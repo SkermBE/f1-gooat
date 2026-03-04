@@ -1,22 +1,22 @@
-/* Colors — F1 Light Theme with Dark Navy Header */
+/* Colors — F1 Light Theme with Ultra-Dark Premium Header */
 @theme {
-      --color-primary: #E10600;
-      --color-secondary: #1B1F3B;
-      --color-tertiary: #2A2E4A;
-      --color-background: #F2F2F7;
-      --color-typography-text: #1B1F3B;
-      --color-typography-heading: #1B1F3B;
-      --color-typography-link: #E10600;
-      --color-typography-link_hover: #C00500;
+      --color-primary: #DC0000; /* Replaced with your new F1 Red */
+      --color-secondary: #0C1B33; /* Replaced with your new deep navy */
+      --color-tertiary: #1A1A2E; /* Replaced with your dark text tone for gradients/hovers */
+      --color-background: #F8FAFC; /* Replaced with your new bg */
+      --color-typography-text: #1A1A2E; /* Replaced with your new text color */
+      --color-typography-heading: #0C1B33; /* Matched to the new deep navy */
+      --color-typography-link: #DC0000; /* Replaced with your new F1 Red */
+      --color-typography-link_hover: #B00000; /* Replaced with your new red hover */
 
       /* F1 surfaces & accents */
       --color-f1-surface: #FFFFFF;
-      --color-f1-surface-elevated: #F8F8FC;
-      --color-f1-border: #E2E2EA;
-      --color-f1-muted: #6B7280;
-      --color-f1-success: #059669;
-      --color-f1-warning: #D97706;
-      --color-f1-perfect: #D4A017;
-      --color-f1-navy: #1B1F3B;
-      --color-f1-navy-light: #2A2E4A;
+      --color-f1-surface-elevated: #F9FAFB; 
+      --color-f1-border: #E5E7EB; 
+      --color-f1-muted: #666666; /* Replaced with your new muted grey */
+      --color-f1-success: #00D664; /* Replaced with your new green */
+      --color-f1-warning: #F59E0B; /* Kept standard warning orange */
+      --color-f1-perfect: #FFB800; /* Replaced with your new yellow for P10 hits */
+      --color-f1-navy: #0C1B33; /* Unified with secondary navy */
+      --color-f1-navy-light: #1A1A2E; /* Unified with tertiary dark tone */
 }

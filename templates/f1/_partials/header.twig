@@ -1,9 +1,26 @@
-<header id="Header" class="fixed top-0 w-full py-4 z-50 bg-f1-navy border-b-4 border-primary">
+{% import "_macros/images/image.twig" as image %}
+{% set siteLogo = craft.assets().id('319').one() ??? null %}
+{% set siteLogoMobile = craft.assets().id('320').one() ??? null %}
+
+
+<header id="Header" class="fixed top-0 w-full py-8 z-50">
     <div class="container">
         <div class="flex items-center justify-between">
             {# Brand #}
-            <a href="{{ siteUrl }}" class="flex items-center gap-3 no-underline">
-                <span class="text-white font-black text-xl tracking-tight uppercase">F1 Prediction Game</span>
+            <a href="{{ siteUrl }}" class="flex items-center gap-3 Link">
+                
+                {{ image.picture(siteLogo, { 
+                    width: 325,
+                    lazy: false,
+                    fetchpriority: 'high',
+                    wrapperClass: 'max-sm:hidden'
+                }) }}
+                {{ image.picture(siteLogoMobile, { 
+                    width: 425,
+                    lazy: false,
+                    fetchpriority: 'high',
+                    wrapperClass: 'sm:hidden'
+                }) }}
             </a>
 
             {# Mobile toggle #}
@@ -40,7 +57,7 @@
 
                     {# Login button #}
                     {% if not currentPlayer %}
-                        <a href="{{ siteUrl('player-login') }}" class="bg-primary text-white font-bold text-sm px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors no-underline">Login</a>
+                        <a href="{{ siteUrl('player-login') }}" class="bg-primary text-white font-bold text-sm px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors Link">Login</a>
                     {% endif %}
                 </div>
             </nav>
