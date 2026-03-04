@@ -5,7 +5,6 @@
     "craftcms/ckeditor": "^5.0.1",
     "craftcms/cms": "^5.9.14",
     "craftcms/mailgun": "^3.1.0",
-    "deployer/deployer": "^7.5",
     "iwf/craft-control-panel-element-counter": "5.0.8",
     "nystudio107/craft-emptycoalesce": "^5.0.0",
     "nystudio107/craft-vite": "^5.0.1",

@@ -6,7 +6,7 @@ export function adminActions() {
 
     function showMessage(text, isError = false) {
         messageEl.textContent = text;
-        messageEl.className = `text-sm ${isError ? 'text-red-400' : 'text-green-400'}`;
+        messageEl.className = `text-sm ${isError ? 'text-primary' : 'text-f1-success'}`;
         messageEl.classList.remove('hidden');
     }
 

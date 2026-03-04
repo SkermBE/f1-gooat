@@ -3,7 +3,7 @@
 */
 
 *:not(svg *) {
-  @apply font-body text-typography-text;
+  @apply font-body;
   font-size: clamp(
     theme(text-default_min),
     theme(text-default),
@@ -108,7 +108,7 @@ h4,
 .Hero-title {
   &,
   * {
-    @apply font-heading text-typography-heading;
+    @apply font-heading;
   }
 }
 

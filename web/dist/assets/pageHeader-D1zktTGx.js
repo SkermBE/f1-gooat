@@ -1,5 +1,5 @@
 /**
- * name: craftskerm
+ * name: f1gooat
  * version: v1.0.0
  * description: Website & codebase by Arno Ramon - Skerm
  * author: Skerm <info@skerm.be>
