@@ -1,16 +1,18 @@
 {
   "src/js/app.js": {
-    "file": "assets/app-CwdvexOA.js",
+    "file": "assets/app-BB90-Y8O.js",
     "name": "app",
     "src": "src/js/app.js",
     "isEntry": true,
     "dynamicImports": [
       "src/js/parts/design-grid.js",
       "src/js/parts/a11y-dialog.js",
-      "src/js/parts/pageHeader.js"
+      "src/js/parts/pageHeader.js",
+      "src/js/parts/driverSelection.js",
+      "src/js/parts/adminActions.js"
     ],
     "css": [
-      "assets/app-DO9k9Jk9.css"
+      "assets/app-bJragZl7.css"
     ]
   },
   "src/js/parts/a11y-dialog.js": {
@@ -19,14 +21,26 @@
     "src": "src/js/parts/a11y-dialog.js",
     "isDynamicEntry": true
   },
+  "src/js/parts/adminActions.js": {
+    "file": "assets/adminActions-DyblL_zy.js",
+    "name": "adminActions",
+    "src": "src/js/parts/adminActions.js",
+    "isDynamicEntry": true
+  },
   "src/js/parts/design-grid.js": {
     "file": "assets/design-grid-Caxyi3xG.js",
     "name": "design-grid",
     "src": "src/js/parts/design-grid.js",
     "isDynamicEntry": true
   },
+  "src/js/parts/driverSelection.js": {
+    "file": "assets/driverSelection-BEx1qnks.js",
+    "name": "driverSelection",
+    "src": "src/js/parts/driverSelection.js",
+    "isDynamicEntry": true
+  },
   "src/js/parts/pageHeader.js": {
-    "file": "assets/pageHeader-naC27kgl.js",
+    "file": "assets/pageHeader-D1zktTGx.js",
     "name": "pageHeader",
     "src": "src/js/parts/pageHeader.js",
     "isDynamicEntry": true
