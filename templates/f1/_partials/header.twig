@@ -1,4 +1,4 @@
-{% import "_macros/images/image.twig" as image %}
+
 {% set siteLogo = craft.assets().id('319').one() ??? null %}
 {% set siteLogoMobile = craft.assets().id('320').one() ??? null %}
 
@@ -8,19 +8,8 @@
         <div class="flex items-center justify-between">
             {# Brand #}
             <a href="{{ siteUrl }}" class="flex items-center gap-3 Link">
-                
-                {{ image.picture(siteLogo, { 
-                    width: 325,
-                    lazy: false,
-                    fetchpriority: 'high',
-                    wrapperClass: 'max-sm:hidden'
-                }) }}
-                {{ image.picture(siteLogoMobile, { 
-                    width: 75,
-                    lazy: false,
-                    fetchpriority: 'high',
-                    wrapperClass: 'sm:hidden'
-                }) }}
+                {{ svg(include('_partials/icons/logo.svg'))|attr({class: 'max-w-[325px] w-full max-sm:hidden h-auto'}) }}
+                {{ svg(include('_partials/icons/icon.svg'))|attr({class: 'max-w-[75px] w-full sm:hidden h-auto'}) }}
             </a>
 
             {# Mobile toggle #}
