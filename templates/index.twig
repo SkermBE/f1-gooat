@@ -13,26 +13,5 @@
 			style: 'primary'
 			
 		} %}
-
-		{% import "_macros/images/image.twig" as image %}
-
-		{# Card image — custom sizes for responsive grid #}
-		{{ image.picture(entry.fieldImage.one(), {
-			width: 1920,
-			ratio: { 0: '1:1', 768: '4:3', 1024: '16:9' },
-			sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
-		}) }}
-
-		{# Simple — just width, defaults handle the rest #}
-		{{ image.picture(entry.fieldImage.one(), { width: 1200 }) }}
-
-		{# Autoplay background video #}
-		{{ image.picture(entry.fieldVideo.one(), {
-			width: 1920,
-			height: 1080,
-			videoAutoplay: false,
-			videoPoster: entry.fieldImage.one()
-		}) }}
-
 	</div>
 {% endblock %}

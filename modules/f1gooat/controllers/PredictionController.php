@@ -1,0 +1,256 @@
+<?php
+
+namespace modules\f1gooat\controllers;
+
+use Craft;
+use craft\web\Controller;
+use craft\elements\Entry;
+use yii\web\Response;
+use modules\f1gooat\Module;
+
+class PredictionController extends Controller
+{
+    protected array|int|bool $allowAnonymous = true;
+
+    /**
+     * Submit a prediction
+     */
+    public function actionSubmitPrediction(): Response
+    {
+        $this->requirePostRequest();
+
+        $player = Module::getCurrentPlayer();
+        if (!$player) {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'Not logged in',
+            ]);
+        }
+
+        $request = Craft::$app->getRequest();
+        $raceId = $request->getBodyParam('raceId');
+        $driverId = $request->getBodyParam('driverId');
+
+        $siteId = Craft::$app->getSites()->getCurrentSite()->id;
+
+        // Get race — must be on current site and open for selection
+        $race = Entry::find()->id($raceId)->siteId($siteId)->one();
+
+        if (!$race || $race->raceStatus != 'selection_open') {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'Selection is not open for this race',
+            ]);
+        }
+
+        // Validate driver exists on this site
+        $driver = Entry::find()
+            ->section('drivers')
+            ->siteId($siteId)
+            ->driverId($driverId)
+            ->one();
+
+        if (!$driver) {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'Driver not found',
+            ]);
+        }
+
+        if (!$driver->isActive) {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'This driver is unavailable',
+            ]);
+        }
+
+        // Check if it's this player's turn
+        $currentSelector = $this->getCurrentSelector($raceId, $siteId);
+
+        if (!$currentSelector || $currentSelector->id != $player->id) {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'It is not your turn to select',
+            ]);
+        }
+
+        // Check if driver already selected for this race
+        $existingPrediction = Entry::find()
+            ->section('predictions')
+            ->siteId($siteId)
+            ->relatedTo(['targetElement' => $raceId, 'field' => 'predictionRace'])
+            ->driverId($driverId)
+            ->one();
+
+        if ($existingPrediction) {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'This driver has already been selected',
+            ]);
+        }
+
+        // Get selection order
+        $selectionOrder = Entry::find()
+            ->section('predictions')
+            ->siteId($siteId)
+            ->relatedTo(['targetElement' => $raceId, 'field' => 'predictionRace'])
+            ->count() + 1;
+
+        // Use validated driver data (not user input)
+        $driverCode = $driver->driverCode;
+        $driverName = trim($driver->driverFirstName . ' ' . $driver->driverLastName);
+
+        // Create prediction on current site
+        $prediction = new Entry();
+        $prediction->sectionId = Craft::$app->getEntries()->getSectionByHandle('predictions')->id;
+        $prediction->typeId = Craft::$app->getEntries()->getSectionByHandle('predictions')->getEntryTypes()[0]->id;
+        $prediction->siteId = $siteId;
+
+        $prediction->setFieldValues([
+            'predictionRace' => [$raceId],
+            'predictionPlayer' => [$player->id],
+            'driverId' => $driverId,
+            'driverCode' => $driverCode,
+            'driverName' => $driverName,
+            'selectionOrder' => $selectionOrder,
+        ]);
+
+        if (!Craft::$app->getElements()->saveElement($prediction)) {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'Could not save prediction',
+            ]);
+        }
+
+        // Auto-close selection if all players have picked
+        $totalPlayers = Entry::find()->section('players')->siteId($siteId)->count();
+        if ($selectionOrder >= $totalPlayers) {
+            $race->setFieldValue('raceStatus', 'selection_closed');
+            Craft::$app->getElements()->saveElement($race);
+        }
+
+        return $this->asJson([
+            'success' => true,
+            'prediction' => [
+                'id' => $prediction->id,
+                'driverCode' => $driverCode,
+                'driverName' => $driverName,
+                'selectionOrder' => $selectionOrder,
+                'totalPlayers' => $totalPlayers,
+            ],
+        ]);
+    }
+
+    /**
+     * Get available drivers for a race
+     */
+    public function actionGetAvailableDrivers(): Response
+    {
+        $raceId = Craft::$app->getRequest()->getQueryParam('raceId');
+
+        // Get already selected driver IDs for this race
+        $selectedPredictions = Entry::find()
+            ->section('predictions')
+            ->relatedTo(['targetElement' => $raceId, 'field' => 'predictionRace'])
+            ->all();
+
+        $selectedIds = [];
+        foreach ($selectedPredictions as $prediction) {
+            $selectedIds[] = $prediction->driverId;
+        }
+
+        // Get all active drivers not yet selected
+        $drivers = Entry::find()
+            ->section('drivers')
+            ->isActive(true)
+            ->all();
+
+        $availableDrivers = [];
+        foreach ($drivers as $driver) {
+            if (!in_array($driver->driverId, $selectedIds)) {
+                $photo = $driver->driverPhoto->one();
+                $availableDrivers[] = [
+                    'id' => $driver->id,
+                    'driverId' => $driver->driverId,
+                    'driverCode' => $driver->driverCode,
+                    'firstName' => $driver->driverFirstName,
+                    'lastName' => $driver->driverLastName,
+                    'teamName' => $driver->teamName,
+                    'photo' => $photo ? $photo->url : null,
+                ];
+            }
+        }
+
+        return $this->asJson([
+            'success' => true,
+            'drivers' => $availableDrivers,
+        ]);
+    }
+
+    /**
+     * Get current selection status
+     */
+    public function actionGetSelectionStatus(): Response
+    {
+        $raceId = Craft::$app->getRequest()->getQueryParam('raceId');
+
+        $race = Entry::find()->id($raceId)->one();
+
+        if (!$race) {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'Race not found',
+            ]);
+        }
+
+        $totalPlayers = Entry::find()->section('players')->siteId($race->siteId)->count();
+        $selectedCount = Entry::find()
+            ->section('predictions')
+            ->relatedTo(['targetElement' => $raceId, 'field' => 'predictionRace'])
+            ->count();
+
+        $currentSelector = $this->getCurrentSelector($raceId, $race->siteId);
+
+        $player = Module::getCurrentPlayer();
+        $isPlayerTurn = $currentSelector && $player && $currentSelector->id == $player->id;
+
+        return $this->asJson([
+            'success' => true,
+            'status' => $race->raceStatus,
+            'totalPlayers' => $totalPlayers,
+            'selectedCount' => $selectedCount,
+            'currentSelector' => $currentSelector ? [
+                'id' => $currentSelector->id,
+                'name' => $currentSelector->title,
+            ] : null,
+            'isPlayerTurn' => $isPlayerTurn,
+        ]);
+    }
+
+    /**
+     * Get current player who should select (site-scoped)
+     */
+    private function getCurrentSelector(int $raceId, ?int $siteId = null): ?Entry
+    {
+        $selectedCount = Entry::find()
+            ->section('predictions')
+            ->relatedTo(['targetElement' => $raceId, 'field' => 'predictionRace'])
+            ->count();
+
+        $query = Entry::find()
+            ->section('players')
+            ->orderBy(['totalPoints' => SORT_ASC]);
+
+        if ($siteId) {
+            $query->siteId($siteId);
+        }
+
+        $players = $query->all();
+
+        if (isset($players[$selectedCount])) {
+            return $players[$selectedCount];
+        }
+
+        return null;
+    }
+}

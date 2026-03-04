@@ -27,6 +27,11 @@
       "php": "8.2"
     }
   },
+  "autoload": {
+    "psr-4": {
+      "modules\\": "modules/"
+    }
+  },
   "scripts": {
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example.dev', '.env');\""

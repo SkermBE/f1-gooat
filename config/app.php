@@ -8,6 +8,12 @@ use craft\mail\transportadapters\Smtp;
 $config = [
     'id' => App::env('CRAFT_APP_ID') ?: 'CraftCMS',
     'components' => [],
+    'modules' => [
+        'f1-gooat' => [
+            'class' => \modules\f1gooat\Module::class,
+        ],
+    ],
+    'bootstrap' => ['f1-gooat'],
 ];
 
 // Only register the mailer override in DEV:
