@@ -13,12 +13,12 @@ previewTargets:
     urlFormat: '{url}'
 propagationMethod: none
 siteSettings:
-  74ff37ae-4ee1-4676-8e95-b511d6b2eb2f: # 2025
+  74ff37ae-4ee1-4676-8e95-b511d6b2eb2f: # Season 2025
     enabledByDefault: true
     hasUrls: false
     template: null
     uriFormat: null
-  a88d754d-03b9-4e5a-9984-de49f12d0629: # 2026
+  a88d754d-03b9-4e5a-9984-de49f12d0629: # Season 2026
     enabledByDefault: true
     hasUrls: false
     template: null

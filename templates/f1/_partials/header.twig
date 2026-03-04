@@ -16,7 +16,7 @@
                     wrapperClass: 'max-sm:hidden'
                 }) }}
                 {{ image.picture(siteLogoMobile, { 
-                    width: 425,
+                    width: 75,
                     lazy: false,
                     fetchpriority: 'high',
                     wrapperClass: 'sm:hidden'
@@ -35,18 +35,14 @@
             {# Navigation #}
             <nav class="Header-navs">
                 <div class="Header-navs--inner flex items-center gap-6">
-                    <ul class="flex flex-col lg:flex-row gap-6 list-none p-0 m-0">
-                        <li><a href="{{ siteUrl('races') }}" class="F1Nav-link{% if craft.app.request.segments|first == 'races' %} is-active{% endif %}">Races</a></li>
-                        <li><a href="{{ siteUrl('standings') }}" class="F1Nav-link{% if craft.app.request.segments|first == 'standings' %} is-active{% endif %}">Standings</a></li>
-                        {% if currentPlayer %}
-                            <li><a href="{{ siteUrl('player/' ~ currentPlayer.id) }}" class="F1Nav-link{% if craft.app.request.segments|first == 'player' %} is-active{% endif %}">Profile</a></li>
-                            <li><a href="{{ siteUrl('player-logout') }}" class="F1Nav-link">Logout</a></li>
-                        {% endif %}
+                    <ul class="flex flex-col lg:flex-row gap-6 list-none !p-0 !m-0">
+                        <li class="list-none flex items-center justify-center"><a href="{{ siteUrl('races') }}" class="rounded-md text-sm font-medium border border-primary px-4 py-2 hover:bg-primary/[.1] transition-colors Link{% if craft.app.request.segments|first == 'races' %} bg-primary text-background pointer-events-none{% endif %}">Races</a></li>
+                        <li class="list-none flex items-center justify-center"><a href="{{ siteUrl('standings') }}" class="rounded-md text-sm font-medium border border-primary px-4 py-2 hover:bg-primary/[.1] transition-colors Link{% if craft.app.request.segments|first == 'standings' %} bg-primary text-background{% endif %}">Standings</a></li>
                     </ul>
 
                     {# Season switcher #}
                     {% if availableSites|length > 1 %}
-                        <select onchange="window.location.href=this.value" class="bg-f1-navy-light border border-white/20 rounded-lg px-3 py-1.5 text-sm text-white/80">
+                        <select onchange="window.location.href=this.value" class="rounded-md text-sm font-medium border px-4 py-2 bg-primary text-background transition-colors">
                             {% for site in availableSites %}
                                 <option value="{{ site.baseUrl }}" {{ site.id == currentSite.id ? 'selected' }}>
                                     {{ site.name }}
@@ -56,9 +52,11 @@
                     {% endif %}
 
                     {# Login button #}
-                    {% if not currentPlayer %}
-                        <a href="{{ siteUrl('player-login') }}" class="bg-primary text-white font-bold text-sm px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors Link">Login</a>
-                    {% endif %}
+                    {% if currentPlayer %}
+                        <a href="{{ siteUrl('player-logout') }}" class="rounded-md text-sm font-medium border border-f1-warning text-f1-warning px-4 py-2 hover:bg-f1-warning hover:text-background transition-colors Link">Logout</a>
+                    {% else %}
+                        <a href="{{ siteUrl('player-login') }}" class="rounded-md text-sm font-medium border px-4 py-2 hover:bg-primary hover:text-background transition-colors Link">Login</a>
+                    {% endif %}    
                 </div>
             </nav>
         </div>

@@ -1,22 +1,22 @@
 /* Colors — F1 Light Theme with Ultra-Dark Premium Header */
 @theme {
-      --color-primary: #DC0000; /* Replaced with your new F1 Red */
-      --color-secondary: #0C1B33; /* Replaced with your new deep navy */
-      --color-tertiary: #1A1A2E; /* Replaced with your dark text tone for gradients/hovers */
-      --color-background: #F8FAFC; /* Replaced with your new bg */
-      --color-typography-text: #1A1A2E; /* Replaced with your new text color */
-      --color-typography-heading: #0C1B33; /* Matched to the new deep navy */
-      --color-typography-link: #DC0000; /* Replaced with your new F1 Red */
-      --color-typography-link_hover: #B00000; /* Replaced with your new red hover */
+      --color-primary: #192335; /* slate-900: Used for primary buttons and main brand identity */
+      --color-secondary: #1E293B; /* slate-800: Deep dark background for header/footer */
+      --color-tertiary: #334155; /* slate-700: Lighter slate for dark gradients or secondary headers */
+      --color-background: #F8FAFC; /* slate-50: Clean, subtle page background */
+      --color-typography-text: #334155; /* slate-700: Highly legible secondary text */
+      --color-typography-heading: #192335; /* slate-900: Bold, dark headings */
+      --color-typography-link: #F59E0B; /* amber-500: Puts focus on links with your brand accent */
+      --color-typography-link_hover: #F97316; /* orange-500: Nice gradient/warm shift on hover */
 
       /* F1 surfaces & accents */
-      --color-f1-surface: #FFFFFF;
-      --color-f1-surface-elevated: #F9FAFB; 
-      --color-f1-border: #E5E7EB; 
-      --color-f1-muted: #666666; /* Replaced with your new muted grey */
-      --color-f1-success: #00D664; /* Replaced with your new green */
-      --color-f1-warning: #F59E0B; /* Kept standard warning orange */
-      --color-f1-perfect: #FFB800; /* Replaced with your new yellow for P10 hits */
-      --color-f1-navy: #0C1B33; /* Unified with secondary navy */
-      --color-f1-navy-light: #1A1A2E; /* Unified with tertiary dark tone */
+      --color-f1-surface: #FFFFFF; /* Pure white for clean card bases */
+      --color-f1-surface-elevated: #F1F5F9; /* slate-100: Subtle background for elevated elements */
+      --color-f1-border: #94A3B8; /* slate-400: Crisp placeholders and dividers */
+      --color-f1-muted: #64748B; /* slate-500: Perfect for muted text and icons */
+      --color-f1-success: #059669; /* emerald-600: Confirmed selection / success */
+      --color-f1-warning: #F87171; /* red-400: Negative points / DNF warnings */
+      --color-f1-perfect: #F59E0B; /* amber-500: P10 logo and perfect guess gold */
+      --color-f1-navy: #0F172A; /* slate-900: Unified with primary/dark backgrounds */
+      --color-f1-navy-light: #1E293B; /* slate-800: Unified for lighter dark areas */
 }

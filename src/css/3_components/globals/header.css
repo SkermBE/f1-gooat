@@ -11,7 +11,7 @@
 
             /* Toggle */
             .Toggle .Toggle-lines .Toggle-line {
-                  @apply bg-white;
+                  @apply bg-background;
 
                   &:nth-child(1) {
                         @apply top-1/2 rotate-[135deg];
@@ -89,7 +89,7 @@
                   @apply relative h-[18px] w-[30px];
 
                   .Toggle-line {
-                        @apply absolute left-1/2 -translate-x-1/2 h-[1px] bg-white min-w-full;
+                        @apply absolute left-1/2 -translate-x-1/2 h-[1px] bg-primary min-w-full;
 
                         &:nth-child(1) {
                               @apply top-0;
@@ -172,19 +172,5 @@
                   text-transform: inherit;
                   font-family: inherit;
             }
-      }
-}
-
-/* F1 Navigation links (white text on dark navy header) */
-.F1Nav-link {
-      @apply text-white/70 font-medium uppercase text-sm tracking-wider transition-colors;
-
-      &:hover,
-      &.is-active {
-            @apply text-white;
-      }
-
-      &:before {
-            display: none;
       }
 }
