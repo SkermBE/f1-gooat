@@ -19,4 +19,6 @@
       --color-f1-perfect: #F59E0B; /* amber-500: P10 logo and perfect guess gold */
       --color-f1-navy: #0F172A; /* slate-900: Unified with primary/dark backgrounds */
       --color-f1-navy-light: #1E293B; /* slate-800: Unified for lighter dark areas */
+
+      --accent: red;
 }

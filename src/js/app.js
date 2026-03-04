@@ -41,4 +41,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const { adminActions } = await import('@js/parts/adminActions');
             adminActions();
       }
+ 
+      // Race by race detail
+      const playersRaceByRaceElements = document.querySelectorAll('.js-player');
+      if (playersRaceByRaceElements.length > 0) {
+            const { playerRaceByRace } = await import('@js/parts/playerRaceByRace');
+            playersRaceByRaceElements.forEach(playersRaceByRaceElement => playerRaceByRace(playersRaceByRaceElement));
+      }
 })

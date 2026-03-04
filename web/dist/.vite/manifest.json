@@ -1,6 +1,6 @@
 {
   "src/js/app.js": {
-    "file": "assets/app-IWgkrUXx.js",
+    "file": "assets/app-CSo0fPNJ.js",
     "name": "app",
     "src": "src/js/app.js",
     "isEntry": true,
@@ -12,7 +12,7 @@
       "src/js/parts/adminActions.js"
     ],
     "css": [
-      "assets/app-Wkh_zrpX.css"
+      "assets/app-CA-LYHZG.css"
     ]
   },
   "src/js/parts/a11y-dialog.js": {
