@@ -1,0 +1,12 @@
+{%- macro isActive(link, class) -%}
+    {%- set active = null -%}
+    {%- set type = craft.app.urlManager.matchedElement -%}
+    {%- if type and link.hasElement() -%}
+        {%- set active = (link.getElement().uri == craft.app.request.getSegment(1)) or (type.id == link.getElement().id) -%}
+    {%- else -%}
+        {%- if link.url starts with '/' -%}
+            {%- set active = link.url|split('/')[1] == craft.app.request.getSegment(1) -%}
+        {%- endif -%}
+    {%- endif -%}
+    {% if active %} {{class}}{% endif %}
+{%- endmacro -%}

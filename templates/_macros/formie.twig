@@ -1,0 +1,80 @@
+{# 
+    Override the default values in your tempalte if needed:
+    * formieElement:
+        A formie element to render.
+    
+    * formiePageTitle:
+        Page titel, only override if needed
+    
+    * formiePageUrl:
+        Page URL, only override if needed
+    
+    * formieOverrideFields:
+        Extra field overrides, this can be added as followed:
+        formieOverrideFields: {
+            'fieldName': overrideValue,
+            'fieldName2': overrideValue2,
+        }
+    
+    * formieRedirectLink
+        The link the form should redirect to.
+        To append a string to the original redirect url you can do:
+        formieRedirectLink: formieElement.getRedirectUrl() ~ '&uid={uid}'
+    
+    * formieRedirectAction
+        Redirect action can be one of the following:
+        - same-tab
+        - new-tab
+
+    * expended example:
+        {% include "_macros/formie" with {
+            formieElement: formieForm,
+            formiePageTitle: 'example override title!',
+            formieOverrideFields: {
+                'firstName': 'first name override',
+                'email': 'email@override.be',
+            },
+            formieRedirectLink: formieElement.getRedirectUrl() ~ '?uid={uid}',
+            formieRedirectAction: 'new-tab'
+        } %}
+
+    * Bare minimum example:
+        {% include "_macros/formie" with {
+            formieElement: entry.fieldForm.one()
+        } %}
+#}
+
+{% set formieElement = formieElement ?? null %}
+
+{% if formieElement %}
+	{# Form redirect overrides #}
+	{% set formieRedirectLink = formieRedirectLink ?? null %}
+    {% set formieRedirectAction = formieRedirectAction ?? 'same-tab' %}
+	{% if formieRedirectLink %}
+		{% do formieElement.setSettings({
+            submitActionUrl: formieRedirectLink,
+            submitAction: 'url',
+            submitActionTab: formieRedirectAction,
+        }) %}
+	{% endif %}
+
+
+	{# Default overrides #}
+	{% set formiePageTitle = formiePageTitle ?? entry.title ?? category.title ?? 'Error: unknow page title' %}
+	{% set formiePageUrl = formiePageUrl ?? entry.url ?? craft.app.request.absoluteUrl %}
+
+	{# Custom overrides #}
+	{% set formieOverrideFields = formieOverrideFields ?? {} %}
+
+	{# Merge custom overrides with defaults #}
+	{% set formieOverrideArray = {
+        hiddenPageTitle: formiePageTitle,
+        hiddenPageUrl: formiePageUrl ?? null
+    }|merge(formieOverrideFields) %}
+
+	{# Let formie know to override the fields #}
+	{% do craft.formie.populateFormValues(formieElement, formieOverrideArray, true) %}
+
+	{# Finaly, render the form #}
+	{{ craft.formie.renderForm(formieElement) }}
+{% endif %}

@@ -1,0 +1,38 @@
+columnSuffix: null
+handle: fieldImages
+instructions: null
+name: Afbeeldingen
+searchable: false
+settings:
+  allowSelfRelations: false
+  allowSubfolders: false
+  allowUploads: true
+  allowedKinds:
+    - image
+    - svg
+  branchLimit: null
+  defaultPlacement: end
+  defaultUploadLocationSource: 'volume:f521d366-2967-4c06-9054-55ba57b7a2c0' # Bestanden
+  defaultUploadLocationSubpath: null
+  maintainHierarchy: false
+  maxRelations: null
+  minRelations: null
+  previewMode: full
+  restrictFiles: true
+  restrictLocation: false
+  restrictedDefaultUploadSubpath: null
+  restrictedLocationSource: 'volume:f521d366-2967-4c06-9054-55ba57b7a2c0' # Bestanden
+  restrictedLocationSubpath: null
+  selectionLabel: 'Kies afbeeldingen'
+  showSearchInput: true
+  showSiteMenu: false
+  showUnpermittedFiles: false
+  showUnpermittedVolumes: false
+  sources:
+    - 'volume:f521d366-2967-4c06-9054-55ba57b7a2c0' # Bestanden
+  targetSiteId: null
+  validateRelatedElements: false
+  viewMode: thumbs
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Assets

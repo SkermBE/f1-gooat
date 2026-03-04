@@ -1,0 +1,6 @@
+siteUid: null
+sortOrder: 2
+template: _formie/emails/adminEmail/index
+uriParts:
+  - formie/mails/admin
+uriPattern: formie/mails/admin

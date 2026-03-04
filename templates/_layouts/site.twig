@@ -1,0 +1,22 @@
+{# Extends #}
+{% extends '_layouts/base' %}
+
+{# Template #}
+{% block body %}
+
+    {# Page header #}
+    {% include '_partials/globals/pageHeader' %}
+    
+    {# Main page content #}
+    <main class="Main">
+      	{% block main %}{% endblock %}
+    </main>
+
+    {# Page footer #}
+    {% include '_partials/globals/pageFooter' %}
+
+    {# Design grid #}
+    {% if getenv('CRAFT_ENVIRONMENT') == 'dev' and getenv('DESIGN_GRID') %}   
+        {% include "_partials/blocks/_design-grid" %}
+    {% endif %}
+{% endblock %}

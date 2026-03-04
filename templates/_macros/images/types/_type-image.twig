@@ -1,0 +1,123 @@
+{# Responsive image handler — AVIF, WebP, original fallback with art direction #}
+
+{% set focalPointCoords = asset.hasFocalPoint ? asset.getFocalPoint() : picture.focalPoint %}
+{% set objectPosition = (focalPointCoords|first * 100) ~ '% ' ~ (focalPointCoords|last * 100) ~ '%' %}
+
+{# Base transform settings #}
+{% set baseTransform = {
+	mode: picture.mode,
+	width: picture.width,
+	height: picture.height,
+	quality: picture.quality,
+	position: asset.hasFocalPoint ? asset.getFocalPoint(true) : null
+} %}
+
+{# Filter widths to not exceed the original asset width or the requested width #}
+{% set maxWidth = min(asset.width, picture.width) %}
+{% set filteredWidths = [] %}
+{% for w in picture.widths %}
+	{% if w <= maxWidth %}
+		{% set filteredWidths = filteredWidths|merge([w]) %}
+	{% endif %}
+{% endfor %}
+{% if maxWidth not in filteredWidths %}
+	{% set filteredWidths = filteredWidths|merge([maxWidth]) %}
+{% endif %}
+
+{# Build srcset string for a given format and dimensions #}
+{% macro buildSrcset(asset, transform, widths, format) %}
+	{%- set entries = [] -%}
+	{%- for w in widths -%}
+		{%- set t = transform|merge({
+			width: w,
+			height: transform.height ? ((w / transform.width) * transform.height)|round : null,
+			format: format
+		}) -%}
+		{%- set entries = entries|merge([asset.getUrl(t) ~ ' ' ~ w ~ 'w']) -%}
+	{%- endfor -%}
+	{{- entries|join(', ') -}}
+{% endmacro %}
+
+{# Dominant color placeholder style #}
+{% set placeholderStyle = '' %}
+{% if picture.placeholder == 'color' %}
+	{% set placeholderStyle = 'background-color: #e5e7eb;' %}
+{% endif %}
+
+{# Fallback src (original format at target size) #}
+{% set fallbackTransform = baseTransform|merge({ format: asset.extension }) %}
+{% set fallbackSrc = asset.getUrl(fallbackTransform) %}
+
+{# Generate scoped ID for responsive aspect-ratio when using breakpoints #}
+{% set hasBreakpoints = picture.breakpoints|length > 0 %}
+{% set scopedId = hasBreakpoints ? (picture.id ? picture.id : 'img-' ~ asset.id ~ '-' ~ random(9999)) : '' %}
+
+{# Responsive aspect-ratio styles for art direction #}
+{% if hasBreakpoints %}
+	<style>
+		{%- for bp in picture.breakpoints %}
+			{% if bp.minWidth > 0 %}
+				@media (min-width: {{ bp.minWidth }}px) { #{{ scopedId }} { aspect-ratio: {{ bp.ratioW }}/{{ bp.ratioH }}; } }
+			{%- else %}
+				#{{ scopedId }} { aspect-ratio: {{ bp.ratioW }}/{{ bp.ratioH }}; }
+			{%- endif %}
+		{%- endfor %}
+	</style>
+{% endif %}
+
+<picture class="block{{ picture.wrapperClass ? ' ' ~ picture.wrapperClass }}">
+
+	{# ── Art direction: breakpoint-specific sources (largest breakpoint first) ── #}
+	{% if hasBreakpoints %}
+		{% set sortedBreakpoints = picture.breakpoints|reverse %}
+
+		{% for bp in sortedBreakpoints %}
+			{% set bpTransform = baseTransform|merge({ width: bp.width, height: bp.height }) %}
+			{% set mediaAttr = bp.minWidth > 0 ? ' media="(min-width: ' ~ bp.minWidth ~ 'px)"' : '' %}
+
+			{# Modern formats for this breakpoint #}
+			{% for format in picture.formats %}
+				{% if (format == 'avif' and craft.app.images.supportsAvif) or (format == 'webp' and craft.app.images.supportsWebP) or format not in ['avif', 'webp'] %}
+					<source
+						type="image/{{ format }}"
+						srcset="{{ _self.buildSrcset(asset, bpTransform, filteredWidths, format) }}"
+						sizes="{{ picture.sizes }}"{{ mediaAttr|raw }}>
+				{% endif %}
+			{% endfor %}
+
+			{# Original format for this breakpoint #}
+			<source
+				type="image/{{ asset.extension }}"
+				srcset="{{ _self.buildSrcset(asset, bpTransform, filteredWidths, asset.extension) }}"
+				sizes="{{ picture.sizes }}"{{ mediaAttr|raw }}>
+		{% endfor %}
+
+	{% else %}
+		{# ── Standard: no art direction, just format negotiation ── #}
+		{% for format in picture.formats %}
+			{% if (format == 'avif' and craft.app.images.supportsAvif) or (format == 'webp' and craft.app.images.supportsWebP) or format not in ['avif', 'webp'] %}
+				<source
+					type="image/{{ format }}"
+					srcset="{{ _self.buildSrcset(asset, baseTransform, filteredWidths, format) }}"
+					sizes="{{ picture.sizes }}">
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+
+	{# ── Fallback <img> ── #}
+	{% set imgStyle = (not hasBreakpoints ? 'aspect-ratio: ' ~ picture.width ~ '/' ~ picture.height ~ '; ' : '') ~ 'object-position: ' ~ objectPosition ~ ';' ~ placeholderStyle %}
+
+	<img
+		{% if hasBreakpoints %}id="{{ scopedId }}"{% elseif picture.id %}id="{{ picture.id }}"{% endif %}
+		src="{{ fallbackSrc }}"
+		srcset="{{ _self.buildSrcset(asset, baseTransform, filteredWidths, asset.extension) }}"
+		sizes="{{ picture.sizes }}"
+		width="{{ picture.width }}"
+		height="{{ picture.height }}"
+		alt="{{ picture.alt }}"
+		class="{{ picture.class ? picture.class ~ ' ' }}w-full h-full object-cover"
+		style="{{ imgStyle }}"
+		loading="{{ picture.lazy ? 'lazy' : 'eager' }}"
+		decoding="{{ picture.decoding }}"
+		fetchpriority="{{ picture.fetchpriority }}">
+</picture>

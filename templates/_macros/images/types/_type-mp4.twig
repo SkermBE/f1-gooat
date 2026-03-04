@@ -1,0 +1,26 @@
+{# Video handler — MP4/WebM with poster, autoplay, and lazy loading #}
+
+{% set posterAttr = '' %}
+{% if picture.videoPoster %}
+	{% if picture.videoPoster is iterable and picture.videoPoster.url is defined %}
+		{% set posterAttr = ' poster="' ~ picture.videoPoster.getUrl({ width: picture.width, height: picture.height, mode: picture.mode }) ~ '"' %}
+	{% else %}
+		{% set posterAttr = ' poster="' ~ picture.videoPoster ~ '"' %}
+	{% endif %}
+{% endif %}
+
+{% set autoplayAttrs = picture.videoAutoplay ? 'autoplay muted playsinline loop' : picture.videoAttr %}
+
+<div class="block{{ picture.wrapperClass ? ' ' ~ picture.wrapperClass }}">
+	<video
+		{% if picture.id %}id="{{ picture.id }}"{% endif %}
+		class="{{ picture.class }}"
+		width="{{ picture.width }}"
+		height="{{ picture.height }}"
+		preload="{{ picture.lazy ? 'none' : 'metadata' }}"
+		{{ autoplayAttrs|raw }}{{ posterAttr|raw }}
+		style="aspect-ratio: {{ picture.width }}/{{ picture.height }};">
+		<source src="{{ asset.url }}" type="{{ asset.getMimeType() }}">
+		Your browser does not support the video tag.
+	</video>
+</div>

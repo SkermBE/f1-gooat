@@ -1,0 +1,6 @@
+siteUid: null
+sortOrder: 1
+template: _formie/emails/userEmail/index
+uriParts:
+  - formie/mails/user
+uriPattern: formie/mails/user

@@ -1,0 +1,152 @@
+{#
+Image Macro — Responsive, performant image rendering for Craft CMS
+
+Options:
+* width:         Target max width in pixels, or 'auto' for original. Falls back to asset width if omitted.
+* height:        Target max height in pixels, or 'auto' for original. Auto-calculated from ratio or asset proportions.
+* ratio:         Aspect ratio — either a string like '16:9' or a breakpoint map:
+                 { 0: '1:1', 768: '4:3', 1024: '16:9' }
+                 Keys are min-width breakpoints in px. 0 = mobile/default.
+* widths:        Array of srcset widths. Default: [320, 640, 768, 1024, 1440, 1920]
+* sizes:         HTML sizes attribute. Default: '100vw'
+* formats:       Output formats for <source> elements. Default: ['avif', 'webp']
+* alt:           Alt text (defaults to asset title)
+* mode:          crop / fit / stretch (default: 'crop')
+* wrapperClass:  Classes on the <picture> wrapper
+* class:         Classes on the <img> tag
+* id:            ID attribute
+* quality:       Image quality 1-100 (default: 80)
+* lazy:          Native lazy loading (default: true). Set false for above-the-fold images.
+* fetchpriority: 'high' | 'low' | 'auto' (default: 'auto'). Use 'high' for LCP images.
+* decoding:      'async' | 'auto' (default: 'async')
+* placeholder:   'color' | 'none' (default: 'color'). Dominant color LQIP background.
+* videoAttr:     Video attributes string (default: 'controls')
+* videoAutoplay: Boolean — sets autoplay muted playsinline loop (default: false)
+* videoPoster:   Asset or URL for video poster frame
+
+Usage:
+
+{% import "_macros/images/image.twig" as image
+
+* responsive image 
+{{ image.picture(entry.fieldImage.one(), { width: 1200 }) }}
+
+* Hero image with fixed ratio
+{{ image.picture(entry.fieldImage.one(), {
+    width: 1920,
+    ratio: '16:9',
+    lazy: false,
+    fetchpriority: 'high'
+}) }}
+
+* Responsive ratio — 1:1 on mobile, 4:3 on tablet, 16:9 on desktop 
+{{ image.picture(entry.fieldImage.one(), {
+    width: 1920,
+    ratio: { 0: '1:1', 768: '4:3', 1024: '16:9' },
+    lazy: false,
+    fetchpriority: 'high'
+}) }}
+
+* Original ratio — just set width, height scales automatically
+{{ image.picture(entry.fieldImage.one(), { width: 1200 }) }}
+
+* Full original dimensions
+{{ image.picture(entry.fieldImage.one(), { width: 'auto' }) }}
+
+*  Smaller card image
+{{ image.picture(entry.fieldImage.one(), {
+    width: 800,
+    ratio: '4:3',
+    sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw',
+    wrapperClass: 'rounded overflow-hidden'
+}) }}
+
+#}
+
+{% macro picture(asset, options) %}
+	{% set asset = asset ?? null %}
+
+	{% set defaults = {
+		width: null,
+		height: null,
+		ratio: null,
+		widths: [320, 640, 768, 1024, 1440, 1920],
+		sizes: '100vw',
+		formats: ['avif', 'webp'],
+		alt: asset ? asset.title : '',
+		mode: 'crop',
+		wrapperClass: '',
+		class: '',
+		id: '',
+		quality: 80,
+		lazy: true,
+		fetchpriority: 'auto',
+		decoding: 'async',
+		placeholder: 'color',
+		focalPoint: [0.5, 0.5],
+		videoAttr: 'controls',
+		videoAutoplay: false,
+		videoPoster: null
+	} %}
+
+	{% set picture = options ? defaults|merge(options) : defaults %}
+
+	{# Support width: 'auto' — use the asset's original dimensions #}
+	{% if picture.width == 'auto' %}
+		{% set picture = picture|merge({ width: null }) %}
+	{% endif %}
+	{% if picture.height == 'auto' %}
+		{% set picture = picture|merge({ height: null }) %}
+	{% endif %}
+
+	{# Fall back to asset width if not provided #}
+	{% if asset and not picture.width %}
+		{% set picture = picture|merge({ width: asset.width }) %}
+	{% endif %}
+
+	{# Build breakpoints array for art direction #}
+	{% set breakpoints = [] %}
+
+	{% if picture.ratio is iterable %}
+		{# Responsive ratio map: { 0: '1:1', 768: '4:3', 1024: '16:9' } #}
+		{% for bp, ratioStr in picture.ratio %}
+			{% set ratioParts = ratioStr|split(':') %}
+			{% set ratioW = ratioParts[0]|number_format %}
+			{% set ratioH = ratioParts[1]|number_format %}
+			{% set bpHeight = ((picture.width / ratioW) * ratioH)|round %}
+			{% set breakpoints = breakpoints|merge([{
+				minWidth: bp,
+				width: picture.width,
+				height: bpHeight,
+				ratioW: ratioW,
+				ratioH: ratioH
+			}]) %}
+		{% endfor %}
+
+		{# Use the smallest breakpoint (0 / mobile) for the <img> fallback #}
+		{% set smallestBp = breakpoints|first %}
+		{% set picture = picture|merge({ height: smallestBp.height }) %}
+
+	{% elseif picture.ratio %}
+		{# Simple ratio string: '16:9' #}
+		{% set ratioParts = picture.ratio|split(':') %}
+		{% set ratioW = ratioParts[0]|number_format %}
+		{% set ratioH = ratioParts[1]|number_format %}
+		{% set picture = picture|merge({ height: ((picture.width / ratioW) * ratioH)|round }) %}
+
+	{% elseif asset and not picture.height %}
+		{# No ratio — scale height proportionally to maintain the asset's native ratio #}
+		{% set picture = picture|merge({ height: ((picture.width / asset.width) * asset.height)|round }) %}
+	{% endif %}
+
+	{# Pass breakpoints to the type template #}
+	{% set picture = picture|merge({ breakpoints: breakpoints }) %}
+
+	{% if asset %}
+		{% include [
+			"_macros/images/types/_type-#{asset.extension}.twig",
+			"_macros/images/types/_type-image.twig"
+		] %}
+	{% endif %}
+
+{% endmacro %}

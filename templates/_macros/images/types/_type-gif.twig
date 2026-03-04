@@ -1,0 +1,14 @@
+{# GIF handler — simple img with native lazy loading #}
+
+<div class="block{{ picture.wrapperClass ? ' ' ~ picture.wrapperClass }}">
+	<img
+		{% if picture.id %}id="{{ picture.id }}"{% endif %}
+		src="{{ asset.url }}"
+		width="{{ picture.width }}"
+		height="{{ picture.height }}"
+		alt="{{ picture.alt }}"
+		class="{{ picture.class }}"
+		style="aspect-ratio: {{ picture.width }}/{{ picture.height }};"
+		loading="{{ picture.lazy ? 'lazy' : 'eager' }}"
+		decoding="async">
+</div>

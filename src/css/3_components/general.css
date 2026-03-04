@@ -1,0 +1,16 @@
+html,
+body {
+    @apply scroll-smooth bg-background;
+}
+
+/* No scroling classs */
+.no-scrolling {
+    @apply max-lg:overflow-hidden;
+}
+
+/* Default iframe styling */
+.HyperIframe {
+    iframe {
+        @apply w-full h-full;
+    }
+}

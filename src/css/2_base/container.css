@@ -1,0 +1,29 @@
+.container {
+      max-width: calc(var(--container) + (var(--container-padding) * 2)) !important;
+
+      margin-left: auto !important;
+      margin-right: auto !important;
+
+      padding-left: var(--container-padding) !important;
+      padding-right: var(--container-padding) !important;
+}
+
+.container-xs {
+      max-width: calc(var(--container-xs) + (var(--container-padding) * 2)) !important;
+}
+
+.container-sm {
+      max-width: calc(var(--container-sm) + (var(--container-padding) * 2)) !important;
+}
+
+.container-lg {
+      max-width: calc(var(--container-lg) + (var(--container-padding) * 2)) !important;
+}
+
+.container-xl {
+      max-width: calc(var(--container-xl) + (var(--container-padding) * 2)) !important;
+}
+
+.container-2xl {
+      max-width: calc(var(--container-2xl) + (var(--container-padding) * 2)) !important;
+}

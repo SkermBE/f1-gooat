@@ -1,0 +1,5 @@
+{% if button.url and button.element %}
+	<span class="HyperIframe{{ button.classes ? ' ' ~ button.classes }}">
+		{{ button.element.getHtml() }}
+	</span>
+{% endif %}

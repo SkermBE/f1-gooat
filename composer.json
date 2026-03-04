@@ -1,0 +1,45 @@
+{
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "craftcms/ckeditor": "^5.0.1",
+    "craftcms/cms": "^5.9.14",
+    "craftcms/element-api": "4.2.0",
+    "craftcms/mailgun": "^3.1.0",
+    "deployer/deployer": "^7.5",
+    "iwf/craft-control-panel-element-counter": "5.0.8",
+    "nystudio107/craft-seomatic": "5.1.20",
+    "nystudio107/craft-vite": "^5.0.1",
+    "verbb/expanded-singles": "3.0.3",
+    "verbb/formie": "^3.1.15",
+    "verbb/hyper": "^2.3.1",
+    "vlucas/phpdotenv": "^5.4.0"
+  },
+  "require-dev": {
+    "craftcms/generator": "^2.0.0",
+    "yiisoft/yii2-shell": "^2.0.3"
+  },
+  "config": {
+    "allow-plugins": {
+      "craftcms/plugin-installer": true,
+      "yiisoft/yii2-composer": true
+    },
+    "sort-packages": true,
+    "optimize-autoloader": true,
+    "platform": {
+      "php": "8.2"
+    }
+  },
+  "scripts": {
+    "post-root-package-install": [
+      "@php -r \"file_exists('.env') || copy('.env.example.dev', '.env');\""
+    ]
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://composer.craftcms.com",
+      "canonical": false
+    }
+  ]
+}

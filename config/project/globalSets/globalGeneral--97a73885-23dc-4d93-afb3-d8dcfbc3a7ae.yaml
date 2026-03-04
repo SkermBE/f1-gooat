@@ -1,0 +1,128 @@
+fieldLayouts:
+  82042490-f719-49eb-956c-bf580ca2631d:
+    cardThumbAlignment: end
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2025-03-31T19:26:11+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 01b9fa51-7c82-495d-a125-54246848dda3 # Multiple line plain text
+            handle: fieldAddres
+            instructions: null
+            label: Address
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 94c63fae-1dcd-4b59-ae53-60c94b6297d0
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2025-03-31T19:26:11+00:00'
+            elementCondition: null
+            type: craft\fieldlayoutelements\HorizontalRule
+            uid: 50a1105e-c364-4b91-8091-6aceb8253387
+            userCondition: null
+          -
+            dateAdded: '2025-03-31T19:26:11+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 5c649467-ed58-4f1f-b7fe-fa3a0ba92b9d # Telefoon
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 210beea4-445d-40ff-bdd1-acf91460de64
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2025-03-31T19:26:11+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: b5c65ee1-322e-4bf7-b1ea-f66e0fba2e1b # Email
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 3d6e7477-b935-4e86-a289-959a7456683b
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2025-03-31T19:26:11+00:00'
+            elementCondition: null
+            type: craft\fieldlayoutelements\HorizontalRule
+            uid: 3420ea06-08b1-45a8-ab0d-026b7c362e9e
+            userCondition: null
+          -
+            dateAdded: '2025-03-31T19:26:11+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: d2703cd2-c6f8-4900-8ed9-7689fdf1b735 # Social media
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 5567adbc-9a0b-4a26-a0f6-a3063b2e2784
+            userCondition: null
+            warning: null
+            width: 100
+        name: Algemeen
+        uid: 39b54f15-f0c8-4ad9-88cc-d86713abc680
+        userCondition: null
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2025-03-31T19:26:11+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 284e462f-58a4-4a36-9184-3e98ac33a54d # Titel
+            handle: fieldSubscribeTitle
+            instructions: null
+            label: Titel
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 511d214f-d103-4e0a-b8ed-e78cbc0c55ba
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2025-03-31T19:26:11+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 172575da-188c-4875-a229-351e50414c12 # Formulier
+            handle: fieldSubscribeForm
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: d319bd23-36cd-4033-88a1-4d82107b8a4a
+            userCondition: null
+            warning: null
+            width: 100
+        name: Subscribe
+        uid: fbe980a6-d45c-44f6-9f7b-7c8508c7141f
+        userCondition: null
+    thumbFieldKey: null
+handle: globalGeneral
+name: Algemeen
+sortOrder: 1

@@ -1,0 +1,51 @@
+.u-block {
+      @apply my-20 md:my-32;
+}
+
+.u-block__top {
+      @apply mt-20 md:mt-32;
+}
+
+.u-block__bottom {
+      @apply mb-20 md:mb-32;
+}
+
+/* Default margin small */
+.u-block--small {
+      @apply my-16 md:my-24;
+}
+
+.u-block--small__top {
+      @apply mt-16 md:mt-24;
+}
+
+.u-block--small__bottom {
+      @apply mb-16 md:mb-24;
+}
+
+/* Default padding */
+.u-block--padding {
+      @apply py-20 md:py-32;
+}
+
+.u-block--padding__top {
+      @apply pt-20 md:pt-32;
+}
+
+.u-block--padding__bottom {
+      @apply pb-20 md:pb-32;
+}
+
+/* Default padding small */
+.u-block--small__padding {
+      @apply py-16 md:py-24;
+
+}
+
+.u-block--small__padding__top {
+      @apply pt-16 md:pt-24;
+}
+
+.u-block--small__padding__bottom {
+      @apply pb-16 md:pb-24;
+}

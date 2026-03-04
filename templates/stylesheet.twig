@@ -1,0 +1,116 @@
+{# 
+    Our main index/home page
+ #}
+
+{% extends '_layouts/site' %}
+{# {% set bodyClass = 'stylesheet Header-white bg-black' %} #}
+
+{% block main %}
+	<div class="container fuck">
+		<a class="Link block my-10" href="{{ siteUrl }}" title="{{ siteName ~ ' ' ~ 'homepage'|t }}">
+			{{ svg(include('_partials/icons/logo.svg'))|attr({class: 'w-full h-auto max-w-[150px]'}) }}
+		</a>
+
+		{# Default styling #}
+		<div class="u-block !mt-0">
+			<h1 class="mb-5">Header 1: a
+				<strong>longer</strong>
+				title</h1>
+			<h2 class="mb-5">Header 2: a
+				<strong>longer</strong>
+				title</h2>
+			<h3 class="mb-5">Header 3: a
+				<strong>longer</strong>
+				title</h3>
+			<h4 class="mb-5">Header 4: a
+				<strong>longer</strong>
+				title</h4>
+
+			<span class="RichText u-block--small">
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+					<strong>Proin placerat nulla</strong>
+					vel lorem facilisis, vel hendrerit nisl placerat. Sed fermentum a nibh quis imperdiet. Aenean condimentum nisi sit amet arcu scelerisque viverra. Aliquam eu nulla libero. Phasellus auctor ut mi non varius. Aliquam nec lorem eu ipsum feugiat tincidunt. Ut vel ligula molestie, mollis mauris eu, tempor justo. Proin nec risus at nisi gravida feugiat et non dui. Nulla volutpat augue sed orci laoreet gravida. Phasellus nec sem augue. Duis in nisl ornare, aliquet tellus eu, pellentesque risus. Sed vulputate varius dictum. Maecenas consectetur tellus et egestas tristique. In convallis vel tellus a pellentesque. Proin urna urna, porttitor vel venenatis id, ornare vel quam.</p>
+				<ol>
+					<li>hey</li>
+					<li>hey2</li>
+					<li>hey3</li>
+				</ol>
+
+				<p>Etiam quis egestas lectus. Phasellus
+					<strong>quis</strong>
+					accumsan risus, non cursus purus.
+					<a href="#">Etiam euismod</a>
+					eros sapien, non cursus felis lobortis nec. Suspendisse luctus sapien id interdum suscipit. Curabitur quis neque quis orci luctus vehicula. Nullam luctus aliquet tincidunt. In non molestie massa, sed aliquam enim. Suspendisse potenti. Nam sed risus eros. Nam commodo, urna sed dignissim dictum, diam sapien vehicula enim, quis iaculis ligula ipsum sit amet dui. Phasellus euismod rutrum enim, at semper sem.</p>
+
+				<ul>
+					<li>hey</li>
+					<li>hey2</li>
+					<li>hey3</li>
+				</ul>
+
+				<p>Aliquam tempus orci lorem, eget bibendum metus pulvinar hendrerit. Phasellus varius nunc vel neque convallis, in vulputate ligula laoreet. Vivamus vehicula ex magna, sit amet efficitur augue fermentum non. Fusce efficitur ante nec lobortis scelerisque. Praesent hendrerit, dolor at laoreet semper, lacus tellus ultrices ligula, a fermentum mauris nunc nec sapien. Praesent vel accumsan tortor, ac tristique sem. Fusce sed leo ut urna sodales consectetur. Vivamus non vestibulum lacus. Nunc magna ex, tristique vel malesuada non, convallis eleifend sem. Nunc lectus mi, lobortis eget mi in, venenatis condimentum lorem. Quisque libero justo, lacinia ut aliquet vel, tristique laoreet justo. Cras elementum vel metus et volutpat. Sed faucibus varius dui vitae tempor. Vestibulum ac ante id magna viverra lobortis. Aliquam placerat tempor molestie.</p>
+			</span>
+
+			<h2 class="mt-5 mb-2">Primary button</h3>
+			{% include "_macros/button/button" with {
+                url: 'https://google.be',
+                text: 'Solliciteer hier',
+				target: '_blank',
+                style: 'primary'
+            } %}
+
+			<h2 class="mt-16 mb-2">Secondary button</h2>
+			{% include "_macros/button/button" with {
+                url: 'https://google.be',
+                text: 'alle projecten',
+				target: '_blank',
+                style: 'secondary'
+            } %}
+
+			<h2 class="mt-16 mb-2">Link button</h2>
+			{% include "_macros/button/button" with {
+                url: 'https://google.be',
+                text: 'alle projecten',
+				target: '_blank',
+                style: 'link'
+            } %}
+		</div>
+
+		<hr
+		class="u-block">
+
+		{# TRIGGER: #}
+		<span class="Label-icon cursor-pointer" data-a11y-dialog-show="dialogId">
+			Open dialog
+		</span>
+
+		{# DIALOG: #}
+		{% embed "_macros/dialog" with { dialogId: 'dialogId', classes: 'dialog', closePosition: 'outside' } %}
+			{% block content %}
+				<h2>Content goes here</h2>
+			{% endblock %}
+		{% endembed %}
+
+		<hr
+		class="u-block">
+
+		{# Form voorbeeld (setup form in back-end first! #}
+		{% set formieForms = craft.formie.forms.all() ?? null %}
+		{% if formieForms %}
+			<div class="u-block--small space-y-20">
+				{% for formieForm in formieForms %}
+					<div class="space-y-10">
+						<h2>{{ formieForm.title }}</h2>
+
+						{% include "_macros/formie" with {
+							formieElement: formieForm,
+							formiePageTitle: 'Stylesheet'
+						} %}
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		<hr class="u-block">
+	</div>
+{% endblock %}

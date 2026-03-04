@@ -1,0 +1,364 @@
+dateModified: 1772614388
+email:
+  fromEmail: $FROM_EMAIL
+  fromName: $SITE_NAME
+  replyToEmail: $REPLY_EMAIL
+  template: null
+  transportSettings:
+    apiKey: $MAILGUN_API
+    domain: $MAILGUN_DOMAIN
+    endpoint: $MAILGUN_ENDPOINT
+  transportType: craft\mailgun\MailgunAdapter
+fs:
+  files:
+    hasUrls: true
+    name: Bestanden
+    settings:
+      path: '@webroot/uploads/files'
+    type: craft\fs\Local
+    url: '@web/uploads/files'
+  icons:
+    hasUrls: true
+    name: Iconen
+    settings:
+      path: '@webroot/uploads/icons'
+    type: craft\fs\Local
+    url: '@web/uploads/icons'
+meta:
+  __names__:
+    1a50ffe8-8e45-48ce-8982-82b766637fcd: 'Default stencil' # Default stencil
+    01b9fa51-7c82-495d-a125-54246848dda3: 'Multiple line plain text' # Multiple line plain text
+    1e26dc00-d92d-49f6-a155-a75a8944b681: Tekst # Tekst
+    4a511286-2b52-4efb-baf0-fd1e1923c6f1: Video # Video
+    4c8aa25e-d55d-4719-bac5-472d04d624d2: Afbeeldingen # Afbeeldingen
+    5a487ca5-3987-48d1-a346-80fd8a7e41d2: '[ FR] Craft Skerm' # [ FR] Craft Skerm
+    5c649467-ed58-4f1f-b7fe-fa3a0ba92b9d: Telefoon # Telefoon
+    6adc95df-cd57-491f-bc86-0dd624a0834f: Header # Header
+    7b415d86-6971-42e8-95f9-85c38e9748b2: Footer # Footer
+    7cae5a52-6822-46d5-97f3-2437b11310a0: 'Plain text' # Plain text
+    8d7086a6-ec3c-4b2f-b154-bb6d7221163d: 'Admin Email' # Admin Email
+    8f5be8c6-8638-440c-9100-d3ac0e8547e1: 'Default template' # Default template
+    09a5d632-53eb-46cb-8764-5dee1dbf30d6: Links # Links
+    9cd0350b-8aad-4bfa-8dd0-387ef5ad8219: '[ EN] Craft Skerm' # [ EN] Craft Skerm
+    10dea281-3bae-4e28-878e-ab75d31dc0c8: 'Cookie Consent' # Cookie Consent
+    34b3836d-5fde-4f0b-ac70-a384aec89e84: 'User Email' # User Email
+    60f45fd4-6f69-41ab-a119-f016b485a9a5: $SITE_NAME # $SITE_NAME
+    71e989b9-a8bf-4d15-b898-513b8d37723d: 'Titel bold' # Titel bold
+    97a73885-23dc-4d93-afb3-d8dcfbc3a7ae: Algemeen # Algemeen
+    146ca53d-2465-4160-8daf-77c685b2d37a: SEO # SEO
+    284e462f-58a4-4a36-9184-3e98ac33a54d: Titel # Titel
+    659be255-b4f4-42bc-a89b-af374fb891e7: Homepage # Homepage
+    902b7939-e38e-41a1-b8ee-0daaa5882508: New # New
+    3191a900-122a-4c10-84c3-2004466abd96: 'Social Media - Type' # Social Media - Type
+    172575da-188c-4875-a229-351e50414c12: Formulier # Formulier
+    24212549-c5b0-4e88-9184-f43bb909aefe: Afbeelding # Afbeelding
+    a28c7a7c-a46e-4b16-ad04-3bf0d8494735: Link # Link
+    a88d754d-03b9-4e5a-9984-de49f12d0629: Skerm # Skerm
+    aab1e909-1491-4d02-934a-4a03b4f3b858: 'Public Schema' # Public Schema
+    b5c65ee1-322e-4bf7-b1ea-f66e0fba2e1b: Email # Email
+    c4a6f1d0-769c-457a-9458-65910758520d: Homepage # Homepage
+    c55ca0a9-4bd6-409b-afd8-c1884dafecd0: Team # Team
+    ce448a77-a759-4cb5-b72a-03b3e0267abc: Toggle # Toggle
+    d2703cd2-c6f8-4900-8ed9-7689fdf1b735: 'Social media' # Social media
+    ddae94aa-4ca8-4566-a31f-fdc6a0042bc1: Intro # Intro
+    e80a0524-bdff-4f2f-a981-38ae6ce47f2d: Iconen # Iconen
+    e665e2aa-5725-4cb1-bba1-63d872799405: 'Subscribe template' # Subscribe template
+    f521d366-2967-4c06-9054-55ba57b7a2c0: Bestanden # Bestanden
+plugins:
+  ckeditor:
+    edition: standard
+    enabled: true
+    schemaVersion: 5.0.0.1
+  control-panel-element-counter:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.0
+  element-api:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.0
+  expanded-singles:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.0
+    settings:
+      expandSingles: true
+      redirectToEntry: true
+  formie:
+    edition: standard
+    enabled: true
+    licenseKey: 95FG03BPK8RXBU636P1IPQXE
+    schemaVersion: 3.4.12
+    settings:
+      ajaxTimeout: 10
+      alertEmails:
+        -
+          - Skerm
+          - info@skerm.be
+      captchas:
+        __assoc__:
+          -
+            - recaptcha
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\Recaptcha
+                -
+                  - enabled
+                  - $RECAPTCHA_ENABLED
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      -
+                        - handle
+                        - recaptcha
+                      -
+                        - secretKey
+                        - $RECAPTCHA_SECRET_KEY
+                      -
+                        - siteKey
+                        - $RECAPTCHA_SITE_KEY
+                      -
+                        - type
+                        - v3
+                      -
+                        - size
+                        - normal
+                      -
+                        - theme
+                        - light
+                      -
+                        - badge
+                        - bottomright
+                      -
+                        - language
+                        - auto
+                      -
+                        - minScore
+                        - 0.5
+                      -
+                        - scriptLoadingMethod
+                        - asyncDefer
+                      -
+                        - enterpriseType
+                        - score
+          -
+            - hcaptcha
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\Hcaptcha
+                -
+                  - enabled
+                  - '0'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      -
+                        - handle
+                        - hcaptcha
+                      -
+                        - size
+                        - normal
+                      -
+                        - theme
+                        - light
+                      -
+                        - language
+                        - en
+                      -
+                        - minScore
+                        - 0.5
+                      -
+                        - scriptLoadingMethod
+                        - asyncDefer
+          -
+            - friendlyCaptcha
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\FriendlyCaptcha
+                -
+                  - enabled
+                  - '0'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      -
+                        - handle
+                        - friendlyCaptcha
+                      -
+                        - language
+                        - en
+                      -
+                        - startMode
+                        - none
+          -
+            - turnstile
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\Turnstile
+                -
+                  - enabled
+                  - '0'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      -
+                        - handle
+                        - turnstile
+                      -
+                        - scriptLoadingMethod
+                        - asyncDefer
+                      -
+                        - theme
+                        - auto
+                      -
+                        - size
+                        - normal
+                      -
+                        - appearance
+                        - always
+          -
+            - duplicate
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\Duplicate
+                -
+                  - enabled
+                  - '1'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      -
+                        - handle
+                        - duplicate
+          -
+            - honeypot
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\Honeypot
+                -
+                  - enabled
+                  - '1'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      -
+                        - handle
+                        - honeypot
+          -
+            - javascript
+            -
+              __assoc__:
+                -
+                  - type
+                  - verbb\formie\integrations\captchas\Javascript
+                -
+                  - enabled
+                  - '1'
+                -
+                  - saveSpam
+                  - true
+                -
+                  - settings
+                  -
+                    __assoc__:
+                      -
+                        - handle
+                        - javascript
+      defaultDateDisplayType: calendar
+      defaultDateTime: null
+      defaultDateValueOption: ''
+      defaultEmailTemplate: formieUserEmail
+      defaultFileUploadVolume: ''
+      defaultFormTemplate: formieDefault
+      defaultInstructionsPosition: verbb\formie\positions\AboveInput
+      defaultLabelPosition: verbb\formie\positions\AboveInput
+      defaultPage: forms
+      emptyValuePlaceholder: 'No response.'
+      enableBackSubmission: true
+      enableCsrfValidationForGuests: true
+      enableLargeFieldStorage: false
+      enableUnloadWarning: true
+      filterIntegrationMapping: true
+      includeDraftElementUsage: false
+      includeRevisionElementUsage: false
+      maxIncompleteSubmissionAge: 30
+      maxSentNotificationsAge: 30
+      pdfPaperOrientation: portrait
+      pdfPaperSize: letter
+      pluginName: Formie
+      queuePriority: null
+      saveSpam: true
+      sendEmailAlerts: true
+      sentNotifications: true
+      setOnlyCurrentPagePayload: false
+      spamBehaviour: showSuccess
+      spamBehaviourMessage: ''
+      spamEmailNotifications: false
+      spamKeywords: ''
+      spamLimit: 500
+      submissionsBehaviour: all
+      useCssLayers: false
+      useQueueForIntegrations: true
+      useQueueForNotifications: true
+      validateCustomTemplates: true
+  hyper:
+    edition: standard
+    enabled: true
+    licenseKey: VCCM77EJH33A6R28BWGD12S5
+    schemaVersion: 1.0.0
+  mailgun:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.0
+  seomatic:
+    edition: standard
+    enabled: true
+    licenseKey: IG2WJ6G5ZAP28Q7FGUXLI241
+    schemaVersion: 3.0.13
+  vite:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.0
+system:
+  edition: team
+  live: true
+  name: $SITE_NAME
+  retryDuration: null
+  schemaVersion: 5.9.0.8
+  timeZone: Europe/Brussels

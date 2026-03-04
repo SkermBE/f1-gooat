@@ -1,0 +1,51 @@
+{# 
+	Use by adding following code to a page where you want to add the dialig:
+
+	TRIGGER:
+	<span class="Label-icon" data-a11y-dialog-show="dialogId">
+		Open dialog
+	</span>
+
+	DIALOG:
+	{% embed "_macros/dialog" with { dialogId: 'dialogId', classes: 'dialog', closePosition: 'outside' } %}
+		{% block content %}
+			** content goes here **
+		{% endblock %}
+	{% endembed %}
+
+#}
+
+
+{% set classes = classes ?? null %}
+{% set closePosition = closePosition ?? 'inside' %}
+
+{# dialog container #}
+<div id="{{ dialogId }}" {% if block('header') is defined %} aria-labelledby="header-{{ modalId }}" {% endif %} class="js-dialog dialog-container {{ classes }}">
+	{# dialog overlay #}
+	<div data-a11y-dialog-hide class="dialog-overlay"></div>
+
+	{# close button #}
+	{% if closePosition == 'outside' %}
+		<button type="button" data-a11y-dialog-hide aria-label="{{closeTitle is defined and closeTitle is not empty ? closeTitle : 'close'|t}}" title="{{closeTitle is defined and closeTitle is not empty ? closeTitle : 'close'|t}}" class="dialog-close dialog-close--{{ closePosition }} js-fakeLink">
+			{{- closeText is defined and closeText is not empty ? closeText|raw : '&times;' -}}
+		</button>
+	{% endif %}
+
+	{# dialog content #}
+	<div role="document" class="dialog-window">
+		
+		{# markup block #}
+		<div class="dialog-content">
+		    
+			{# close button #}
+			{% if closePosition == 'inside' %}
+				<button type="button" data-a11y-dialog-hide aria-label="{{closeTitle is defined and closeTitle is not empty ? closeTitle : 'close'|t}}" title="{{closeTitle is defined and closeTitle is not empty ? closeTitle : 'close'|t}}" class="dialog-close dialog-close--{{ closePosition }} js-fakeLink">
+					{{closeText is defined and closeText is not empty ? closeText|raw : '&times;'}}
+				</button>
+			{% endif %}
+            
+            {% block content %}{% endblock %}
+		</div>
+
+	</div>
+</div>

@@ -1,0 +1,23 @@
+# CRAFT ENVIRONMENT
+.env.php
+.env.sh
+.env
+
+# COMPOSER
+/vendor
+
+# ASSETS
+/web/uploads/
+/web/transforms/
+
+# TRANSLATIONS
+/translations
+
+# BUILD FILES
+/node_modules
+/yarn-error.log
+
+# MISC FILES
+.cache
+.DS_Store
+/config/license.key

@@ -1,0 +1,33 @@
+{# 
+	{% include "_macros/navigation" with {
+		navName: 'SiteMap',
+		navItems: _globals.get('sitemap'),
+		navLinkClasses: 'Link',
+		navLinkInherits: false
+	} %}
+ #}
+
+{% import '_macros/active.twig' as macroActive %}
+
+{% set navName = navName ??? 'DefaultNav' %}
+{% set navItems = navItems ??? null %}
+{% set navLinkInherits = navLinkInherits ?? true %}
+
+{% set navClasses = navClasses ??? null %}
+{% set navListClasses = navListClasses ??? '!list-none !p-0' %}
+{% set navItemClasses = navItemClasses ??? null %}
+{% set navLinkClasses = navLinkClasses ??? null %}
+
+{% if navItems and navItems|length %}
+	<nav class="{{ navName }}{{ navClasses ? ' ' ~ navClasses }}">
+		<ul class="{{ navName ~ '-list' }}{{ navListClasses ? ' ' ~ navListClasses }}">
+			{% for navItem in navItems %}
+				{% if not navItem.isEmpty() %}
+					<li class="{{ navName ~ '-item' }}{{ navItemClasses ? ' ' ~ navItemClasses }}{{ macroActive.isActive(navItem, 'is-active') }}">
+						<a href="{{ navItem.url }}" target="{{ navItem.target|default('_self') }}" class="{{ navName ~ '-link' }}{{ navLinkInherits ? ' Nav-link' }}{{ navLinkClasses ? ' ' ~ navLinkClasses }}">{{ navItem.text }}</a>
+					</li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+	</nav>
+{% endif %}

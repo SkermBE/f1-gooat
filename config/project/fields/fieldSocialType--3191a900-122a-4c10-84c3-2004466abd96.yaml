@@ -1,0 +1,44 @@
+columnSuffix: null
+handle: fieldSocialType
+instructions: null
+name: 'Social Media - Type'
+searchable: false
+settings:
+  customOptions: false
+  options:
+    -
+      __assoc__:
+        -
+          - label
+          - Facebook
+        -
+          - value
+          - facebook
+        -
+          - default
+          - '1'
+    -
+      __assoc__:
+        -
+          - label
+          - Instagram
+        -
+          - value
+          - instagram
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - LinkedIn
+        -
+          - value
+          - linkedin
+        -
+          - default
+          - ''
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Dropdown

@@ -1,0 +1,274 @@
+{% set mailBaseUrl = getenv('PRIMARY_SITE_URL') %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTDXHTML1.0Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+	<head>
+		<!--[if gte mso 9]><xml>
+			<o:OfficeDocumentSettings>
+			<o:AllowPNG/>
+			<o:PixelsPerInch>96</o:PixelsPerInch>
+			</o:OfficeDocumentSettings>
+			</xml>
+		<![endif]-->
+		<title>{{ "Nieuw formulier via de website"|t }}</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0 "/>
+		<meta name="format-detection" content="telephone=no"/>
+		<style type="text/css">
+			body {
+				margin: 0;
+				padding: 0;
+				-webkit-text-size-adjust: 100% !important;
+				-ms-text-size-adjust: 100% !important;
+				-webkit-font-smoothing: antialiased !important;
+			}
+			img {
+				border: 0 !important;
+				outline: none !important;
+			}
+			p {
+				Margin: 0 !important;
+				Padding: 0 !important;
+			}
+			.ExternalClass * {
+				line-height: 100%;
+			}
+			.em_defaultlink a {
+				color: inherit;
+			}
+			.em_g_img + div {
+				display: none;
+			}
+			.tpl-content {
+				padding: 0 !important;
+			}
+			.mcnPreviewText {
+				display: none !important;
+			}
+			.em_wrapper {
+				width: 100% !important;
+				max-width: 700px !important;
+			}
+			.em_full_img {
+				width: 100% !important;
+				height: auto !important;
+			}
+
+			.em_defaultlink p {
+				margin-bottom: 15px !important;
+			}
+			@media only screen and(min-width:481px) and(max-width:667px) {
+				.em_wrapper {
+					width: 100% !important;
+				}
+				.em_hide {
+					display: none !important;
+				}
+				.em_full_img {
+					width: 100% !important;
+					height: auto !important;
+				}
+				.em_full_img img {
+					width: 100% !important;
+					height: auto !important;
+				}
+				.em_center {
+					text-align: center !important;
+				}
+				.em_side15 {
+					width: 15px !important;
+				}
+				.em_aside15 {
+					padding: 0 15px !important;
+				}
+				.em_ptop {
+					padding-top: 30px !important;
+				}
+				.em_pbottom {
+					padding-bottom: 30px !important;
+				}
+				.em_h30 {
+					height: 30px !important;
+				}
+				.em_h50 {
+					height: 50px !important;
+				}
+			}
+			@media screen and(max-width: 480px) {
+				.em_wrapper {
+					width: 100% !important;
+				}
+				.em_hide {
+					display: none !important;
+				}
+				.em_full_img {
+					width: 100% !important;
+					height: auto !important;
+				}
+				.em_full_img img {
+					width: 100% !important;
+					height: auto !important;
+				}
+				.em_center {
+					text-align: center !important;
+				}
+				.em_side15 {
+					width: 15px !important;
+				}
+				.em_aside15 {
+					padding: 0 15px !important;
+				}
+				.em_ptop {
+					padding-top: 30px !important;
+				}
+				.em_pbottom {
+					padding-bottom: 30px !important;
+				}
+				.em_h30 {
+					height: 30px !important;
+				}
+				u + .em_body .em_full_wrap {
+					width: 100% !important;
+					width: 100vw !important;
+				}
+				.em_w100 {
+					width: 100px !important;
+					height: auto !important;
+					max-width: 100px !important;
+				}
+				.em_w30 {
+					width: 30px !important;
+					height: auto !important;
+					max-width: 100px !important;
+				}
+				.em_h50 {
+					height: 50px !important;
+				}
+				.em_font_22 {
+					font-size: 22px !important;
+					line-height: 32px !important;
+				}
+			}
+		</style>
+	</head>
+	<body class="em_body" style="margin:0px auto; padding:0px;" bgcolor="#fafafa">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="em_full_wrap" bgcolor="#fafafa">
+			<tr>
+				<td align="center" valign="top">
+					<table align="center" width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td align="center" valign="top">
+								<table width="700" border="0" cellspacing="0" cellpadding="0" align="center" class="em_wrapper" style="width:700px;" bgcolor="#ffffff">
+									<tr>
+										<td align="right" valign="top" style="padding-right:10px; padding-top: 10px;" class="em_pbottom">
+											{% block webversie %}{% endblock %}
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			
+			<tr>
+				<td align="center" valign="top">
+					<table align="center" width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td align="center" valign="top">
+								<table width="700" border="0" cellspacing="0" cellpadding="0" align="center" class="em_wrapper" style="width:700px;" bgcolor="#ffffff">
+									<tr>
+										<td align="center" valign="top" style="padding: 30px 25px 60px 25px;" class="em_pbottom">
+											<a href="{{ siteUrl }}" target="_blank" style="text-decoration:none;">
+												<img class="" src="{{ mailBaseUrl }}/dist/icons/logo.png" width="275px" alt="{{ systemName }} logo" border="0" style="display:block;font-family:Arial, sans-serif; font-size:15px; line-height:20px; color:#424242;width:75%;max-width:275px"/>
+											</a>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			
+			<tr>
+				<td align="center" valign="top">
+					<table align="center" width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td align="center" valign="top">
+								<table width="700" border="0" cellspacing="0" cellpadding="0" align="center" class="em_wrapper" style="width:700px;" bgcolor="#ffffff">
+									{% block main %}{% endblock %}
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+
+			<tr>
+				<td align="center" valign="top">
+					<table width="700" border="0" cellspacing="0" cellpadding="0" align="center" class="em_wrapper" style="width:700px;">
+						<tr>
+							<td align="center" valign="top" bgcolor="#fff" style="padding:25px;background-color:#fff;border-top:1px solid #242A2E;" class="em_aside15">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+									<tr>
+										<td valign="top" align="center">
+											<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+												<tr>
+													<td valign="top" align="center" style="vertical-align: bottom; padding: 0 25px;">
+														<tr>
+															<td align="left" valign="bottom">
+																<a href="{{ siteUrl }}" target="_blank" style="text-decoration:none;">
+																	<img class="" src="{{ mailBaseUrl }}/dist/icons/icon.png" width="125px" alt="{{ systemName }} logo" border="0" style="display:block;font-family:Arial, sans-serif; font-size:15px; line-height:20px; color:#424242;width:75%;max-width:125px"/>
+																</a>
+															</td>
+
+															<td valign="bottom">
+																<table cellpadding="0" cellspacing="0" border="0" width="100%">
+																	{% if globalGeneral is defined and (globalGeneral.fieldAddres) %}
+																		<tr>
+																			<td valign="top" align="right">
+																				<table border="0" cellspacing="0" cellpadding="0" align="right">
+																					<tr>
+																						<td align="left" valign="top" class="em_defaultlink" style="font-family:Arial, sans-serif; font-size:15px; line-height:25px; color:#000000;text-align: right;">
+																							{{ globalGeneral.fieldAddres|nl2br }}
+																						</td>
+																					</tr>
+																				</table>
+																			</td>
+																		</tr>
+																	{% endif %}
+									
+																	{% if globalGeneral is defined and globalGeneral.fieldSocials %}
+																		<tr>
+																			<td valign="top" align="right">
+																				<table border="0" cellspacing="0" cellpadding="0" align="right">
+																					<tr>
+																						{% for social in globalGeneral.fieldSocials %}
+																							<td align="center" valign="top" style="padding:12px 6px 0 6px;">
+																								<a href="{{ social.getUrl() }}" target="_blank" style="text-decoration: none; color: #ffffff;"><img src="{{ mailBaseUrl }}/dist/mailing/icons/{{ social.fieldSocialType.value }}.png" width="20" height="20" alt="insta" border="0" style="display: block; max-width: 420px; color: #ffffff; font-size: 12px; font-family: Arial, sans-serif;"></a>
+																							</td>
+																						{% endfor %}
+																					</tr>
+																				</table>
+																			</td>
+																		</tr>
+																	{% endif %}
+																</table>
+															</td>
+														</tr>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

@@ -1,0 +1,58 @@
+/**
+    Button settings
+    All classed need to have '!important' so Formie does not override them!
+*/
+
+.btn {
+  font-size: clamp(theme(text-btn_min),
+      theme(text-btn),
+      theme(text-btn_max)) !important;
+
+  line-height: clamp(theme(line-btn_min),
+      theme(line-btn),
+      theme(line-btn_max)) !important;
+
+  position: relative !important;
+  display: inline-block !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  cursor: pointer !important;
+
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: theme("spacing.2") theme("spacing.5") !important;
+  transition: border .5s, background-color .5s, color .5s !important;
+
+  @media (min-width: theme(breakpoint-md)) {
+    padding: theme("spacing.3") theme("spacing.6") !important;
+
+  }
+}
+
+.btn-primary {
+  /* mobile (default) */
+  border: 1px solid theme(color-primary) !important;
+  color: theme(color-primary) !important;
+
+  /* Hover */
+  &.fui-loading,
+  &:hover {
+    background-color: theme(color-primary) !important;
+    color: theme(color-white) !important;
+  }
+}
+
+.btn-secondary {
+  /* mobile (default) */
+  border: 1px solid theme(color-secondary) !important;
+  color: theme(color-secondary) !important;
+
+  /* Hover */
+  &.fui-loading,
+  &:hover {
+    background-color: theme(color-secondary) !important;
+    color: theme(color-white) !important;
+  }
+}

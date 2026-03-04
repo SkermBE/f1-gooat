@@ -1,0 +1,29 @@
+/* Tailwind */
+@import "tailwindcss";
+
+/* 1_theme variables */
+@import "./1_theme/colors.css";
+@import "./1_theme/font-sizes.css";
+@import "./1_theme/fonts.css";
+@import "./1_theme/sizes.css";
+
+/* 2_base */
+@import "./2_base/container.css";
+@import "./2_base/formie.css";
+@import "./2_base/typography.css";
+@import "./2_base/u-block.css";
+@import "./2_base/utilities.css";
+
+/* 3_components */
+@import "./3_components/general.css";
+
+/* 3_components -> Customs */
+@import "./3_components/custom/a11y-dialog.css";
+@import "./3_components/custom/design-grid.css";
+
+/* 3_components -> Globals */
+@import "./3_components/globals/buttons.css";
+@import "./3_components/globals/cookieConsent.css";
+@import "./3_components/globals/footer.css";
+@import "./3_components/globals/header.css";
+@import "./3_components/globals/headroom.css";

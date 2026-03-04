@@ -1,0 +1,16 @@
+@theme {
+      /* Extra breakpoints */
+      --breakpoint-xs: 440px;
+      --breakpoint-ml: 960px;
+
+      /* Container paddings */
+      --container-padding: 30px;
+
+      /* Container sizes */
+      --container-xs: 1100px;
+      --container-sm: 1325px;
+      --container: 1625px;
+      --container-lg: 2180px;
+      --container-xl: 2447px;
+      --container-2xl: 2674px;
+}

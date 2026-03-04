@@ -1,0 +1,5 @@
+/* Fonts */
+@theme {
+      --font-body: "Inter", "ui-serif", "Georgia", "Cambria", '"Times New Roman"', "Times", "serif";
+      --font-heading: "Inter", "ui-serif", "Georgia", "Cambria", '"Times New Roman"', "Times", "serif";
+}

@@ -1,0 +1,130 @@
+/*
+    1. Make the dialog container, and its child overlay spread across the entire window.
+*/
+.dialog-container,
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.pop-up--video {
+  .dialog-window {
+    padding: 0;
+  }
+
+  .dialog-content {
+    margin: 0;
+    max-width: 100%;
+  }
+}
+
+/*
+    1. Make sure the dialog container and all its descendants sits on top of the rest of the page.
+    2. Make the dialog container a flex container to easily center the dialog.
+*/
+.dialog-container {
+  z-index: 999;
+  display: flex;
+  transition: all 250ms;
+}
+
+/*
+    1. Make sure the dialog container and all its descendants are not visible and not focusable when it is hidden.
+*/
+.dialog-container[aria-hidden="true"] {
+  /* display: none; */
+  opacity: 0;
+  pointer-events: none;
+}
+
+/*
+    1. Make the overlay look like an overlay.
+*/
+.dialog-overlay {
+  background-color: rgba(43, 46, 56, 0.9);
+}
+
+/*
+    1. Vertically and horizontally center the dialog in the page.
+    2. Make sure the dialog sits on top of the overlay.
+    3. Make sure the dialog has an opaque background.
+*/
+.dialog-window {
+  margin: auto;
+  z-index: 2;
+  position: relative;
+  background-color: #fff;
+
+
+  width: calc(100% - (var(--container-padding) * 2));
+  max-width: var(--container);
+  max-height: 95vh;
+  border-radius: 0px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.dialog-close {
+  top: 10px;
+  right: 18px;
+  position: absolute;
+  background: transparent;
+  border: 0;
+  font-size: 32px;
+  line-height: 22px;
+  color: black;
+  z-index: 30;
+  cursor: pointer;
+
+}
+
+.dialog-close--outside {
+  color: white;
+}
+
+.dialog-content {
+  position: relative;
+  margin: auto;
+  width: 100%;
+  @apply px-6 py-8 md:px-11 md:py-11;
+}
+
+/*
+    ANIMATIONS
+*/
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes scale-up {
+  from {
+    transform: scale(.85);
+  }
+}
+
+.dialog-overlay {
+  animation: fade-in 150ms both;
+}
+
+/*
+    1. Add an animation delay equal to the overlay animation duration to wait for the overlay to appear before animation in the dialog.
+*/
+
+.dialog-window {
+  animation: fade-in 300ms 250ms both, scale-up 450ms 250ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog-close {
+    transition: none;
+  }
+
+  .dialog-content {
+    animation: none;
+  }
+}

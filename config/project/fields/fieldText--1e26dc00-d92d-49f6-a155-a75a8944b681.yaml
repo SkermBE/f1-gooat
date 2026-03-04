@@ -1,0 +1,150 @@
+columnSuffix: null
+handle: fieldText
+instructions: null
+name: Tekst
+searchable: false
+settings:
+  advancedLinkFields:
+    - target
+  availableTransforms: ''
+  availableVolumes: '*'
+  characterLimit: null
+  css: ".ck.ck-content h2 {\r\n  font-size: 24px;\r\n}\r\n.ck.ck-content h3 {\r\n  font-size: 20px;\r\n}\r\n.ck.ck-content h4 {\r\n  font-size: 16px;\r\n}\r\n.ck.ck-content ul {\r\n  padding-left: 40px;\r\n}"
+  defaultTransform: null
+  defaultUploadLocationSubpath: null
+  defaultUploadLocationVolume: null
+  fullGraphqlData: false
+  headingLevels:
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+  imageEntryTypeUid: null
+  imageFieldUid: null
+  imageMode: img
+  js: null
+  options:
+    __assoc__:
+      -
+        - heading
+        -
+          __assoc__:
+            -
+              - options
+              -
+                -
+                  __assoc__:
+                    -
+                      - class
+                      - ck-heading_paragraph
+                    -
+                      - model
+                      - paragraph
+                    -
+                      - title
+                      - Paragraph
+                -
+                  __assoc__:
+                    -
+                      - class
+                      - ck-heading_heading2
+                    -
+                      - model
+                      - heading2
+                    -
+                      - title
+                      - 'Heading 2'
+                    -
+                      - view
+                      - h2
+                -
+                  __assoc__:
+                    -
+                      - class
+                      - ck-heading_heading2
+                    -
+                      - model
+                      - heading3
+                    -
+                      - title
+                      - 'Heading 3'
+                    -
+                      - view
+                      - h3
+                -
+                  __assoc__:
+                    -
+                      - class
+                      - ck-heading_heading3
+                    -
+                      - model
+                      - heading4
+                    -
+                      - title
+                      - 'Heading 4'
+                    -
+                      - view
+                      - h4
+      -
+        - link
+        -
+          __assoc__:
+            -
+              - addTargetToExternalLinks
+              - false
+            -
+              - decorators
+              -
+                __assoc__:
+                  -
+                    - openInNewTab
+                    -
+                      __assoc__:
+                        -
+                          - attributes
+                          -
+                            __assoc__:
+                              -
+                                - rel
+                                - 'noopener noreferrer'
+                              -
+                                - target
+                                - _blank
+                        -
+                          - label
+                          - 'Open in a new tab'
+                        -
+                          - mode
+                          - manual
+  parseEmbeds: false
+  purifierConfig: null
+  purifyHtml: true
+  showUnpermittedFiles: false
+  showUnpermittedVolumes: false
+  showWordCount: true
+  sourceEditingGroups:
+    - __ADMINS__
+  toolbar:
+    - undo
+    - redo
+    - '|'
+    - heading
+    - '|'
+    - bold
+    - italic
+    - underline
+    - horizontalLine
+    - '|'
+    - link
+    - '|'
+    - bulletedList
+    - numberedList
+    - '|'
+    - superscript
+    - subscript
+  wordLimit: null
+translationKeyFormat: null
+translationMethod: site
+type: craft\ckeditor\Field

@@ -1,0 +1,15 @@
+/* Main body styling (sets footer always to bottom) */
+body {
+  @apply relative flex flex-col min-h-screen antialiased;
+
+  footer {
+    @apply mt-auto;
+  }
+}
+
+/* MainGrid */
+.MainGrid {
+  @apply grid grid-cols-12 gap-x-2 w-full;
+  @apply sm:gap-x-4;
+  @apply md:gap-x-6;
+}

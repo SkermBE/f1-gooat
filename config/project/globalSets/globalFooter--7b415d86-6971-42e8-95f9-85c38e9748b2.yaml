@@ -1,0 +1,30 @@
+fieldLayouts:
+  2c3b1859-8382-4d77-a5e9-65d9b958fec3:
+    cardThumbAlignment: end
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2025-03-31T19:30:31+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 09a5d632-53eb-46cb-8764-5dee1dbf30d6 # Links
+            handle: fieldUtilsNav
+            instructions: null
+            label: 'Utilities navigatie'
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: f283ee1c-0d4e-4663-a06b-32316b8ffc8d
+            userCondition: null
+            warning: null
+            width: 100
+        name: 'Utilities navigatie'
+        uid: e8514745-3bb1-46a0-a3d7-266dc3cbe564
+        userCondition: null
+    thumbFieldKey: null
+handle: globalFooter
+name: Footer
+sortOrder: 3

@@ -1,0 +1,96 @@
+allowLineBreaksInTitles: false
+color: null
+description: null
+fieldLayouts:
+  2a1deca2-6521-4468-9851-62dd94e6157a:
+    cardThumbAlignment: end
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2025-03-31T19:32:31+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 284e462f-58a4-4a36-9184-3e98ac33a54d # Titel
+            handle: null
+            instructions: null
+            label: null
+            required: true
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 8d3ad4c5-e084-449b-85e9-fce94dc01803
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T08:08:17+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 24212549-c5b0-4e88-9184-f43bb909aefe # Afbeelding
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: c8bc3436-f980-4363-8b4d-7c057e146c11
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T08:08:17+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 4a511286-2b52-4efb-baf0-fd1e1923c6f1 # Video
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: ca18bfad-5b69-4eb1-8a3b-1dfdd15b225a
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: 08c75760-215e-41f6-8a55-cf01adb080bd
+        userCondition: null
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2025-03-31T19:34:23+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 146ca53d-2465-4160-8daf-77c685b2d37a # SEO
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 6581c5e5-0fad-4907-9e41-ce177983fbfa
+            userCondition: null
+            warning: null
+            width: 100
+        name: SEO
+        uid: 43c08569-8a49-459c-a069-e67811b7b447
+        userCondition: null
+    thumbFieldKey: null
+handle: entryHome
+hasTitleField: false
+icon: house
+name: Homepage
+showSlugField: false
+showStatusField: false
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: '{ fieldTitle }'
+titleTranslationKeyFormat: null
+titleTranslationMethod: site
+uiLabelFormat: '{title}'

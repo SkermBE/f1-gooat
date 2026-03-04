@@ -1,0 +1,71 @@
+{% extends '_mails/base-mail' %}
+
+{# Only for webversion #}
+{% if submission is not defined %}
+	{# Get the query string value for `submissionid` #}
+	{% set submissionId = craft.app.request.getParam('submissionid') %}
+
+	{# Ditch any requests that don't supply this #}
+	{% if not submissionId %}
+		{% exit 404 %}
+	{% endif %}
+
+	{# Fetch the submission #}
+	{% set submission = craft.formie.submissions.uid(submissionId).one() ?? null %}
+
+	{# Ditch any requests that have supplied an invalid submission #}
+	{% if not submission %}
+		{% exit 404 %}
+	{% endif %}
+
+	{#  Fetch the related form #}
+	{% set form = craft.formie.forms.id(submission.formId).one() %}
+
+	{# Get the notification content #}
+	{% set notification = submission.form.getNotifications() | filter(n => n.handle == 'userNotification') | first %}
+{% endif %}
+
+{# Get the parsed notification content #}
+{% set notificationSubject = craft.formie.getParsedValue(notification.subject, submission, form, notification, true) ?? "Bedankt voor jouw interesse in {siteName}"|t(params={siteName:systemName}) %}
+{% set notificationContent = craft.formie.getParsedValue(notification.getParsedContent(), submission, form, notification, true) ??? contentHtml ??? 'Wij nemen zo snel mogelijk contact met je op.'|t %}
+
+{% block webversie %}
+	{% if submission is not defined %}
+		<a href="{{ siteUrl }}formie/mails/user?submissionid={{ submission.uid }}" target="_blank" class="em_full_img" style="display:block;font-family:Arial, sans-serif; font-size:10px; line-height:20px; color:#000;">{{ "Webversie openen"|t }}</a>
+	{% endif %}
+{% endblock %}
+
+{% block main %}
+	<table align="center" width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td align="center" valign="top">
+				<table width="700" border="0" cellspacing="0" cellpadding="0" align="center" class="em_wrapper" style="width:700px;" bgcolor="#ffffff">
+					<tr>
+						<td align="center" valign="top" style="padding:0px 25px;" class="em_aside15">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+								<tr>
+									<td align="left" valign="top" class="em_defaultlink" style="font-family:Arial, sans-serif; font-size:20px; line-height:31px; text-align: center; font-weight: 700;">
+										{{ notificationSubject }}
+									</td>
+								</tr>
+								<tr>
+									<td bgcolor="#ffffff" height="1" width="48px" class="em_h30" style="font-size:1px; line-height:1px;">
+										<div style="background-color: #000; height: 1px; width: 48px; margin: 20px auto 20px;"></div>
+									</td>
+								</tr>
+								<tr>
+									<td align="left" valign="top" class="em_defaultlink" style="font-family:Arial, sans-serif; font-size:15px; line-height:25px; color:#000000;">
+										{{ notificationContent|raw }}
+									</td>
+								</tr>
+								<tr>
+									<td height="28" class="em_h30" style="font-size:1px; line-height:1px;"></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+{% endblock %}

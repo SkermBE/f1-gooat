@@ -1,0 +1,34 @@
+{
+  "src/js/app.js": {
+    "file": "assets/app-E6JbLgBM.js",
+    "name": "app",
+    "src": "src/js/app.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/js/parts/design-grid.js",
+      "src/js/parts/a11y-dialog.js",
+      "src/js/parts/pageHeader.js"
+    ],
+    "css": [
+      "assets/app-9SCxrzJV.css"
+    ]
+  },
+  "src/js/parts/a11y-dialog.js": {
+    "file": "assets/a11y-dialog-BFOmc8Zq.js",
+    "name": "a11y-dialog",
+    "src": "src/js/parts/a11y-dialog.js",
+    "isDynamicEntry": true
+  },
+  "src/js/parts/design-grid.js": {
+    "file": "assets/design-grid-Caxyi3xG.js",
+    "name": "design-grid",
+    "src": "src/js/parts/design-grid.js",
+    "isDynamicEntry": true
+  },
+  "src/js/parts/pageHeader.js": {
+    "file": "assets/pageHeader-naC27kgl.js",
+    "name": "pageHeader",
+    "src": "src/js/parts/pageHeader.js",
+    "isDynamicEntry": true
+  }
+}

@@ -1,0 +1,11 @@
+{# SVG handler — inline SVG with dimensions #}
+
+<div class="block{{ picture.wrapperClass ? ' ' ~ picture.wrapperClass }}">
+	<span{% if picture.id %} id="{{ picture.id }}"{% endif %} class="inline-block">
+		{{ svg(asset)|attr({
+			width: picture.width ?? asset.width,
+			height: 'auto',
+			class: picture.class
+		}) }}
+	</span>
+</div>

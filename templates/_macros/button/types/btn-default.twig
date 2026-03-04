@@ -1,0 +1,5 @@
+{% if button.url %}
+    <a href="{{ button.url }}" class="btn btn-{{ button.style }}{{button.style != 'link' ? ' Link ' }}{{ button.classes }}" target="{{ button.target }}" title="{{ button.text is not empty ? button.text : button.url }}">
+        {{ button.text is not empty ? button.text|raw|t : button.url }}
+    </a>
+{% endif %}

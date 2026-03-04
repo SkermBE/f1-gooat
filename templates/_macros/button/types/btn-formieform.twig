@@ -1,0 +1,29 @@
+{% if button.element and button.element.getElement() %}
+	{% set formElement = craft.formie.forms({ handle: button.element.getElement().handle }).one() ?? null %}
+	{% set formID = formElement.id ~ random(0, 999) %}
+
+	{% if formElement %}
+		<span class="btn btn-{{ button.style }}{{button.style != 'link' ? ' Link ' }}{{ button.classes }}" data-a11y-dialog-show="{{ formID }}">
+			{{ button.text is not empty ? button.text|raw|t : button.url }}
+		</span>
+
+		{% embed "_macros/dialog" with { dialogId: formID, classes: 'dialog', closePosition: 'inside' } %}
+			{% block content %}
+				{% if button.element.fieldTitle or button.element.fieldIntro %}
+					<div class="mb-10 space-y-4">
+						{% if button.element.fieldTitle %}
+							<h2>{{ button.element.fieldTitle }}</h2>
+						{% endif %}
+						{% if button.element.fieldIntro %}
+							<span class="RichText">{{ button.element.fieldIntro }}</span>
+						{% endif %}
+					</div>
+				{% endif %}
+				{% include "_macros/formie" with {
+					formieElement: formElement
+				} %}
+			{% endblock %}
+		{% endembed %}
+
+	{% endif %}
+{% endif %}

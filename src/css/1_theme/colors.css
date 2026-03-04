@@ -1,0 +1,11 @@
+/* Colors */
+@theme {
+      --color-primary: #38D0B1;
+      --color-secondary: #003421;
+      --color-tertiary: #9CDCFE;
+      --color-background: #FFFFFF;
+      --color-typography-text: #1E5157;
+      --color-typography-heading: #1E5157;
+      --color-typography-link: #1E5157;
+      --color-typography-link_hover: #66CAA4;
+}

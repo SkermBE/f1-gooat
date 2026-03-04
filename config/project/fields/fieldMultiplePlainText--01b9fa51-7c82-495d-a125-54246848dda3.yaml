@@ -1,0 +1,16 @@
+columnSuffix: null
+handle: fieldMultiplePlainText
+instructions: null
+name: 'Multiple line plain text'
+searchable: false
+settings:
+  byteLimit: null
+  charLimit: null
+  code: false
+  initialRows: 1
+  multiline: true
+  placeholder: null
+  uiMode: normal
+translationKeyFormat: null
+translationMethod: site
+type: craft\fields\PlainText

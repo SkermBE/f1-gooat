@@ -1,0 +1,58 @@
+{# 
+    Render a button field with Hyper of custom values
+
+    * element:
+        A Hyper element to render.
+    * url:
+        The link url, leave blank to use the Hyper element url
+    * text:
+        The link text, leave blank to use the Hyper element text
+    * target:
+        The link target, leave blank to use the Hyper element target
+    * style:
+        The styling of the button, default to 'primary' button.
+        Can also be 'secondary', 'link' or any custom stylings
+    * type:
+        The link type, leave blank to use the Hyper element type
+    * classes:
+        Any custom classes you want to add to the form
+
+    Examples:
+    # Custom button:
+        {% include "_macros/button/button" with { 
+            url: 'https://google.be',
+            text: 'To google',
+            target: '_blank'
+            style: 'secondary'
+            classes: 'ExtraLargeBtn'
+        } %}
+
+    # Hyper field button with custom values:
+        {% include "_macros/button/button" with { 
+            element: link,
+            text: 'Custom link text',
+            style: 'link'
+        } %}
+        
+    # Hyper default button:
+        {% include "_macros/button/button" with { 
+            element: link
+        } %}
+ #}
+
+
+{% set button = {
+    element: element ?? null,
+    url: url ?? element.url ?? null,
+    text: text ??? element.text ??? element.linkText ??? 'Lees meer'|t,
+    target: target ?? element.target ?? '_self',
+    style: style ?? 'primary',
+    type: type ?? element.type ?? 'default',
+    classes: classes ?? ''
+} %}
+
+{% set buttonType = button.type|split('\\')|last|lower %}
+{% include [
+    "_macros/button/types/btn-#{buttonType}",
+    "_macros/button/types/btn-default.twig"
+] %}

@@ -1,0 +1,38 @@
+{% extends '_layouts/site' %}
+
+{% block main %}
+	<div class="container u-block space-y-6">
+		<a class="Link" href="{{ siteUrl }}" title="{{ siteName ~ ' ' ~ 'homepage'|t }}">
+			{{ svg(include('_partials/icons/logo.svg'))|attr({class: 'w-full h-auto max-w-[450px] mb-20'}) }}
+		</a>
+		<h1 class="">{{ systemName }}</h1>
+		<h2 class="h4">With Vite & Tailwind</h2>
+		{% include "_macros/button/button" with { 
+			url: '/stylesheet',
+			text: 'Stylesheet',
+			style: 'primary'
+			
+		} %}
+
+		{% import "_macros/images/image.twig" as image %}
+
+		{# Card image — custom sizes for responsive grid #}
+		{{ image.picture(entry.fieldImage.one(), {
+			width: 1920,
+			ratio: { 0: '1:1', 768: '4:3', 1024: '16:9' },
+			sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
+		}) }}
+
+		{# Simple — just width, defaults handle the rest #}
+		{{ image.picture(entry.fieldImage.one(), { width: 1200 }) }}
+
+		{# Autoplay background video #}
+		{{ image.picture(entry.fieldVideo.one(), {
+			width: 1920,
+			height: 1080,
+			videoAutoplay: false,
+			videoPoster: entry.fieldImage.one()
+		}) }}
+
+	</div>
+{% endblock %}

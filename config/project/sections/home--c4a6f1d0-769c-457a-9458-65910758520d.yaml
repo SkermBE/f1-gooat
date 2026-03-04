@@ -1,0 +1,31 @@
+defaultPlacement: end
+enableVersioning: true
+entryTypes:
+  -
+    uid: 659be255-b4f4-42bc-a89b-af374fb891e7 # Homepage
+handle: home
+maxAuthors: 1
+name: Homepage
+previewTargets:
+  -
+    label: 'Primary entry page'
+    refresh: '1'
+    urlFormat: '{url}'
+propagationMethod: all
+siteSettings:
+  5a487ca5-3987-48d1-a346-80fd8a7e41d2: # [ FR] Craft Skerm
+    enabledByDefault: true
+    hasUrls: true
+    template: index
+    uriFormat: __home__
+  9cd0350b-8aad-4bfa-8dd0-387ef5ad8219: # [ EN] Craft Skerm
+    enabledByDefault: true
+    hasUrls: true
+    template: index
+    uriFormat: __home__
+  a88d754d-03b9-4e5a-9984-de49f12d0629: # Skerm
+    enabledByDefault: true
+    hasUrls: true
+    template: index
+    uriFormat: __home__
+type: single

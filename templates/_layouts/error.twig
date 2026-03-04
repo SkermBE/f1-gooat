@@ -1,0 +1,8 @@
+{% extends '_layouts/site' %}
+
+{% block main %}
+	<div class="container u-block">
+        <h1 class="mb-5">{{ error.title ?? 'Error' }}</h1>
+        <p>{{ (error.text ?? 'An error has occurred.') }}</p>
+    </div>
+{% endblock %}

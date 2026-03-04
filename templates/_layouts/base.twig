@@ -1,0 +1,64 @@
+{% set baseUrl = alias('@web') ~ '/' %}
+{% set notchColor = '#000000' %}
+
+{# Site globals #}
+{% do _globals.set({
+	primaryNavItems: globalHeader.fieldPrimaryNav ??? null,
+	topNavItems: globalHeader.fieldTopNav ??? null
+}) %}
+
+{% if bodyClass is not defined %}
+	{% set bodyClass = entry is defined ? "#{entry.section.handle|capitalize}Page" : craft.app.request.segments|first %}
+{% endif %}
+
+<!doctype html>
+<html lang="{{ craft.app.language }}" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+	<head>
+		{# Detault meta tags #}
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="mobile-web-app-capable" content="yes"/>
+
+		<meta name="apple-mobile-web-app-status-bar-style" content="{{ notchColor }}">
+		<meta name="msapplication-navbutton-color" content="{{ notchColor }}">
+
+		<meta name="format-detection" content="telephone=no">
+
+		{# Favicons #}
+		{{ craft.vite.inline("@webroot/dist/assets/favicons/webapp.html") }}
+
+		{# Site fonts #}
+		{% include "_partials/head/site_fonts" %}
+
+		{# SEOmatic cookie settings #}
+		{% include "_partials/cookies/_scripts" %}
+
+		{# Inline JS #}
+		<script type="text/javascript">
+			var baseUrl = "{{ baseUrl }}";
+		</script>
+
+		{# Inline css #}
+		<style>
+			:root {
+				--easing: cubic-bezier(0.77, 0, 0.23, 1);
+			}
+		</style>
+
+		{# Load critical css when not in dev mode #}
+		{% if getenv('CRAFT_ENVIRONMENT') != "dev" %}
+			{{ craft.vite.includeCriticalCssTags() }}
+		{% endif %}
+
+		{# Load in our main app.js (this includes our app.css) #}
+		{{ craft.vite.script('src/js/app.js', true) }}
+	</head>
+
+	{# HTML Body #}
+	<body class="{{ bodyClass }}">
+
+		{# Main block #}
+		{% block body %}{% endblock %}
+
+	</body>
+</html>

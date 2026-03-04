@@ -1,0 +1,202 @@
+/**
+ * Typography settings
+*/
+
+*:not(svg *) {
+  @apply font-body text-typography-text;
+  font-size: clamp(
+    theme(text-default_min),
+    theme(text-default),
+    theme(text-default_max)
+  );
+  line-height: clamp(
+    theme(line-default_min),
+    theme(line-default),
+    theme(line-default_max)
+  );
+}
+
+a:not(.Link),
+.Is-link {
+  @apply relative cursor-pointer font-medium text-typography-link transition duration-500;
+  @apply hover:text-typography-link_hover hover:before:border-typography-link_hover;
+
+  &:before {
+    content: "";
+    @apply absolute left-0 bottom-px w-full h-px border-t border-typography-link;
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  &:hover:before {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+
+  &.Is-link--reversed {
+    &:before {
+      transform: scaleX(0);
+      transform-origin: right;
+    }
+
+    &:hover:before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+}
+
+.RichText {
+  @apply block space-y-5;
+
+  strong *,
+  strong {
+    @apply font-bold text-primary;
+  }
+
+  p,
+  li,
+  ul,
+  ol {
+    font-weight: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  a {
+    @apply inline-block;
+  }
+}
+
+p,
+ol,
+li {
+  font-size: clamp(
+    theme(text-default_min),
+    theme(text-default),
+    theme(text-default_max)
+  );
+  line-height: clamp(
+    theme(line-default_min),
+    theme(line-default),
+    theme(line-default_max)
+  );
+
+  b,
+  strong {
+    @apply font-bold;
+  }
+
+  i {
+    @apply italic;
+  }
+}
+
+ul {
+  @apply list-disc pl-5;
+}
+
+ol {
+  @apply list-decimal pl-5;
+}
+
+h1,
+h2,
+h3,
+h4,
+.Hero-title {
+  &,
+  * {
+    @apply font-heading text-typography-heading;
+  }
+}
+
+.Hero-title {
+  &,
+  * {
+    font-size: clamp(
+      theme(text-hero_min),
+      theme(text-hero),
+      theme(text-hero_max)
+    );
+    line-height: clamp(
+      theme(line-hero_min),
+      theme(line-hero),
+      theme(line-hero_max)
+    );
+  }
+}
+
+h1,
+.h1 {
+  @apply font-semibold;
+  &,
+  * {
+    font-size: clamp(
+      theme(text-h1_min),
+      theme(text-h1),
+      theme(text-h1_max)
+    );
+
+    line-height: clamp(
+      theme(line-h1_min),
+      theme(line-h1),
+      theme(line-h1_max)
+    );
+  }
+}
+
+h2,
+.h2 {
+  &,
+  * {
+    font-size: clamp(
+      theme(text-h2_min),
+      theme(text-h2),
+      theme(text-h2_max)
+    );
+
+    line-height: clamp(
+      theme(line-h2_min),
+      theme(line-h2),
+      theme(line-h2_max)
+    );
+  }
+}
+
+h3,
+.h3 {
+  &,
+  * {
+    font-size: clamp(
+      theme(text-h3_min),
+      theme(text-h3),
+      theme(text-h3_max)
+    );
+
+    line-height: clamp(
+      theme(line-h3_min),
+      theme(line-h3),
+      theme(line-h3_max)
+    );
+  }
+}
+
+h4,
+.h4 {
+  &,
+  * {
+    font-size: clamp(
+      theme(text-h4_min),
+      theme(text-h4),
+      theme(text-h4_max)
+    );
+
+    line-height: clamp(
+      theme(line-h4_min),
+      theme(line-h4),
+      theme(line-h4_max)
+    );
+  }
+}

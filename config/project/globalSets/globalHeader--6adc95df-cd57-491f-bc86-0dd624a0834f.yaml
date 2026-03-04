@@ -1,0 +1,52 @@
+fieldLayouts:
+  0f7f3aa9-ad93-4283-a4b3-dc5a757668d0:
+    cardThumbAlignment: end
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2025-03-31T19:23:03+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 09a5d632-53eb-46cb-8764-5dee1dbf30d6 # Links
+            handle: fieldPrimaryNav
+            instructions: null
+            label: 'Main navigatie'
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 7c79cadb-54a0-44b1-92fe-6b3a46dcd02e
+            userCondition: null
+            warning: null
+            width: 100
+        name: 'Main navigation'
+        uid: e6e0352a-fce5-40f1-93a5-9fa676ea072a
+        userCondition: null
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2025-04-02T18:47:03+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 09a5d632-53eb-46cb-8764-5dee1dbf30d6 # Links
+            handle: fieldTopNav
+            instructions: null
+            label: 'Top navigatie'
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 8564202d-fbbb-46b0-ae95-9a8240c4490c
+            userCondition: null
+            warning: null
+            width: 100
+        name: 'Top navigatie'
+        uid: e178b6a2-9714-4584-92e2-8752a21f4fb1
+        userCondition: null
+    thumbFieldKey: null
+handle: globalHeader
+name: Header
+sortOrder: 2

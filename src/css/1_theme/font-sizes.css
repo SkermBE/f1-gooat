@@ -1,0 +1,59 @@
+@theme {
+      /* Font size */
+      --text-default_max: 16px;
+      --text-default: .85vw;
+      --text-default_min: 15px;
+
+      --text-btn_max: 16px;
+      --text-btn: .75vw;
+      --text-btn_min: 13px;
+
+      --text-hero_max: 135px;
+      --text-hero: 7.05vw;
+      --text-hero_min: 65px;
+
+      --text-h1_max: 70px;
+      --text-h1: 3.5vw;
+      --text-h1_min: 38px;
+
+      --text-h2_max: 45px;
+      --text-h2: 2.35vw;
+      --text-h2_min: 29px;
+
+      --text-h3_max: 32px;
+      --text-h3: 1.7vw;
+      --text-h3_min: 25px;
+
+      --text-h4_max: 24px;
+      --text-h4: 1.3vw;
+      --text-h4_min: 22px;
+
+      /* Line heights */
+      --line-default_max: 115%;
+      --line-default: 115%;
+      --line-default_min: 115%;
+
+      --line-btn_max: 115%;
+      --line-btn: 115%;
+      --line-btn_min: 115%;
+
+      --line-hero_max: 115%;
+      --line-hero: 115%;
+      --line-hero_min: 115%;
+
+      --line-h1_max: 115%;
+      --line-h1: 115%;
+      --line-h1_min: 115%;
+
+      --line-h2_max: 115%;
+      --line-h2: 115%;
+      --line-h2_min: 115%;
+
+      --line-h3_max: 115%;
+      --line-h3: 115%;
+      --line-h3_min: 115%;
+
+      --line-h4_max: 115%;
+      --line-h4: 115%;
+      --line-h4_min: 115%;
+}

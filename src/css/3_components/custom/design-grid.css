@@ -1,0 +1,78 @@
+.design-grid {
+    z-index: 1000000;
+    pointer-events: none;
+    transition: opacity .4s ease;
+    opacity: 1;
+    top: 0;
+
+    &.not-visible {
+        opacity: 0
+    }
+
+    .grid {
+        div {
+            background-color: red;
+            opacity: .1;
+            @apply col-span-1 w-full h-full;
+        }
+    }
+}
+
+.design-grid--toggle {
+    cursor: pointer !important;
+    position: fixed;
+    z-index: 100000000;
+    border: 1px solid;
+    @apply bg-blue-700 rounded-full w-[40px] h-[40px] fixed bottom-10 right-10 flex justify-center items-center border-blue-700;
+    transition: width .4s ease, height .4s ease, background-color .4s ease;
+
+    .design-grid--toggle-icon {
+        @apply w-[24px] h-[24px] relative pointer-events-none;
+        transition: width .4s ease, height .4s ease;
+
+        >* {
+            @apply absolute bg-white;
+            transition: background-color .4s ease;
+        }
+
+        .design-grid--toggle-icon--line1 {
+            @apply left-1 top-0 w-[1px] h-full;
+        }
+
+        .design-grid--toggle-icon--line2 {
+            @apply right-1 top-0 w-[1px] h-full;
+        }
+
+        .design-grid--toggle-icon--line3 {
+            @apply left-0 bottom-1 w-full h-[1px];
+        }
+
+        .design-grid--toggle-icon--line4 {
+            @apply left-0 top-1 w-full h-[1px];
+        }
+    }
+
+    &.active {
+        @apply bg-white;
+
+        .design-grid--toggle {
+            .design-grid--toggle-icon {
+                @apply w-[20px] h-[20px];
+
+                >* {
+                    @apply absolute bg-blue-700;
+                }
+            }
+        }
+    }
+
+    &:hover {
+        width: 45px;
+        height: 45px;
+
+        .design-grid--toggle-icon {
+            @apply w-[20px] h-[20px];
+
+        }
+    }
+}
