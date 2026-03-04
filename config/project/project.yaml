@@ -1,4 +1,4 @@
-dateModified: 1772631070
+dateModified: 1772644863
 elementSources:
   craft\elements\Entry:
     -
@@ -75,11 +75,10 @@ elementSources:
       key: 'section:b0c75c6b-ebdc-4798-af15-4441983df8e9' # Races
       page: 'F1 GOOAT'
       tableAttributes:
-        - status
-        - postDate
-        - expiryDate
-        - authors
-        - link
+        - 'field:daa79e49-c575-4c86-abb5-bef8fd86876a' # Race Round
+        - 'field:cf0b87ab-e617-4f90-92cc-440a6aa36912' # Race Status
+        - 'field:f026cf70-26cc-4731-a17f-b16713fb81c1' # Race Date
+        - 'field:f125241f-f44f-4e39-b357-76186e36cd32' # Season
       type: native
 elementSourcesPages:
   craft\elements\Entry:

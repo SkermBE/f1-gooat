@@ -58,8 +58,8 @@ class Module extends BaseModule
                 $event->rules['update/fetch-results'] = 'f1-gooat/update/fetch-all-results';
 
                 // Auth
-                $event->rules['login'] = 'f1-gooat/auth/login';
-                $event->rules['logout'] = 'f1-gooat/auth/logout';
+                $event->rules['player-login'] = 'f1-gooat/auth/login';
+                $event->rules['player-logout'] = 'f1-gooat/auth/logout';
 
                 // Frontend routes (season is now determined by site, no <season> param needed)
                 $event->rules['select/<raceId:\d+>'] = 'f1-gooat/frontend/select-driver';
@@ -147,7 +147,7 @@ class Module extends BaseModule
             $predictionsQuery->siteId($siteId);
         }
 
-        $races = $racesQuery->all();
+        $races = $racesQuery->orderBy(['raceRound' => SORT_ASC])->all();
         $raceIds = array_map(fn($r) => $r->id, $races);
 
         if (empty($raceIds)) {
@@ -158,8 +158,14 @@ class Module extends BaseModule
             ->relatedTo(['targetElement' => $raceIds, 'field' => 'predictionRace'])
             ->all();
 
-        // Sum points per player
+        // Find the latest completed race to exclude for previous standings
+        $completedRaces = array_filter($races, fn($r) => $r->raceStatus == 'completed');
+        $latestCompletedRace = !empty($completedRaces) ? end($completedRaces) : null;
+        $latestRaceId = $latestCompletedRace ? $latestCompletedRace->id : null;
+
+        // Sum points per player (current + previous)
         $playerPoints = [];
+        $playerPrevPoints = [];
         $playerEntries = [];
 
         foreach ($predictions as $prediction) {
@@ -167,26 +173,51 @@ class Module extends BaseModule
             if (!$player) continue;
 
             $pid = $player->id;
+            $points = $prediction->pointsEarned ?? 0;
+            $predRace = $prediction->predictionRace->one();
+            $predRaceId = $predRace ? $predRace->id : null;
+
             if (!isset($playerPoints[$pid])) {
                 $playerPoints[$pid] = 0;
+                $playerPrevPoints[$pid] = 0;
                 $playerEntries[$pid] = $player;
             }
-            $playerPoints[$pid] += $prediction->pointsEarned ?? 0;
+
+            $playerPoints[$pid] += $points;
+
+            // Previous = all points except from the latest completed race
+            if ($predRaceId !== $latestRaceId) {
+                $playerPrevPoints[$pid] += $points;
+            }
         }
 
-        // Sort by points desc
+        // Sort current standings by points desc
         arsort($playerPoints);
+
+        // Build previous position map
+        arsort($playerPrevPoints);
+        $prevPositions = [];
+        $pos = 1;
+        foreach ($playerPrevPoints as $pid => $pts) {
+            $prevPositions[$pid] = $pos;
+            $pos++;
+        }
 
         // Build standings array
         $standings = [];
         $position = 1;
         foreach ($playerPoints as $pid => $points) {
             $player = $playerEntries[$pid];
+            $prevPos = $prevPositions[$pid] ?? $position;
+            $posChange = $prevPos - $position; // positive = moved up
+
             $standings[] = [
                 'id' => $pid,
                 'title' => $player->title,
                 'totalPoints' => $points,
                 'currentStanding' => $position,
+                'previousStanding' => $prevPos,
+                'positionChange' => $posChange,
                 'player' => $player,
             ];
             $position++;

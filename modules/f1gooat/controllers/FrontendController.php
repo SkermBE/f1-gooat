@@ -21,7 +21,7 @@ class FrontendController extends Controller
         $player = Module::getCurrentPlayer();
         if (!$player) {
             Craft::$app->getSession()->set('returnUrl', Craft::$app->getRequest()->getUrl());
-            return $this->redirect(UrlHelper::siteUrl('login'));
+            return $this->redirect(UrlHelper::siteUrl('player-login'));
         }
 
         $race = Entry::find()->id($raceId)->one();

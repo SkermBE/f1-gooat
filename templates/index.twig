@@ -12,18 +12,18 @@
 
     {# Player greeting or login prompt #}
     {% if currentPlayer %}
-        <div class="F1Card F1Card--highlight text-center mb-8 py-6">
+        <div class="F1Card F1Card--highlight text-center mb-10 py-6">
             <p class="text-f1-muted">Welcome back,</p>
             <h2 class="text-2xl font-bold">{{ currentPlayer.title }}</h2>
         </div>
     {% else %}
-        <div class="F1Card text-center mb-8 py-6">
+        <div class="F1Card text-center mb-10 py-6">
             <p class="text-f1-muted mb-4">Login to make your predictions</p>
-            <a href="{{ siteUrl('login') }}" class="btn btn-primary inline-block px-8 py-3">Login</a>
+            <a href="{{ siteUrl('player-login') }}" class="btn btn-primary inline-block px-8 py-3">Login</a>
         </div>
     {% endif %}
 
-    {# ── Build race lists ── #}
+    {# ── Build race data ── #}
     {% set allRaces = craft.entries().section('races').orderBy('raceRound asc').all() %}
 
     {% set pastRaces = [] %}
@@ -36,204 +36,190 @@
         {% endif %}
     {% endfor %}
 
-    {# 2 most recent past races (reversed so newest first) #}
-    {% set recentRaces = pastRaces|reverse|slice(0, 2) %}
+    {% set nextRace = futureRaces|length ? futureRaces|first : (pastRaces|length ? pastRaces|last : null) %}
 
-    {# Next race = first future race #}
-    {% set nextRace = futureRaces|first %}
+    {# Calendar: 2 past + current/next + 2 upcoming (centered around nextRace) #}
+    {% set currentIndex = 0 %}
+    {% for race in allRaces %}
+        {% if nextRace and race.id == nextRace.id %}
+            {% set currentIndex = loop.index0 %}
+        {% endif %}
+    {% endfor %}
+    {% set startIndex = currentIndex - 2 %}
+    {% if startIndex < 0 %}{% set startIndex = 0 %}{% endif %}
+    {% set endIndex = startIndex + 5 %}
+    {% if endIndex > allRaces|length %}{% set endIndex = allRaces|length %}{% endif %}
+    {% set startIndex = endIndex - 5 %}
+    {% if startIndex < 0 %}{% set startIndex = 0 %}{% endif %}
+    {% set calendarRaces = allRaces|slice(startIndex, endIndex - startIndex) %}
 
-    {# 2 upcoming after the next one #}
-    {% set upcomingRaces = futureRaces|slice(1, 2) %}
+    {# ── 3-column dashboard ── #}
+    <div class="grid lg:grid-cols-3 gap-6">
 
-    <div class="grid lg:grid-cols-3 gap-8">
-        {# ── Left: Races ── #}
-        <div class="lg:col-span-2">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-bold">Races</h2>
-                <a href="{{ siteUrl('races') }}" class="text-primary text-sm font-medium hover:underline">All races &rarr;</a>
-            </div>
+        {# ── NEXT RACE ── #}
+        <div class="bg-f1-surface rounded-xl border border-f1-border shadow-sm overflow-hidden">
+            <div class="h-1 bg-primary"></div>
+            <div class="px-7 py-8">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-f1-muted mb-8">Next Race</h2>
 
-            <div class="space-y-3">
-                {# Recent completed/closed races #}
-                {% for race in recentRaces %}
-                    <a href="{{ siteUrl('results/' ~ race.id) }}" class="F1Card block group">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-f1-muted text-sm">R{{ race.raceRound }}</span>
-                                <h3 class="font-bold group-hover:text-primary transition-colors">{{ race.title }}</h3>
-                                {% if race.raceDate %}
-                                    <span class="text-f1-muted text-xs">{{ race.raceDate|date('d M Y') }}</span>
-                                {% endif %}
-                            </div>
-                            <span class="F1Badge F1Badge--{{ race.raceStatus }}">
-                                {{ race.raceStatus == 'completed' ? 'Completed' : 'Closed' }}
-                            </span>
-                        </div>
-                    </a>
-                {% endfor %}
-
-                {# Next race — highlighted #}
                 {% if nextRace %}
                     {% set isOpen = nextRace.raceStatus == 'selection_open' %}
+                    {% set isCompleted = nextRace.raceStatus == 'completed' or nextRace.raceStatus == 'selection_closed' %}
+
+                    <p class="text-primary text-xs font-bold uppercase tracking-wider mb-2">Round {{ nextRace.raceRound }}</p>
+                    <h3 class="text-2xl font-black leading-tight">{{ nextRace.title }}</h3>
+
+                    {% if nextRace.raceDate %}
+                        <p class="text-f1-muted text-sm mt-1">{{ nextRace.raceDate|date('l, F j \\· Y') }}</p>
+
+                        {% if not isCompleted %}
+                            {% set daysLeft = ((nextRace.raceDate|date('U') - now|date('U')) / 86400)|round(0, 'ceil') %}
+                            {% if daysLeft > 0 %}
+                                <div class="mt-8">
+                                    <span class="text-5xl font-black text-secondary">{{ daysLeft }}</span>
+                                    <span class="text-f1-muted text-lg ml-1">day{{ daysLeft != 1 ? 's' }} away</span>
+                                </div>
+                            {% elseif daysLeft == 0 %}
+                                <div class="mt-8">
+                                    <span class="text-3xl font-black text-f1-success">Race day!</span>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <p class="text-f1-muted text-sm mt-1">{{ nextRace.raceDate|date('d M Y') }}</p>
+                        {% endif %}
+                    {% endif %}
 
                     {% if isOpen %}
                         {% set selectedCount = craft.entries().section('predictions').relatedTo({targetElement: nextRace.id, field: 'predictionRace'}).count() %}
                         {% set totalPlayers = craft.entries().section('players').count() %}
                         {% set selectionComplete = selectedCount >= totalPlayers %}
                         {% set orderedPlayers = craft.entries().section('players').orderBy('totalPoints asc').all() %}
-                        {% set currentSelector = orderedPlayers[selectedCount] ?? null %}
+                        {% set currentSelector = orderedPlayers[selectedCount] is defined ? orderedPlayers[selectedCount] : null %}
                         {% set isPlayerTurn = currentSelector and currentPlayer and currentSelector.id == currentPlayer.id %}
 
-                        {% if nextRace.raceDate %}
-                            {% set daysLeft = ((nextRace.raceDate|date('U') - now|date('U')) / 86400)|round(0, 'ceil') %}
-                        {% endif %}
-
-                        <a href="{{ siteUrl('select/' ~ nextRace.id) }}" class="F1Card F1Card--highlight block group">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <span class="text-primary text-xs font-bold uppercase tracking-wider">Next Race</span>
-                                    <div class="flex items-center gap-2 mt-1">
-                                        <span class="text-f1-muted text-sm">R{{ nextRace.raceRound }}</span>
-                                        <h3 class="font-bold text-lg group-hover:text-primary transition-colors">{{ nextRace.title }}</h3>
-                                    </div>
-                                    {% if nextRace.raceDate and daysLeft is defined and daysLeft > 0 %}
-                                        <span class="text-f1-muted text-xs">{{ daysLeft }} day{{ daysLeft != 1 ? 's' }} to go</span>
-                                    {% elseif nextRace.raceDate and daysLeft is defined and daysLeft == 0 %}
-                                        <span class="text-f1-success text-xs font-bold">Race day!</span>
-                                    {% endif %}
-                                </div>
-                                <span class="F1Badge F1Badge--selection_open">Open</span>
-                            </div>
+                        <div class="mt-6 pt-5 border-t border-f1-border">
                             {% if not selectionComplete %}
-                                <div class="mt-3 pt-3 border-t border-f1-border flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-f1-muted text-sm">Now picking:</span>
-                                        <span class="font-bold {{ isPlayerTurn ? 'text-f1-success' : 'text-secondary' }}">
-                                            {{ currentSelector ? currentSelector.title : '—' }}
-                                            {% if isPlayerTurn %}<span class="text-f1-success text-xs ml-1">(Your turn!)</span>{% endif %}
-                                        </span>
-                                    </div>
-                                    <span class="text-f1-muted text-sm">{{ selectedCount }}/{{ totalPlayers }}</span>
-                                </div>
-                            {% else %}
-                                <div class="mt-3 pt-3 border-t border-f1-border">
-                                    <span class="text-f1-success font-medium text-sm">All picks in!</span>
-                                </div>
-                            {% endif %}
-                        </a>
-                    {% else %}
-                        {% if nextRace.raceDate %}
-                            {% set daysLeft = ((nextRace.raceDate|date('U') - now|date('U')) / 86400)|round(0, 'ceil') %}
-                        {% endif %}
-
-                        <div class="F1Card F1Card--highlight">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <span class="text-primary text-xs font-bold uppercase tracking-wider">Next Race</span>
-                                    <div class="flex items-center gap-2 mt-1">
-                                        <span class="text-f1-muted text-sm">R{{ nextRace.raceRound }}</span>
-                                        <h3 class="font-bold text-lg">{{ nextRace.title }}</h3>
-                                    </div>
-                                    {% if nextRace.raceDate and daysLeft is defined and daysLeft > 0 %}
-                                        <span class="text-f1-muted text-xs">{{ daysLeft }} day{{ daysLeft != 1 ? 's' }} to go</span>
-                                    {% elseif nextRace.raceDate and daysLeft is defined and daysLeft == 0 %}
-                                        <span class="text-f1-success text-xs font-bold">Race day!</span>
+                                <p class="text-f1-muted text-xs uppercase tracking-wider mb-1">Now picking</p>
+                                <p class="font-bold text-lg {{ isPlayerTurn ? 'text-f1-success' : 'text-secondary' }}">
+                                    {{ currentSelector ? currentSelector.title : '—' }}
+                                    {% if isPlayerTurn %}
+                                        <span class="text-xs font-bold text-f1-success ml-1">(Your turn!)</span>
                                     {% endif %}
-                                </div>
-                                <span class="F1Badge F1Badge--upcoming">Upcoming</span>
-                            </div>
+                                </p>
+                                <p class="text-f1-muted text-sm mt-0.5">{{ selectedCount }}/{{ totalPlayers }} picks</p>
+                            {% else %}
+                                <p class="text-f1-success font-bold">All picks in!</p>
+                            {% endif %}
                         </div>
                     {% endif %}
-                {% endif %}
-
-                {# Upcoming races (dimmed) #}
-                {% for race in upcomingRaces %}
-                    <div class="F1Card opacity-60">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-f1-muted text-sm">R{{ race.raceRound }}</span>
-                                <h3 class="font-bold">{{ race.title }}</h3>
-                                {% if race.raceDate %}
-                                    {% set daysUntil = ((race.raceDate|date('U') - now|date('U')) / 86400)|round(0, 'ceil') %}
-                                    <span class="text-f1-muted text-xs">{{ daysUntil > 0 ? daysUntil ~ ' day' ~ (daysUntil != 1 ? 's' : '') ~ ' to go' : race.raceDate|date('d M Y') }}</span>
-                                {% endif %}
-                            </div>
-                            <span class="F1Badge F1Badge--upcoming">Upcoming</span>
-                        </div>
-                    </div>
-                {% endfor %}
-
-                {# Empty state #}
-                {% if not recentRaces|length and not nextRace and not upcomingRaces|length %}
-                    <div class="F1Card text-center py-8">
-                        <p class="text-f1-muted">No races scheduled yet.</p>
-                    </div>
+                {% else %}
+                    <p class="text-f1-muted text-center">No races scheduled yet.</p>
                 {% endif %}
             </div>
         </div>
 
-        {# ── Right: Standings + Points ── #}
-        <div>
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-bold">Standings</h2>
-                <a href="{{ siteUrl('standings') }}" class="text-primary text-sm font-medium hover:underline">Full standings &rarr;</a>
-            </div>
+        {# ── TOP PLAYERS ── #}
+        <div class="bg-f1-surface rounded-xl border border-f1-border shadow-sm overflow-hidden">
+            <div class="h-1 bg-f1-perfect"></div>
+            <div class="px-7 py-8">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-f1-muted mb-8">Top Players</h2>
 
-            {% set players = craft.entries().section('players').orderBy('totalPoints desc').all() %}
+                {% set standings = craft.app.getModule('f1-gooat').calculateSeasonStandings() %}
 
-            {% if players|length %}
-                <div class="F1Card overflow-hidden !p-0">
-                    <table class="F1Table w-full">
-                        <thead>
-                            <tr>
-                                <th class="pl-4 w-10">#</th>
-                                <th>Player</th>
-                                <th class="text-right pr-4">Pts</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for player in players %}
-                                {% set isMe = currentPlayer and player.id == currentPlayer.id %}
-                                <tr class="{{ isMe ? 'bg-primary/10' : '' }}">
-                                    <td class="pl-4">
-                                        <span class="font-bold {{ loop.index <= 3 ? 'text-primary' : 'text-f1-muted' }}">
-                                            {{ loop.index }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <a href="{{ siteUrl('player/' ~ player.id) }}" class="font-semibold hover:text-primary transition-colors {{ isMe ? 'text-primary' : '' }}">
-                                            {{ player.title }}
-                                            {% if isMe %}<span class="text-f1-muted text-xs ml-1">(You)</span>{% endif %}
-                                        </a>
-                                    </td>
-                                    <td class="text-right pr-4">
-                                        <span class="font-mono font-bold">{{ player.totalPoints ?? 0 }}</span>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            {% else %}
-                <div class="F1Card text-center py-8">
-                    <p class="text-f1-muted">No players yet.</p>
-                </div>
-            {% endif %}
+                {% if standings|length %}
+                    <div class="space-y-2 mb-8">
+                        {% for entry in standings %}
+                            {% set isMe = currentPlayer and entry.id == currentPlayer.id %}
+                            <a href="{{ siteUrl('player/' ~ entry.id) }}"
+                               class="flex items-center justify-between py-3 px-4 rounded-lg transition-colors
+                                      {{ isMe ? 'ring-2 ring-f1-success/60 bg-f1-success/5' : 'bg-f1-surface-elevated hover:bg-f1-border/30' }}">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-7 h-7 rounded flex items-center justify-center text-sm font-bold
+                                                 {{ loop.index == 1 ? 'bg-f1-success/15 text-f1-success' : 'text-f1-muted' }}">
+                                        {{ entry.currentStanding }}
+                                    </span>
+                                    {% if entry.positionChange > 0 %}
+                                        <span class="text-f1-success text-[11px] font-bold">&uarr;{{ entry.positionChange }}</span>
+                                    {% elseif entry.positionChange < 0 %}
+                                        <span class="text-primary text-[11px] font-bold">&darr;{{ entry.positionChange|abs }}</span>
+                                    {% endif %}
+                                    <span class="font-semibold text-secondary">
+                                        {{ entry.title }}
+                                        {% if isMe %}
+                                            <span class="ml-1.5 text-[10px] bg-f1-success text-white px-1.5 py-0.5 rounded font-bold uppercase align-middle">You</span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <span class="font-mono text-sm text-f1-muted">{{ entry.totalPoints }} pts</span>
+                            </a>
+                        {% endfor %}
+                    </div>
 
-            {# Points reference #}
-            <h3 class="text-lg font-bold mt-8 mb-3">Points System</h3>
-            <div class="F1Card">
-                <p class="text-f1-muted text-sm mb-3">Predict who finishes P10:</p>
-                <div class="grid grid-cols-2 gap-1 text-sm">
-                    {% for diff, pts in pointsMap %}
-                        <div class="flex justify-between py-1 {{ diff == 0 ? 'text-f1-perfect font-bold' : 'text-f1-muted' }}">
-                            <span>{{ diff == 0 ? 'Exact P10' : 'Off by ' ~ diff }}</span>
-                            <span class="font-mono">{{ pts }} pts</span>
-                        </div>
-                    {% endfor %}
-                </div>
+                    <a href="{{ siteUrl('standings') }}" class="block w-full text-center py-3 border-2 border-secondary/20 rounded-lg font-bold text-secondary hover:bg-secondary hover:text-white transition-colors">
+                        Full Standings
+                    </a>
+                {% else %}
+                    <p class="text-f1-muted text-center">No players yet.</p>
+                {% endif %}
             </div>
         </div>
+
+        {# ── RACE CALENDAR ── #}
+        <div class="bg-f1-surface rounded-xl border border-f1-border shadow-sm overflow-hidden">
+            <div class="h-1 bg-secondary"></div>
+            <div class="px-7 py-8">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-f1-muted mb-8">Race Calendar</h2>
+
+                {% if calendarRaces|length %}
+                    <div class="space-y-0 mb-8">
+                        {% for race in calendarRaces %}
+                            {% set isRaceCompleted = race.raceStatus == 'completed' or race.raceStatus == 'selection_closed' %}
+                            {% set isRaceOpen = race.raceStatus == 'selection_open' %}
+
+                            {% if isRaceCompleted %}
+                                {% set raceUrl = siteUrl('results/' ~ race.id) %}
+                            {% elseif isRaceOpen %}
+                                {% set raceUrl = siteUrl('select/' ~ race.id) %}
+                            {% else %}
+                                {% set raceUrl = null %}
+                            {% endif %}
+
+                            {% if raceUrl %}
+                                <a href="{{ raceUrl }}" class="flex items-center gap-3 py-3 hover:bg-f1-surface-elevated rounded-lg px-1 -mx-1 transition-colors group">
+                            {% else %}
+                                <div class="flex items-center gap-3 py-3">
+                            {% endif %}
+                                    <span class="w-8 h-8 rounded-full bg-primary text-white text-[11px] font-bold flex items-center justify-center shrink-0">
+                                        R{{ race.raceRound }}
+                                    </span>
+                                    <span class="font-semibold text-secondary flex-1 text-sm {{ raceUrl ? 'group-hover:text-primary transition-colors' : '' }}">{{ race.title }}</span>
+                                    {% if race.raceDate %}
+                                        <span class="text-f1-muted text-xs shrink-0">{{ race.raceDate|date('d M') }}</span>
+                                    {% endif %}
+                                    {% if isRaceCompleted %}
+                                        <span class="text-[11px] font-medium text-f1-success bg-f1-success/10 px-2 py-0.5 rounded-full shrink-0">Done</span>
+                                    {% elseif isRaceOpen %}
+                                        <span class="text-[11px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full shrink-0">Open</span>
+                                    {% else %}
+                                        <span class="text-[11px] font-medium text-f1-muted bg-f1-surface-elevated px-2 py-0.5 rounded-full shrink-0">Soon</span>
+                                    {% endif %}
+                            {% if raceUrl %}
+                                </a>
+                            {% else %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <a href="{{ siteUrl('races') }}" class="block w-full text-center py-3 border-2 border-secondary/20 rounded-lg font-bold text-secondary hover:bg-secondary hover:text-white transition-colors">
+                        Full Calendar
+                    </a>
+                {% else %}
+                    <p class="text-f1-muted text-center">No races scheduled yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
     </div>
 </div>
 {% endblock %}

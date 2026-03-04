@@ -55,7 +55,7 @@
                                             <span class="text-f1-perfect ml-1">&#9733;</span>
                                         {% endif %}
                                     {% else %}
-                                        <span class="text-f1-muted">&mdash;</span>
+                                        <span class="text-primary font-medium">DNF</span>
                                     {% endif %}
                                 </td>
                                 <td class="text-right pr-5">
@@ -84,9 +84,13 @@
                     </thead>
                     <tbody>
                         {% for result in classification %}
-                            <tr class="{{ result.isP10 ? 'bg-primary/15' : '' }}">
+                            <tr class="{{ result.isP10 ? 'bg-primary/15' : '' }} {{ result.status != 'Finished' ? 'opacity-50' : '' }}">
                                 <td class="pl-5 font-mono {{ result.isP10 ? 'text-primary font-bold' : 'text-f1-muted' }}">
-                                    {{ result.position }}
+                                    {% if result.status == 'Finished' %}
+                                        {{ result.position }}
+                                    {% else %}
+                                        {{ result.status }}
+                                    {% endif %}
                                 </td>
                                 <td>
                                     <span class="font-bold">{{ result.driverCode }}</span>

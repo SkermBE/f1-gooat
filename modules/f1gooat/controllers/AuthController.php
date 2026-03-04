@@ -75,6 +75,8 @@ class AuthController extends Controller
     public function actionLogout(): Response
     {
         Craft::$app->getSession()->remove('playerEmail');
-        return $this->redirect(UrlHelper::siteUrl(''));
+
+        // Redirect to the homepage of the current site (not the CP)
+        return $this->redirect(Craft::$app->getSites()->getCurrentSite()->getBaseUrl());
     }
 }

@@ -6,6 +6,10 @@
         @apply border-primary scale-[1.02] shadow-md;
     }
 
+    &.is-confirming {
+        @apply border-primary bg-primary/10 scale-[1.03] shadow-lg;
+    }
+
     &.is-selected {
         @apply border-f1-success bg-f1-success/10;
     }

@@ -88,11 +88,19 @@ class FetchRaceResultsJob extends BaseJob
                          strpos($status, '+') === 0 ||
                          strpos($status, 'Lap') !== false;
 
+            if ($isFinished) {
+                $displayStatus = 'Finished';
+            } elseif (stripos($status, 'Disqualified') !== false) {
+                $displayStatus = 'DSQ';
+            } else {
+                $displayStatus = 'DNF';
+            }
+
             $formatted[] = [
                 'position' => (int)$result['position'],
                 'driverCode' => $result['Driver']['code'] ?? '',
                 'driverId' => $result['Driver']['driverId'] ?? '',
-                'status' => $isFinished ? 'Finished' : 'DNF',
+                'status' => $displayStatus,
             ];
         }
 

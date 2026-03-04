@@ -10,7 +10,7 @@
             <div class="F1Login-error">{{ error }}</div>
         {% endif %}
 
-        <form method="post" action="{{ siteUrl('login') }}">
+        <form method="post" action="{{ siteUrl('player-login') }}">
             {{ csrfInput() }}
             {{ actionInput('f1-gooat/auth/login') }}
             <div class="mb-4">

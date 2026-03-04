@@ -90,6 +90,9 @@ class RaceController extends Controller
         // Update player standings for this site/season
         $this->updatePlayerStandings($race->siteId);
 
+        // Auto-open the next race
+        $this->openNextRace($race);
+
         return $this->asJson([
             'success' => true,
             'message' => 'Points calculated successfully',
@@ -107,6 +110,23 @@ class RaceController extends Controller
             }
         }
         return null;
+    }
+
+    /**
+     * Auto-open selection for the next race after completion
+     */
+    private function openNextRace(Entry $completedRace): void
+    {
+        $nextRace = Entry::find()
+            ->section('races')
+            ->siteId($completedRace->siteId)
+            ->raceRound($completedRace->raceRound + 1)
+            ->one();
+
+        if ($nextRace && $nextRace->raceStatus == 'upcoming') {
+            $nextRace->setFieldValue('raceStatus', 'selection_open');
+            Craft::$app->getElements()->saveElement($nextRace);
+        }
     }
 
     /**

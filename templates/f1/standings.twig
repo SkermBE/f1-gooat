@@ -20,9 +20,18 @@
                         {% set isCurrentPlayer = currentPlayer and entry.id == currentPlayer.id %}
                         <tr class="{{ isCurrentPlayer ? 'bg-primary/10' : '' }}">
                             <td class="pl-5">
-                                <span class="font-bold text-lg {{ entry.currentStanding <= 3 ? 'text-primary' : 'text-f1-muted' }}">
-                                    {{ entry.currentStanding }}
-                                </span>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-lg {{ entry.currentStanding <= 3 ? 'text-primary' : 'text-f1-muted' }}">
+                                        {{ entry.currentStanding }}
+                                    </span>
+                                    {% if entry.positionChange > 0 %}
+                                        <span class="text-f1-success text-xs font-bold">&uarr;{{ entry.positionChange }}</span>
+                                    {% elseif entry.positionChange < 0 %}
+                                        <span class="text-primary text-xs font-bold">&darr;{{ entry.positionChange|abs }}</span>
+                                    {% else %}
+                                        <span class="text-f1-muted text-xs">&ndash;</span>
+                                    {% endif %}
+                                </div>
                             </td>
                             <td>
                                 <a href="{{ siteUrl('player/' ~ entry.id) }}" class="font-semibold hover:text-primary transition-colors {{ isCurrentPlayer ? 'text-primary' : '' }}">

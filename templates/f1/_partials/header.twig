@@ -23,7 +23,7 @@
                         <li><a href="{{ siteUrl('standings') }}" class="F1Nav-link{% if craft.app.request.segments|first == 'standings' %} is-active{% endif %}">Standings</a></li>
                         {% if currentPlayer %}
                             <li><a href="{{ siteUrl('player/' ~ currentPlayer.id) }}" class="F1Nav-link{% if craft.app.request.segments|first == 'player' %} is-active{% endif %}">Profile</a></li>
-                            <li><a href="{{ siteUrl('logout') }}" class="F1Nav-link">Logout</a></li>
+                            <li><a href="{{ siteUrl('player-logout') }}" class="F1Nav-link">Logout</a></li>
                         {% endif %}
                     </ul>
 
@@ -40,7 +40,7 @@
 
                     {# Login button #}
                     {% if not currentPlayer %}
-                        <a href="{{ siteUrl('login') }}" class="bg-primary text-white font-bold text-sm px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors no-underline">Login</a>
+                        <a href="{{ siteUrl('player-login') }}" class="bg-primary text-white font-bold text-sm px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors no-underline">Login</a>
                     {% endif %}
                 </div>
             </nav>
