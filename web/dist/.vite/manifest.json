@@ -1,6 +1,6 @@
 {
   "src/js/app.js": {
-    "file": "assets/app-BytTPJ2H.js",
+    "file": "assets/app-CBTK5PkN.js",
     "name": "app",
     "src": "src/js/app.js",
     "isEntry": true,
@@ -13,7 +13,7 @@
       "src/js/parts/playerRaceByRace.js"
     ],
     "css": [
-      "assets/app-mN10ytzS.css"
+      "assets/app-C1_-IZIK.css"
     ]
   },
   "src/js/parts/a11y-dialog.js": {

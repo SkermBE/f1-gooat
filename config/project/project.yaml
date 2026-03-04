@@ -1,4 +1,4 @@
-dateModified: 1772653857
+dateModified: 1772663178
 elementSources:
   craft\elements\Entry:
     -
@@ -190,7 +190,7 @@ plugins:
     enabled: true
     schemaVersion: 1.0.0
 system:
-  edition: team
+  edition: solo
   live: true
   name: $SITE_NAME
   retryDuration: null
