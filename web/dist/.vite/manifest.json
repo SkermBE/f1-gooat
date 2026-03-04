@@ -1,6 +1,6 @@
 {
   "src/js/app.js": {
-    "file": "assets/app-CSo0fPNJ.js",
+    "file": "assets/app-BytTPJ2H.js",
     "name": "app",
     "src": "src/js/app.js",
     "isEntry": true,
@@ -9,10 +9,11 @@
       "src/js/parts/a11y-dialog.js",
       "src/js/parts/pageHeader.js",
       "src/js/parts/driverSelection.js",
-      "src/js/parts/adminActions.js"
+      "src/js/parts/adminActions.js",
+      "src/js/parts/playerRaceByRace.js"
     ],
     "css": [
-      "assets/app-CA-LYHZG.css"
+      "assets/app-mN10ytzS.css"
     ]
   },
   "src/js/parts/a11y-dialog.js": {
@@ -43,6 +44,12 @@
     "file": "assets/pageHeader-D1zktTGx.js",
     "name": "pageHeader",
     "src": "src/js/parts/pageHeader.js",
+    "isDynamicEntry": true
+  },
+  "src/js/parts/playerRaceByRace.js": {
+    "file": "assets/playerRaceByRace-Bz3vaI_3.js",
+    "name": "playerRaceByRace",
+    "src": "src/js/parts/playerRaceByRace.js",
     "isDynamicEntry": true
   }
 }
