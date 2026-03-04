@@ -1,9 +1,9 @@
 baseUrl: $PRIMARY_SITE_URL_NL
 enabled: true
-handle: craftSkermNL
+handle: season2026
 hasUrls: true
 language: en
-name: Skerm
+name: '2026'
 primary: true
 siteGroup: 60f45fd4-6f69-41ab-a119-f016b485a9a5 # $SITE_NAME
 sortOrder: 1

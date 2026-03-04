@@ -1,4 +1,0 @@
-handle: formieUserEmail
-name: 'User Email'
-sortOrder: 2
-template: _formie/emails/userEmail

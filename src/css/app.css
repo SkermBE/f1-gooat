@@ -23,7 +23,6 @@
 
 /* 3_components -> Globals */
 @import "./3_components/globals/buttons.css";
-@import "./3_components/globals/cookieConsent.css";
 @import "./3_components/globals/footer.css";
 @import "./3_components/globals/header.css";
 @import "./3_components/globals/headroom.css";

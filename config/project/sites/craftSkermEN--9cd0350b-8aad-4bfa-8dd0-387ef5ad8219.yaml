@@ -1,9 +1,0 @@
-baseUrl: $PRIMARY_SITE_URL_EN
-enabled: '1'
-handle: craftSkermEN
-hasUrls: true
-language: en
-name: '[ EN] Craft Skerm'
-primary: false
-siteGroup: 60f45fd4-6f69-41ab-a119-f016b485a9a5 # $SITE_NAME
-sortOrder: 3

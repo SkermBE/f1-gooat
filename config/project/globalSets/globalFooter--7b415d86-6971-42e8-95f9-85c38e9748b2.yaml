@@ -10,7 +10,7 @@ fieldLayouts:
             editCondition: null
             elementCondition: null
             elementEditCondition: null
-            fieldUid: 09a5d632-53eb-46cb-8764-5dee1dbf30d6 # Links
+            fieldUid: 09a5d632-53eb-46cb-8764-5dee1dbf30d6
             handle: fieldUtilsNav
             instructions: null
             label: 'Utilities navigatie'

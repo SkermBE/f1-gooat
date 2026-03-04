@@ -1,9 +1,6 @@
 // Import css
 import '../css/app.css';
 
-// Cookie banner
-import "@js/parts/cookie-banner";
-
 // Formie forms
 import { formieForm } from "@js/parts/formie";
 formieForm();

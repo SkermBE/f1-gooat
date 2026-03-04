@@ -32,7 +32,7 @@ fieldLayouts:
             editCondition: null
             elementCondition: null
             elementEditCondition: null
-            fieldUid: 5c649467-ed58-4f1f-b7fe-fa3a0ba92b9d # Telefoon
+            fieldUid: 5c649467-ed58-4f1f-b7fe-fa3a0ba92b9d
             handle: null
             instructions: null
             label: null
@@ -48,7 +48,7 @@ fieldLayouts:
             editCondition: null
             elementCondition: null
             elementEditCondition: null
-            fieldUid: b5c65ee1-322e-4bf7-b1ea-f66e0fba2e1b # Email
+            fieldUid: b5c65ee1-322e-4bf7-b1ea-f66e0fba2e1b
             handle: null
             instructions: null
             label: null
@@ -70,7 +70,7 @@ fieldLayouts:
             editCondition: null
             elementCondition: null
             elementEditCondition: null
-            fieldUid: d2703cd2-c6f8-4900-8ed9-7689fdf1b735 # Social media
+            fieldUid: d2703cd2-c6f8-4900-8ed9-7689fdf1b735
             handle: null
             instructions: null
             label: null
@@ -108,7 +108,7 @@ fieldLayouts:
             editCondition: null
             elementCondition: null
             elementEditCondition: null
-            fieldUid: 172575da-188c-4875-a229-351e50414c12 # Formulier
+            fieldUid: 172575da-188c-4875-a229-351e50414c12
             handle: fieldSubscribeForm
             instructions: null
             label: null
