@@ -1,0 +1,11 @@
+columnSuffix: sgnlkcyz
+contentColumnType: string
+handle: playerEmail
+instructions: 'Player email address'
+name: 'Player Email'
+searchable: false
+settings:
+  placeholder: null
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Email

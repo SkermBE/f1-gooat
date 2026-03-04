@@ -1,0 +1,156 @@
+allowLineBreaksInTitles: false
+color: null
+description: null
+fieldLayouts:
+  70a161a0-5e16-4427-9fa1-1fbdb32e2c57:
+    cardThumbAlignment: end
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            dateAdded: '2026-03-04T09:17:24+00:00'
+            disabled: false
+            elementCondition: null
+            id: null
+            inputType: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            readonly: false
+            required: true
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\entries\EntryTitleField
+            uid: 6dba1d24-6240-4e7c-94e9-3e30792ff830
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:25:56+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: f026cf70-26cc-4731-a17f-b16713fb81c1 # Race Date
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: d88c30db-b4a1-4e5c-8f6e-721df4dbf171
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:25:56+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: daa79e49-c575-4c86-abb5-bef8fd86876a # Race Round
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 04527ed6-02bf-4c74-92a1-066355f4491a
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:25:56+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: f125241f-f44f-4e39-b357-76186e36cd32 # Season
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: c72424c8-9737-4a7f-b960-6c21d55175df
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:25:56+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: cf0b87ab-e617-4f90-92cc-440a6aa36912 # Race Status
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: a3fca02d-6f2d-469a-92b4-ca439963ac33
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:25:56+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: cf0b87ab-e617-4f90-92cc-440a6aa36912 # Race Status
+            handle: raceStatus2
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: d6c6f901-fc0f-4632-97f0-84dfb66c3d36
+            userCondition: null
+            warning: null
+            width: 100
+        name: Details
+        uid: 7e8f7fa9-7dd8-4dcf-8a5c-0428275569db
+        userCondition: null
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2026-03-04T09:25:56+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 37578336-98ad-4efc-9e87-ab127f7ac8d3 # Race Results
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 630b548e-9039-4889-a3a9-e9024f40039c
+            userCondition: null
+            warning: null
+            width: 100
+        name: Results
+        uid: 9d6a9d66-abad-4cff-a7c0-cc371ddc4e3b
+        userCondition: null
+    thumbFieldKey: null
+handle: entryRaces
+hasTitleField: true
+icon: null
+name: Races
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: null
+titleTranslationKeyFormat: null
+titleTranslationMethod: site
+uiLabelFormat: '{title}'

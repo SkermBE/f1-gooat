@@ -1,0 +1,118 @@
+allowLineBreaksInTitles: false
+color: null
+description: null
+fieldLayouts:
+  84e6813d-cc8f-43c5-9ac0-72a2a11527d4:
+    cardThumbAlignment: end
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            dateAdded: '2026-03-04T09:16:14+00:00'
+            disabled: false
+            elementCondition: null
+            id: null
+            inputType: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            readonly: false
+            required: true
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\entries\EntryTitleField
+            uid: 3ab64ecc-ce49-413d-bd03-80820b0c44f6
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:24:44+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 70c7bc84-96ad-46cb-a4fa-cb199f539360 # Player Email
+            handle: null
+            instructions: null
+            label: null
+            required: true
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: b9d7cadd-d2ba-431b-b009-251bc449b02c
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:24:44+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 7e74b128-601c-4dc0-ad90-cffba00195a4 # Total Points
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 48eed8e3-5ca9-4fab-8c1d-a546ea4f80a0
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:24:44+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 43b3cc3e-6293-45a4-9321-2c0bd1d82aa6 # Current Standing
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: dc61abd0-a6ea-4a53-8786-cfaf122a9c28
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:24:44+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 039ea3d5-d4e4-4e88-bd0c-5a3746c3918f # Previous Standing
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 24803403-61d1-46f8-b3a7-ecce0194a041
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: a44c47d9-008c-4c91-84b5-9f80689d5b0a
+        userCondition: null
+    thumbFieldKey: null
+handle: entryPlayers
+hasTitleField: true
+icon: null
+name: Players
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: null
+titleTranslationKeyFormat: null
+titleTranslationMethod: site
+uiLabelFormat: '{title}'

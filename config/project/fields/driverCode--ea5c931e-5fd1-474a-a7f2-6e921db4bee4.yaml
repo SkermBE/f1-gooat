@@ -1,0 +1,18 @@
+columnSuffix: ssxovsgx
+contentColumnType: text
+handle: driverCode
+instructions: '3-letter code (VER, HAM, etc.)'
+name: 'Driver Code'
+searchable: false
+settings:
+  byteLimit: null
+  charLimit: null
+  code: false
+  columnType: null
+  initialRows: 4
+  multiline: false
+  placeholder: null
+  uiMode: normal
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\PlainText

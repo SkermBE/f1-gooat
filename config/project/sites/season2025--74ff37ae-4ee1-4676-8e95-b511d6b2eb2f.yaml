@@ -1,0 +1,9 @@
+baseUrl: null
+enabled: '1'
+handle: season2025
+hasUrls: true
+language: en
+name: '2025'
+primary: false
+siteGroup: 60f45fd4-6f69-41ab-a119-f016b485a9a5 # $SITE_NAME
+sortOrder: 2

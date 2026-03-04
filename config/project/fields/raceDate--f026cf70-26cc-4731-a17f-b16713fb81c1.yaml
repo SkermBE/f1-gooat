@@ -1,0 +1,16 @@
+columnSuffix: htdnsnhb
+contentColumnType: datetime
+handle: raceDate
+instructions: 'Date and time of the race'
+name: 'Race Date'
+searchable: false
+settings:
+  max: null
+  min: null
+  minuteIncrement: 30
+  showDate: true
+  showTime: true
+  showTimeZone: false
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Date

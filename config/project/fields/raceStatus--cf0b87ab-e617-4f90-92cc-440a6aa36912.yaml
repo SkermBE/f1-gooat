@@ -1,0 +1,56 @@
+columnSuffix: hlggxdhr
+contentColumnType: string(16)
+handle: raceStatus
+instructions: 'Current status of the race'
+name: 'Race Status'
+searchable: false
+settings:
+  columnType: null
+  options:
+    -
+      __assoc__:
+        -
+          - label
+          - Upcoming
+        -
+          - value
+          - upcoming
+        -
+          - default
+          - true
+    -
+      __assoc__:
+        -
+          - label
+          - 'Selection Open'
+        -
+          - value
+          - selection_open
+        -
+          - default
+          - false
+    -
+      __assoc__:
+        -
+          - label
+          - 'Selection Closed'
+        -
+          - value
+          - selection_closed
+        -
+          - default
+          - false
+    -
+      __assoc__:
+        -
+          - label
+          - Completed
+        -
+          - value
+          - completed
+        -
+          - default
+          - false
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Dropdown

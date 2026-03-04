@@ -1,0 +1,160 @@
+allowLineBreaksInTitles: false
+color: null
+description: null
+fieldLayouts:
+  6faf4f7e-a4ba-449f-8ce7-02be5d0aaee9:
+    cardThumbAlignment: end
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2026-03-04T09:27:12+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: a6bbbfb4-c43f-47a9-b53d-5a01e2c3d166 # Prediction Race
+            handle: null
+            instructions: null
+            label: null
+            required: true
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: eee17fcd-9c94-4a9c-9b8a-5b931543f6ad
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:27:12+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 4ebfb8a1-8dc0-4bad-8876-a2fbce75f84c # Prediction Player
+            handle: null
+            instructions: null
+            label: null
+            required: true
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: c7e88037-d67a-4c23-9ba6-38678eb099e6
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:27:12+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: ea5c931e-5fd1-474a-a7f2-6e921db4bee4 # Driver Code
+            handle: null
+            instructions: null
+            label: null
+            required: true
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 6e6f8023-6290-42d0-a953-a0328127002b
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:27:12+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: c20bf6d0-eda3-4415-a90b-44eaee61232e # Driver ID
+            handle: null
+            instructions: null
+            label: null
+            required: true
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 41012d8f-16cf-464e-96b3-5733def55607
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:27:12+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 765f1d3e-7083-49ca-8baa-d90996d0366f # Driver Name
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 5ea3f602-3d35-48e6-86c5-ec107478b199
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:27:12+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 0231b113-9a76-492f-b534-9bf406cf2a20 # Selection Order
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 50c8d3e2-2799-4aa8-9d61-766b7b5ccaba
+            userCondition: null
+            warning: null
+            width: 100
+        name: Prediction
+        uid: 36743adf-3ce2-4cb1-83fd-d7c3d8dfb893
+        userCondition: null
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2026-03-04T09:27:12+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 8191b742-84f0-4c30-bc48-30474a878186 # Actual Position
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 4d8f3100-3ecc-43ad-ba04-7584e021e573
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-03-04T09:27:12+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 63c31cd7-9c31-469c-93fd-c5e8c173695f # Points Earned
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: cd6c396d-4c5c-4c3b-bb6b-6c80111066e3
+            userCondition: null
+            warning: null
+            width: 100
+        name: Results
+        uid: 44b4ce31-5b6c-46fd-a48a-0cec68907d13
+        userCondition: null
+    thumbFieldKey: null
+handle: entryPredictions
+hasTitleField: false
+icon: null
+name: Predictions
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: '{predictionPlayer.one().title} - {driverCode}'
+titleTranslationKeyFormat: null
+titleTranslationMethod: site
+uiLabelFormat: '{title}'

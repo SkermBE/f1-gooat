@@ -1,0 +1,69 @@
+columnSuffix: rxynmjwm
+contentColumnType: text
+handle: raceResults
+instructions: 'Final race results from API'
+name: 'Race Results'
+searchable: false
+settings:
+  addRowLabel: 'Add a row'
+  columnType: text
+  columns:
+    __assoc__:
+      -
+        - position
+        -
+          __assoc__:
+            -
+              - heading
+              - Position
+            -
+              - handle
+              - position
+            -
+              - type
+              - number
+      -
+        - driverCode
+        -
+          __assoc__:
+            -
+              - heading
+              - 'Driver Code'
+            -
+              - handle
+              - driverCode
+            -
+              - type
+              - singleline
+      -
+        - driverId
+        -
+          __assoc__:
+            -
+              - heading
+              - 'Driver ID'
+            -
+              - handle
+              - driverId
+            -
+              - type
+              - singleline
+      -
+        - status
+        -
+          __assoc__:
+            -
+              - heading
+              - Status
+            -
+              - handle
+              - status
+            -
+              - type
+              - singleline
+  maxRows: null
+  minRows: null
+  staticRows: false
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Table
