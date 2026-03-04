@@ -1,0 +1,16 @@
+/* F1 Login */
+.F1Login {
+    @apply flex items-center justify-center min-h-[60vh];
+}
+
+.F1Login-form {
+    @apply bg-f1-surface rounded-xl p-8 w-full max-w-md border border-f1-border shadow-lg;
+}
+
+.F1Login-input {
+    @apply w-full bg-f1-surface-elevated border border-f1-border rounded-lg px-4 py-3 text-secondary focus:border-primary focus:outline-none transition-colors;
+}
+
+.F1Login-error {
+    @apply bg-primary/10 border border-primary/30 text-primary rounded-lg px-4 py-3 mb-4;
+}

@@ -1,6 +1,6 @@
 html,
 body {
-    @apply scroll-smooth bg-background;
+    @apply scroll-smooth bg-background text-typography-text;
 }
 
 /* No scroling classs */

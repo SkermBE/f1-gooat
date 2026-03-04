@@ -1,0 +1,104 @@
+{% extends 'f1/_layout' %}
+
+{% block main %}
+<div class="container py-12">
+    <a href="{{ siteUrl('races') }}" class="text-f1-muted text-sm hover:text-primary mb-2 inline-block">&larr; Back to races</a>
+    <h1 class="text-3xl font-black uppercase mb-2">{{ race.title }}</h1>
+    <p class="text-f1-muted mb-8">Round {{ race.raceRound }} &middot; Results</p>
+
+    {# P10 highlight #}
+    {% if actualP10 %}
+        <div class="F1Card F1Card--highlight mb-8 text-center py-6">
+            <span class="text-f1-muted text-sm uppercase tracking-wider">P10 Finisher</span>
+            <h2 class="text-4xl font-black text-primary mt-2">{{ actualP10.code }}</h2>
+            <p class="text-secondary">{{ actualP10.name }}</p>
+            <p class="text-f1-muted text-sm">{{ actualP10.team }}</p>
+            {% if perfectCount > 0 %}
+                <p class="text-f1-perfect mt-3 font-bold">{{ perfectCount }} perfect prediction{{ perfectCount > 1 ? 's' }}!</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <div class="grid lg:grid-cols-2 gap-8">
+        {# Player predictions #}
+        <div>
+            <h2 class="text-xl font-bold mb-4">Player Predictions</h2>
+            <div class="F1Card overflow-hidden !p-0">
+                <table class="F1Table w-full">
+                    <thead>
+                        <tr>
+                            <th class="pl-5">Player</th>
+                            <th>Pick</th>
+                            <th>Finished</th>
+                            <th class="text-right pr-5">Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prediction in predictions %}
+                            {% set predPlayer = prediction.predictionPlayer.one() %}
+                            {% set isPerfect = prediction.actualPosition == 10 %}
+                            <tr class="{{ isPerfect ? 'bg-f1-perfect/10' : '' }}">
+                                <td class="pl-5">
+                                    {% if predPlayer %}
+                                        <a href="{{ siteUrl('player/' ~ predPlayer.id) }}" class="font-medium hover:text-primary transition-colors">
+                                            {{ predPlayer.title }}
+                                        </a>
+                                    {% else %}
+                                        <span class="text-f1-muted">Unknown</span>
+                                    {% endif %}
+                                </td>
+                                <td class="font-mono font-bold">{{ prediction.driverCode }}</td>
+                                <td>
+                                    {% if prediction.actualPosition %}
+                                        P{{ prediction.actualPosition }}
+                                        {% if isPerfect %}
+                                            <span class="text-f1-perfect ml-1">&#9733;</span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="text-f1-muted">&mdash;</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-right pr-5">
+                                    <span class="font-mono font-bold {{ isPerfect ? 'text-f1-perfect' : 'text-secondary' }}">
+                                        {{ prediction.pointsEarned ?? 0 }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {# Full classification #}
+        <div>
+            <h2 class="text-xl font-bold mb-4">Race Classification</h2>
+            <div class="F1Card overflow-hidden !p-0">
+                <table class="F1Table w-full">
+                    <thead>
+                        <tr>
+                            <th class="pl-5 w-12">Pos</th>
+                            <th>Driver</th>
+                            <th class="pr-5">Team</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in classification %}
+                            <tr class="{{ result.isP10 ? 'bg-primary/15' : '' }}">
+                                <td class="pl-5 font-mono {{ result.isP10 ? 'text-primary font-bold' : 'text-f1-muted' }}">
+                                    {{ result.position }}
+                                </td>
+                                <td>
+                                    <span class="font-bold">{{ result.driverCode }}</span>
+                                    <span class="text-f1-muted text-sm ml-2">{{ result.firstName }} {{ result.lastName }}</span>
+                                </td>
+                                <td class="pr-5 text-f1-muted text-sm">{{ result.team }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

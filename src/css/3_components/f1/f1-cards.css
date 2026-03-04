@@ -1,0 +1,12 @@
+/* F1 Card */
+.F1Card {
+    @apply bg-f1-surface rounded-xl border border-f1-border p-5 transition-all duration-300 shadow-sm;
+
+    &:hover {
+        @apply border-primary/30 shadow-md;
+    }
+
+    &--highlight {
+        @apply border-primary/30 bg-primary/5;
+    }
+}

@@ -26,3 +26,10 @@
 @import "./3_components/globals/footer.css";
 @import "./3_components/globals/header.css";
 @import "./3_components/globals/headroom.css";
+
+/* 3_components -> F1 */
+@import "./3_components/f1/f1-cards.css";
+@import "./3_components/f1/f1-badges.css";
+@import "./3_components/f1/f1-table.css";
+@import "./3_components/f1/f1-driver-grid.css";
+@import "./3_components/f1/f1-login.css";

@@ -1,4 +1,4 @@
-baseUrl: null
+baseUrl: $PRIMARY_SITE_URL_2025
 enabled: '1'
 handle: season2025
 hasUrls: true

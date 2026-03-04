@@ -1,0 +1,36 @@
+<footer class="bg-f1-navy py-8 mt-auto">
+    <div class="container">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <span class="text-white/60 text-sm">GOOAT F1 Prediction Game &mdash; {{ currentSeasonYear }} Season</span>
+            <span class="text-white/60 text-sm">Predict who finishes P10</span>
+        </div>
+
+        {% if currentPlayer %}
+            <div class="border-t border-white/10 mt-6 pt-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                    <h3 class="text-sm font-semibold text-white/50 uppercase tracking-wider">
+                        Admin &mdash; {{ currentSite.name }}
+                    </h3>
+                    <div id="adminMessage" class="text-sm hidden"></div>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <button type="button" class="js-admin-action bg-white/10 text-white/80 hover:bg-white/20 px-4 py-2 text-sm rounded-lg font-medium transition-colors"
+                            data-url="{{ siteUrl('update/sync-drivers') }}"
+                            data-csrf="{{ craft.app.request.csrfToken }}">
+                        Sync Drivers
+                    </button>
+                    <button type="button" class="js-admin-action bg-white/10 text-white/80 hover:bg-white/20 px-4 py-2 text-sm rounded-lg font-medium transition-colors"
+                            data-url="{{ siteUrl('update/sync-races') }}"
+                            data-csrf="{{ craft.app.request.csrfToken }}">
+                        Sync Races
+                    </button>
+                    <button type="button" class="js-admin-action bg-white/10 text-white/80 hover:bg-white/20 px-4 py-2 text-sm rounded-lg font-medium transition-colors"
+                            data-url="{{ siteUrl('update/fetch-results') }}"
+                            data-csrf="{{ craft.app.request.csrfToken }}">
+                        Fetch Results
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</footer>

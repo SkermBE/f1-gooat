@@ -1,0 +1,16 @@
+/* F1 Table */
+.F1Table {
+    @apply w-full;
+
+    th {
+        @apply text-left text-f1-muted uppercase text-xs tracking-wider pb-3 border-b border-f1-border font-semibold;
+    }
+
+    td {
+        @apply py-3 border-b border-f1-border/50;
+    }
+
+    tbody tr:hover td {
+        @apply bg-f1-surface-elevated;
+    }
+}

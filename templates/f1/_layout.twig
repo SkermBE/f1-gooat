@@ -1,0 +1,14 @@
+{# F1 Layout — extends base directly for full control #}
+{% extends '_layouts/base' %}
+
+{% set bodyClass = 'F1Page' %}
+
+{% block body %}
+    {% include 'f1/_partials/header' %}
+
+    <main class="Main pt-20">
+        {% block main %}{% endblock %}
+    </main>
+
+    {% include 'f1/_partials/footer' %}
+{% endblock %}

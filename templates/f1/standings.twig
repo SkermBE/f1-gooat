@@ -1,0 +1,48 @@
+{% extends 'f1/_layout' %}
+
+{% block main %}
+<div class="container py-12">
+    <h1 class="text-3xl font-black uppercase mb-2">Season Standings</h1>
+    <p class="text-f1-muted mb-8">{{ currentSeasonYear }} Championship</p>
+
+    {% if standings|length %}
+        <div class="F1Card overflow-hidden !p-0">
+            <table class="F1Table w-full">
+                <thead>
+                    <tr>
+                        <th class="pl-5 w-16">Pos</th>
+                        <th>Player</th>
+                        <th class="text-right pr-5">Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in standings %}
+                        {% set isCurrentPlayer = currentPlayer and entry.id == currentPlayer.id %}
+                        <tr class="{{ isCurrentPlayer ? 'bg-primary/10' : '' }}">
+                            <td class="pl-5">
+                                <span class="font-bold text-lg {{ entry.currentStanding <= 3 ? 'text-primary' : 'text-f1-muted' }}">
+                                    {{ entry.currentStanding }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{{ siteUrl('player/' ~ entry.id) }}" class="font-semibold hover:text-primary transition-colors {{ isCurrentPlayer ? 'text-primary' : '' }}">
+                                    {{ entry.title }}
+                                    {% if isCurrentPlayer %}<span class="text-f1-muted text-xs ml-2">(You)</span>{% endif %}
+                                </a>
+                            </td>
+                            <td class="text-right pr-5">
+                                <span class="font-mono font-bold text-lg">{{ entry.totalPoints }}</span>
+                                <span class="text-f1-muted text-sm ml-1">pts</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="F1Card text-center py-12">
+            <p class="text-f1-muted">No results yet. Standings will appear after the first race.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -100,22 +100,6 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
-          -
-            dateAdded: '2026-03-04T09:25:56+00:00'
-            editCondition: null
-            elementCondition: null
-            elementEditCondition: null
-            fieldUid: cf0b87ab-e617-4f90-92cc-440a6aa36912 # Race Status
-            handle: raceStatus2
-            instructions: null
-            label: null
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: d6c6f901-fc0f-4632-97f0-84dfb66c3d36
-            userCondition: null
-            warning: null
-            width: 100
         name: Details
         uid: 7e8f7fa9-7dd8-4dcf-8a5c-0428275569db
         userCondition: null

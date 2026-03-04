@@ -1,0 +1,53 @@
+{% extends 'f1/_layout' %}
+
+{% block main %}
+<div class="container py-12">
+    <h1 class="text-3xl font-black uppercase mb-2">{{ currentSeasonYear }} Race Calendar</h1>
+    <p class="text-f1-muted mb-8">{{ races|length }} races this season</p>
+
+    <div class="grid gap-3">
+        {% for race in races %}
+            {% if race.raceStatus == 'selection_open' %}
+                <a href="{{ siteUrl('select/' ~ race.id) }}" class="F1Card flex items-center justify-between group">
+                    <div class="flex items-center gap-5">
+                        <span class="text-f1-muted font-mono text-sm w-8">R{{ race.raceRound }}</span>
+                        <div>
+                            <h3 class="font-bold text-lg group-hover:text-primary transition-colors">{{ race.title }}</h3>
+                            {% if race.raceDate %}
+                                <span class="text-f1-muted text-sm">{{ race.raceDate|date('d M Y') }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <span class="F1Badge F1Badge--selection_open">Selection open</span>
+                </a>
+            {% elseif race.raceStatus == 'completed' %}
+                <a href="{{ siteUrl('results/' ~ race.id) }}" class="F1Card flex items-center justify-between group">
+                    <div class="flex items-center gap-5">
+                        <span class="text-f1-muted font-mono text-sm w-8">R{{ race.raceRound }}</span>
+                        <div>
+                            <h3 class="font-bold text-lg group-hover:text-primary transition-colors">{{ race.title }}</h3>
+                            {% if race.raceDate %}
+                                <span class="text-f1-muted text-sm">{{ race.raceDate|date('d M Y') }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <span class="F1Badge F1Badge--completed">Completed</span>
+                </a>
+            {% else %}
+                <div class="F1Card flex items-center justify-between opacity-50 cursor-default hover:border-f1-border hover:bg-f1-surface">
+                    <div class="flex items-center gap-5">
+                        <span class="text-f1-muted font-mono text-sm w-8">R{{ race.raceRound }}</span>
+                        <div>
+                            <h3 class="font-bold text-lg text-f1-muted">{{ race.title }}</h3>
+                            {% if race.raceDate %}
+                                <span class="text-f1-muted text-sm">{{ race.raceDate|date('d M Y') }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <span class="F1Badge F1Badge--{{ race.raceStatus }}">{{ race.raceStatus|replace({'_': ' '}) }}</span>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

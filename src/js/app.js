@@ -27,4 +27,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             const { pageHeader } = await import('@js/parts/pageHeader');
             pageHeader(headerElement);
       }
+
+      // Driver selection grid
+      const driverGrid = document.querySelector('#driverGrid');
+      if (driverGrid) {
+            const { driverSelection } = await import('@js/parts/driverSelection');
+            driverSelection(driverGrid);
+      }
+
+      // Admin actions (footer sync buttons)
+      const adminButtons = document.querySelectorAll('.js-admin-action');
+      if (adminButtons.length > 0) {
+            const { adminActions } = await import('@js/parts/adminActions');
+            adminActions();
+      }
 })

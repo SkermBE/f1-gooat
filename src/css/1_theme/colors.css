@@ -1,11 +1,22 @@
-/* Colors */
+/* Colors — F1 Light Theme with Dark Navy Header */
 @theme {
-      --color-primary: #38D0B1;
-      --color-secondary: #003421;
-      --color-tertiary: #9CDCFE;
-      --color-background: #FFFFFF;
-      --color-typography-text: #1E5157;
-      --color-typography-heading: #1E5157;
-      --color-typography-link: #1E5157;
-      --color-typography-link_hover: #66CAA4;
+      --color-primary: #E10600;
+      --color-secondary: #1B1F3B;
+      --color-tertiary: #2A2E4A;
+      --color-background: #F2F2F7;
+      --color-typography-text: #1B1F3B;
+      --color-typography-heading: #1B1F3B;
+      --color-typography-link: #E10600;
+      --color-typography-link_hover: #C00500;
+
+      /* F1 surfaces & accents */
+      --color-f1-surface: #FFFFFF;
+      --color-f1-surface-elevated: #F8F8FC;
+      --color-f1-border: #E2E2EA;
+      --color-f1-muted: #6B7280;
+      --color-f1-success: #059669;
+      --color-f1-warning: #D97706;
+      --color-f1-perfect: #D4A017;
+      --color-f1-navy: #1B1F3B;
+      --color-f1-navy-light: #2A2E4A;
 }

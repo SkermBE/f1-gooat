@@ -1,0 +1,20 @@
+/* F1 Status Badges */
+.F1Badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider;
+
+    &--upcoming {
+        @apply bg-f1-muted/20 text-f1-muted;
+    }
+
+    &--selection_open {
+        @apply bg-f1-success/20 text-f1-success;
+    }
+
+    &--selection_closed {
+        @apply bg-f1-warning/20 text-f1-warning;
+    }
+
+    &--completed {
+        @apply bg-primary/20 text-primary;
+    }
+}

@@ -1,0 +1,49 @@
+<header id="Header" class="fixed top-0 w-full py-4 z-50 bg-f1-navy border-b-4 border-primary">
+    <div class="container">
+        <div class="flex items-center justify-between">
+            {# Brand #}
+            <a href="{{ siteUrl }}" class="flex items-center gap-3 no-underline">
+                <span class="text-white font-black text-xl tracking-tight uppercase">F1 Prediction Game</span>
+            </a>
+
+            {# Mobile toggle #}
+            <button class="Toggle js-toggle lg:hidden" title="Toggle navigation">
+                <div class="Toggle-lines">
+                    <span class="Toggle-line"></span>
+                    <span class="Toggle-line"></span>
+                    <span class="Toggle-line"></span>
+                </div>
+            </button>
+
+            {# Navigation #}
+            <nav class="Header-navs">
+                <div class="Header-navs--inner flex items-center gap-6">
+                    <ul class="flex flex-col lg:flex-row gap-6 list-none p-0 m-0">
+                        <li><a href="{{ siteUrl('races') }}" class="F1Nav-link{% if craft.app.request.segments|first == 'races' %} is-active{% endif %}">Races</a></li>
+                        <li><a href="{{ siteUrl('standings') }}" class="F1Nav-link{% if craft.app.request.segments|first == 'standings' %} is-active{% endif %}">Standings</a></li>
+                        {% if currentPlayer %}
+                            <li><a href="{{ siteUrl('player/' ~ currentPlayer.id) }}" class="F1Nav-link{% if craft.app.request.segments|first == 'player' %} is-active{% endif %}">Profile</a></li>
+                            <li><a href="{{ siteUrl('logout') }}" class="F1Nav-link">Logout</a></li>
+                        {% endif %}
+                    </ul>
+
+                    {# Season switcher #}
+                    {% if availableSites|length > 1 %}
+                        <select onchange="window.location.href=this.value" class="bg-f1-navy-light border border-white/20 rounded-lg px-3 py-1.5 text-sm text-white/80">
+                            {% for site in availableSites %}
+                                <option value="{{ site.baseUrl }}" {{ site.id == currentSite.id ? 'selected' }}>
+                                    {{ site.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+
+                    {# Login button #}
+                    {% if not currentPlayer %}
+                        <a href="{{ siteUrl('login') }}" class="bg-primary text-white font-bold text-sm px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors no-underline">Login</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>

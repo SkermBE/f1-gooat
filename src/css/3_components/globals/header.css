@@ -11,7 +11,7 @@
 
             /* Toggle */
             .Toggle .Toggle-lines .Toggle-line {
-                  @apply bg-secondary;
+                  @apply bg-white;
 
                   &:nth-child(1) {
                         @apply top-1/2 rotate-[135deg];
@@ -54,7 +54,7 @@
       .Header-navs {
             /* Mobile */
             @media not all and (min-width: theme("screens.lg")) {
-                  @apply bg-primary fixed top-0 w-screen h-full z-40 pt-40;
+                  @apply bg-f1-navy fixed top-0 w-screen h-full z-40 pt-40;
                   @apply translate-x-full;
                   margin-left: calc(var(--container-padding) * -1);
             }
@@ -89,7 +89,7 @@
                   @apply relative h-[18px] w-[30px];
 
                   .Toggle-line {
-                        @apply absolute left-1/2 -translate-x-1/2 h-[1px] bg-primary min-w-full;
+                        @apply absolute left-1/2 -translate-x-1/2 h-[1px] bg-white min-w-full;
 
                         &:nth-child(1) {
                               @apply top-0;
@@ -172,5 +172,19 @@
                   text-transform: inherit;
                   font-family: inherit;
             }
+      }
+}
+
+/* F1 Navigation links (white text on dark navy header) */
+.F1Nav-link {
+      @apply text-white/70 font-medium uppercase text-sm tracking-wider transition-colors;
+
+      &:hover,
+      &.is-active {
+            @apply text-white;
+      }
+
+      &:before {
+            display: none;
       }
 }

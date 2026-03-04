@@ -1,0 +1,96 @@
+{% extends 'f1/_layout' %}
+
+{% block main %}
+<div class="container py-12">
+    <a href="{{ siteUrl('standings') }}" class="text-f1-muted text-sm hover:text-primary mb-2 inline-block">&larr; Standings</a>
+    <h1 class="text-3xl font-black uppercase mb-8">{{ player.title }}</h1>
+
+    {# Stats cards #}
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        <div class="F1Card text-center">
+            <span class="text-f1-muted text-xs uppercase tracking-wider">Races</span>
+            <span class="block text-3xl font-black mt-1">{{ raceCount }}</span>
+        </div>
+        <div class="F1Card text-center">
+            <span class="text-f1-muted text-xs uppercase tracking-wider">Avg Points</span>
+            <span class="block text-3xl font-black mt-1">{{ avgPoints }}</span>
+        </div>
+        <div class="F1Card text-center">
+            <span class="text-f1-muted text-xs uppercase tracking-wider">Perfect Picks</span>
+            <span class="block text-3xl font-black text-f1-perfect mt-1">{{ perfectCount }}</span>
+        </div>
+        <div class="F1Card text-center">
+            <span class="text-f1-muted text-xs uppercase tracking-wider">Best Race</span>
+            <span class="block text-xl font-bold mt-1">{{ bestPoints }} pts</span>
+            {% if bestRace %}
+                <span class="text-f1-muted text-xs">{{ bestRace.title }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+        {# Race history #}
+        <div class="lg:col-span-2">
+            <h2 class="text-xl font-bold mb-4">Race History</h2>
+            {% if raceHistory|length %}
+                <div class="F1Card overflow-hidden !p-0">
+                    <table class="F1Table w-full">
+                        <thead>
+                            <tr>
+                                <th class="pl-5">Race</th>
+                                <th>Pick</th>
+                                <th>Finished</th>
+                                <th class="text-right pr-5">Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entry in raceHistory %}
+                                <tr class="{{ entry.isPerfect ? 'bg-f1-perfect/10' : '' }}">
+                                    <td class="pl-5">
+                                        {% if entry.race %}
+                                            <a href="{{ siteUrl('results/' ~ entry.race.id) }}" class="hover:text-primary transition-colors">{{ entry.race.title }}</a>
+                                        {% endif %}
+                                    </td>
+                                    <td class="font-mono font-bold">{{ entry.prediction.driverCode }}</td>
+                                    <td>
+                                        {% if entry.prediction.actualPosition %}
+                                            P{{ entry.prediction.actualPosition }}
+                                            {% if entry.isPerfect %}<span class="text-f1-perfect">&#9733;</span>{% endif %}
+                                        {% else %}
+                                            <span class="text-f1-muted">Pending</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-right pr-5 font-mono font-bold">{{ entry.prediction.pointsEarned ?? 0 }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="F1Card text-center py-8">
+                    <p class="text-f1-muted">No race history yet.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        {# Most picked drivers #}
+        <div>
+            <h2 class="text-xl font-bold mb-4">Favorite Drivers</h2>
+            {% if driverPicks|length %}
+                <div class="space-y-2">
+                    {% for code, count in driverPicks %}
+                        <div class="F1Card !p-3 flex items-center justify-between">
+                            <span class="font-mono font-bold text-lg">{{ code }}</span>
+                            <span class="text-f1-muted">{{ count }} pick{{ count > 1 ? 's' }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="F1Card text-center py-8">
+                    <p class="text-f1-muted">No picks yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

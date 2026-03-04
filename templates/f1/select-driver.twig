@@ -1,0 +1,118 @@
+{% extends 'f1/_layout' %}
+
+{% block main %}
+<div class="container py-12">
+    {# Race header #}
+    <div class="mb-8">
+        <a href="{{ siteUrl('races') }}" class="text-f1-muted text-sm hover:text-primary mb-2 inline-block">&larr; Back to races</a>
+        <h1 class="text-3xl font-black uppercase">{{ race.title }}</h1>
+        <p class="text-f1-muted">Round {{ race.raceRound }} &middot; Driver Selection</p>
+    </div>
+
+    {% set selectionOpen = race.raceStatus == 'selection_open' %}
+
+    {# Selection not open banner #}
+    {% if not selectionOpen %}
+        <div class="F1Card F1Card--highlight text-center py-8 mb-8">
+            {% if race.raceStatus == 'upcoming' %}
+                <span class="F1Badge F1Badge--upcoming mb-3">Upcoming</span>
+                <p class="text-lg font-bold mt-2">Selection hasn't opened yet</p>
+                <p class="text-f1-muted mt-1">Check back when this race is open for picks.</p>
+            {% elseif race.raceStatus == 'selection_closed' %}
+                <span class="F1Badge F1Badge--selection_closed mb-3">Selection Closed</span>
+                <p class="text-lg font-bold mt-2">Picks are locked in</p>
+                <p class="text-f1-muted mt-1">Waiting for race results.</p>
+            {% elseif race.raceStatus == 'completed' %}
+                <span class="F1Badge F1Badge--completed mb-3">Completed</span>
+                <p class="text-lg font-bold mt-2">This race has finished</p>
+                <a href="{{ siteUrl('results/' ~ race.id) }}" class="btn btn-primary inline-block mt-3 px-6 py-2">View Results</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {# Main content — dimmed when selection is not open #}
+    <div class="{{ not selectionOpen ? 'opacity-40 pointer-events-none select-none' : '' }}">
+        {# Selection status bar #}
+        <div class="F1Card mb-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="text-f1-muted text-sm">Progress</span>
+                    <div class="flex items-center gap-3 mt-1">
+                        <span class="text-2xl font-bold">{{ selectedCount }}/{{ totalPlayers }}</span>
+                        <div class="w-32 h-2 bg-f1-surface-elevated rounded-full overflow-hidden">
+                            <div class="h-full bg-primary rounded-full transition-all" style="width: {{ totalPlayers > 0 ? (selectedCount / totalPlayers * 100) : 0 }}%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    {% if selectionComplete %}
+                        <span class="F1Badge F1Badge--completed">All picks in</span>
+                    {% elseif currentSelector %}
+                        <div class="text-right">
+                            <span class="text-f1-muted text-sm">Now picking:</span>
+                            <span class="block font-bold text-lg {{ isPlayerTurn ? 'text-f1-success' : 'text-secondary' }}">
+                                {{ currentSelector.title }}{{ isPlayerTurn ? ' (You!)' : '' }}
+                            </span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            {# Available drivers grid #}
+            <div class="lg:col-span-2">
+                <h2 class="text-xl font-bold mb-4">Available Drivers</h2>
+
+                {% if selectionComplete %}
+                    <div class="F1Card text-center py-12">
+                        <p class="text-f1-muted text-lg">All players have made their picks for this race.</p>
+                    </div>
+                {% elseif not isPlayerTurn %}
+                    <div class="F1Card text-center py-8 mb-6">
+                        <p class="text-f1-muted">Waiting for <strong class="text-secondary">{{ currentSelector.title }}</strong> to pick...</p>
+                    </div>
+                {% endif %}
+
+                <div id="driverGrid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3"
+                     data-race-id="{{ race.id }}"
+                     data-is-player-turn="{{ isPlayerTurn and selectionOpen ? '1' : '0' }}"
+                     data-submit-url="{{ siteUrl('prediction/submit') }}"
+                     data-csrf="{{ craft.app.request.csrfToken }}">
+                    {% for driver in availableDrivers %}
+                        <div class="F1DriverCard {{ (not isPlayerTurn or not selectionOpen) ? 'is-disabled' : '' }}"
+                             data-driver-id="{{ driver.driverId }}">
+                            <div class="text-center pt-2">
+                                <span class="text-2xl font-black block">{{ driver.driverCode }}</span>
+                                <span class="text-sm text-f1-muted block">{{ driver.driverFirstName }} {{ driver.driverLastName }}</span>
+                                <span class="text-xs text-f1-muted/60 block mt-1">{{ driver.teamName }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {# Sidebar: all picks in reverse order (most recent first) #}
+            <div>
+                <h2 class="text-xl font-bold mb-4">Picks ({{ allSelections|length }})</h2>
+
+                {% if allSelections|length %}
+                    <div class="space-y-2">
+                        {% for prediction in allSelections|reverse %}
+                            {% set predPlayer = prediction.predictionPlayer.one() %}
+                            <div class="F1Card !p-3 flex items-center justify-between">
+                                <span class="font-medium">{{ predPlayer ? predPlayer.title : 'Unknown' }}</span>
+                                <span class="text-primary font-bold">{{ prediction.driverCode }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="F1Card text-center py-8">
+                        <p class="text-f1-muted">No picks yet. Be the first!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
