@@ -1,118 +1,220 @@
 {% extends 'f1/_layout' %}
 
+{% if race.raceStatus == 'completed' %}
+	{% redirect siteUrl('results/' ~ race.id) %}
+{% endif %}
+
+{% set selectionOpen = race.raceStatus == 'selection_open' %}
+{% set totalPercentage = (1 - selectedCount / totalPlayers) * 100 %}
+
 {% block main %}
-<div class="container py-12">
-    {# Race header #}
-    <div class="mb-8">
-        <a href="{{ siteUrl('races') }}" class="text-f1-muted text-sm hover:text-primary mb-2 inline-block">&larr; Back to races</a>
-        <h1 class="text-3xl font-black uppercase">{{ race.title }}</h1>
-        <p class="text-f1-muted">Round {{ race.raceRound }} &middot; Driver Selection</p>
-    </div>
+	<div class="container">
+		<div class="mb-6">
+			<a href="{{ siteUrl('races') }}">
+				<button class="!cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-8 rounded-md px-3 text-xs text-slate-500 mb-4">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left w-4 h-4 mr-1">
+						<path d="m12 19-7-7 7-7"></path>
+						<path d="M19 12H5"></path>
+					</svg>Back</button>
+			</a>
+			<div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+				<div class="flex items-center gap-4">
+					<div>
+						<div class="flex items-center gap-2 mb-1">
+							<span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Round
+								{{ race.raceRound }}</span>
 
-    {% set selectionOpen = race.raceStatus == 'selection_open' %}
 
-    {# Selection not open banner #}
-    {% if not selectionOpen %}
-        <div class="F1Card F1Card--highlight text-center py-8 mb-8">
-            {% if race.raceStatus == 'upcoming' %}
-                <span class="F1Badge F1Badge--upcoming mb-3">Upcoming</span>
-                <p class="text-lg font-bold mt-2">Selection hasn't opened yet</p>
-                <p class="text-f1-muted mt-1">Check back when this race is open for picks.</p>
-            {% elseif race.raceStatus == 'selection_closed' %}
-                <span class="F1Badge F1Badge--selection_closed mb-3">Selection Closed</span>
-                <p class="text-lg font-bold mt-2">Picks are locked in</p>
-                <p class="text-f1-muted mt-1">Waiting for race results.</p>
-            {% elseif race.raceStatus == 'completed' %}
-                <span class="F1Badge F1Badge--completed mb-3">Completed</span>
-                <p class="text-lg font-bold mt-2">This race has finished</p>
-                <a href="{{ siteUrl('results/' ~ race.id) }}" class="btn btn-primary inline-block mt-3 px-6 py-2">View Results</a>
-            {% endif %}
-        </div>
-    {% endif %}
+							{% if race.raceStatus == 'selection_open' %}
+								<span class="inline-flex items-center gap-1.5 font-semibold uppercase tracking-wide border rounded-full px-2.5 py-0.5 text-[10px] bg-amber-500/10 text-amber-600 border-amber-500/20">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-3 h-3">
+										<circle cx="12" cy="12" r="10"></circle>
+										<polyline points="12 6 12 12 16 14"></polyline>
+									</svg>
+									{{ race.raceStatus.label }}
+								</span>
+							{% elseif race.raceStatus == 'selection_closed'%}
+								<span class="inline-flex items-center gap-1.5 font-semibold uppercase tracking-wide border rounded-full px-2.5 py-0.5 text-[10px] bg-red-500/10 text-red-600 border-red-500/20">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-3 h-3">
+										<circle cx="12" cy="12" r="10"></circle>
+										<polyline points="12 6 12 12 16 14"></polyline>
+									</svg>
+									{{ race.raceStatus.label }}
+								</span>
 
-    {# Main content — dimmed when selection is not open #}
-    <div class="{{ not selectionOpen ? 'opacity-40 pointer-events-none select-none' : '' }}">
-        {# Selection status bar #}
-        <div class="F1Card mb-8">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <span class="text-f1-muted text-sm">Progress</span>
-                    <div class="flex items-center gap-3 mt-1">
-                        <span class="text-2xl font-bold">{{ selectedCount }}/{{ totalPlayers }}</span>
-                        <div class="w-32 h-2 bg-f1-surface-elevated rounded-full overflow-hidden">
-                            <div class="h-full bg-primary rounded-full transition-all" style="width: {{ totalPlayers > 0 ? (selectedCount / totalPlayers * 100) : 0 }}%"></div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    {% if selectionComplete %}
-                        <span class="F1Badge F1Badge--completed">All picks in</span>
-                    {% elseif currentSelector %}
-                        <div class="text-right">
-                            <span class="text-f1-muted text-sm">Now picking:</span>
-                            <span class="block font-bold text-lg {{ isPlayerTurn ? 'text-f1-success' : 'text-secondary' }}">
-                                {{ currentSelector.title }}{{ isPlayerTurn ? ' (You!)' : '' }}
-                            </span>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+							{% endif %}
 
-        <div class="grid lg:grid-cols-3 gap-8">
-            {# Available drivers grid #}
-            <div class="lg:col-span-2">
-                <h2 class="text-xl font-bold mb-4">Available Drivers</h2>
+						</div>
+						<h1 class="text-2xl sm:text-3xl font-black text-slate-900">{{ race.title }}</h1>
+						<div class="flex flex-wrap gap-4 text-sm text-slate-500 mt-1">
+							<span class="flex items-center gap-1">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4">
+									<path d="M8 2v4"></path>
+									<path d="M16 2v4"></path>
+									<rect width="18" height="18" x="3" y="4" rx="2"></rect>
+									<path d="M3 10h18"></path>
+								</svg>
+								{{ race.raceDate|date('d M, Y')}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="space-y-2">
+					<div class="flex items-center justify-between text-sm">
+						<span class="flex items-center gap-1.5 text-slate-600">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-4 h-4">
+								<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+								<circle cx="9" cy="7" r="4"></circle>
+								<path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+								<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+							</svg>Players Selected</span>
+						<span class="font-bold text-slate-900 tabular-nums ml-1">{{ selectedCount }}/{{ totalPlayers }}</span>
+					</div>
+					<div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" class="relative w-full overflow-hidden rounded-full h-2 bg-slate-100">
+						<div data-state="indeterminate" data-max="100" class="h-full w-full flex-1 bg-amber-600 transition-all" style="transform: translateX(-{{ totalPercentage }}%);"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-                {% if selectionComplete %}
-                    <div class="F1Card text-center py-12">
-                        <p class="text-f1-muted text-lg">All players have made their picks for this race.</p>
-                    </div>
-                {% elseif not isPlayerTurn %}
-                    <div class="F1Card text-center py-8 mb-6">
-                        <p class="text-f1-muted">Waiting for <strong class="text-secondary">{{ currentSelector.title }}</strong> to pick...</p>
-                    </div>
-                {% endif %}
+		<div class="grid lg:grid-cols-4 gap-6 mb-20">
+			{% if not selectionOpen and race.raceStatus == 'selection_closed' %}
+				<div class="col-span-4 bg-primary p-5 rounded-2xl Link block text-center">
 
-                <div id="driverGrid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3"
-                     data-race-id="{{ race.id }}"
-                     data-is-player-turn="{{ isPlayerTurn and selectionOpen ? '1' : '0' }}"
-                     data-submit-url="{{ siteUrl('prediction/submit') }}"
-                     data-csrf="{{ craft.app.request.csrfToken }}">
-                    {% for driver in availableDrivers %}
-                        <div class="F1DriverCard {{ (not isPlayerTurn or not selectionOpen) ? 'is-disabled' : '' }}"
-                             data-driver-id="{{ driver.driverId }}">
-                            <div class="text-center pt-2">
-                                <span class="text-2xl font-black block">{{ driver.driverCode }}</span>
-                                <span class="text-sm text-f1-muted block">{{ driver.driverFirstName }} {{ driver.driverLastName }}</span>
-                                <span class="text-xs text-f1-muted/60 block mt-1">{{ driver.teamName }}</span>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+					<h3 class="font-bold text-lg leading-tight text-white">Selection Closed</h3>
+					<div class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Picks are locked in</div>
 
-            {# Sidebar: all picks in reverse order (most recent first) #}
-            <div>
-                <h2 class="text-xl font-bold mb-4">Picks ({{ allSelections|length }})</h2>
 
-                {% if allSelections|length %}
-                    <div class="space-y-2">
-                        {% for prediction in allSelections|reverse %}
-                            {% set predPlayer = prediction.predictionPlayer.one() %}
-                            <div class="F1Card !p-3 flex items-center justify-between">
-                                <span class="font-medium">{{ predPlayer ? predPlayer.title : 'Unknown' }}</span>
-                                <span class="text-primary font-bold">{{ prediction.driverCode }}</span>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    <div class="F1Card text-center py-8">
-                        <p class="text-f1-muted">No picks yet. Be the first!</p>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
+					<span class="inline-flex items-center gap-1.5 font-semibold uppercase tracking-wide border rounded-full px-2.5 py-0.5 text-[10px] bg-green-500/10 text-green-600 border-green-500/20">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-3 h-3">
+							<circle cx="12" cy="12" r="10"></circle>
+							<polyline points="12 6 12 12 16 14"></polyline>
+						</svg>Waiting for race results!</span>
+				</div>
+			{% endif %}
+			<div class="lg:col-span-1 space-y-6">
+				{% if isPlayerTurn %}
+					<div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 p-6 text-white" style="opacity: 1; transform: none;">
+
+						<div class="relative flex items-center gap-4">
+							<div class="p-3 rounded-xl bg-white/20 backdrop-blur-sm">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap w-6 h-6">
+									<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path>
+								</svg>
+							</div>
+							<div>
+								<div class="text-sm font-medium text-amber-100 uppercase tracking-wide">It's Your Turn!</div>
+								<div class="text-xl font-bold">Select Your P10 Prediction</div>
+							</div>
+						</div>
+					</div>
+				{% elseif selectionOpen %}
+					<div class="rounded-2xl bg-slate-100 border border-slate-200 p-6">
+						<div class="flex items-center gap-4">
+							<div class="p-3 rounded-xl bg-slate-200">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-6 h-6 text-slate-500">
+									<circle cx="12" cy="12" r="10"></circle>
+									<polyline points="12 6 12 12 16 14"></polyline>
+								</svg>
+							</div>
+							<div>
+								<div class="text-sm font-medium text-slate-500 uppercase tracking-wide">Waiting for</div>
+								<div class="text-xl font-bold text-slate-900">{{ currentSelector.title }}</div>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+
+				{% if allSelections|length %}
+					<div class="space-y-2">
+						<div class="text-xs font-semibold uppercase tracking-wider text-slate-500">Recently Selected</div>
+						<div class="space-y-2">
+							{% for prediction in allSelections|reverse %}
+								<div class="flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-100" style="opacity: 1; height: auto; transform: none;">
+									<div class="w-2 h-2 rounded-full" style="background-color: rgb(182, 186, 189);"></div>
+									<div class="flex-1 min-w-0">
+										<span class="font-medium text-slate-900 truncate">{{ prediction.predictionPlayer.one().title }}</span>
+										<span class="text-slate-400 mx-1.5">picked</span>
+										<span class="font-bold" style="color: rgb(182, 186, 189);">{{ prediction.driverCode }}</span>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+			</div>
+
+			<div class="lg:col-span-3">
+				<div class="flex items-center justify-between mb-4">
+					<h2 class="text-xl font-bold text-slate-900">Available Drivers</h2>
+					<span class="text-sm text-slate-500">{{ availableDrivers|length}}
+						available</span>
+				</div>
+
+				<div id="driverGrid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4" data-race-id="{{ race.id }}" data-is-player-turn="{{ isPlayerTurn and selectionOpen ? '1' : '0' }}" data-submit-url="{{ siteUrl('prediction/submit') }}" data-csrf="{{ craft.app.request.csrfToken }}">
+					{% for driver in availableDrivers %}
+						{% if driver.teamName %}
+
+							<div class="F1DriverCard relative rounded-2xl overflow-hidden bg-white border-2 transition-all duration-200 hover:scale-105 {{ isPlayerTurn ? 'border-amber-600 cursor-pointer' : 'border-gray-100 pointer-events-none' }}" data-driver-id="{{ driver.driverId }}">
+								<div class="h-1.5 w-full {{ isPlayerTurn ? 'bg-amber-600' : 'bg-gray-100' }}"></div>
+								<div class="p-3">
+									<div class="relative mx-auto mb-3 rounded-xl overflow-hidden bg-gradient-to-b from-slate-100 to-slate-200 w-16 h-16">
+										<div class="w-full h-full flex items-center justify-center">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-8 h-8 text-slate-400">
+												<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+												<circle cx="12" cy="7" r="4"></circle>
+											</svg>
+										</div>
+									</div>
+									<div class="text-center font-black tracking-tight text-2xl" style="color: rgb(182, 186, 189);">{{ driver.driverCode }}</div>
+									<div class="js-driver-name text-center text-slate-700 font-medium truncate text-xs">{{ driver.driverFirstName }}
+										{{ driver.driverLastName }}</div>
+									<div class="text-center text-slate-400 truncate mt-0.5 text-[10px]">{{ driver.teamName }}</div>
+									<button class="inline-flex items-center justify-center gap-2 whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 shadow h-8 rounded-md px-3 text-xs w-full mt-3 font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200" disabled="">SELECT</button>
+								</div>
+							</div>
+
+						{% endif %}
+					{% endfor %}
+				</div>
+
+				{% if selectedDrivers|length %}
+					<div class="mt-8">
+
+						<div class="flex items-center justify-between mb-4">
+							<h2 class="text-xl font-bold text-slate-900">Already Selected</h2>
+							<span class="text-sm text-slate-500">{{ selectedDrivers|length }}
+								unavailable</span>
+						</div>
+						<div class="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-6 gap-3">
+							{% for selectedDriver in selectedDrivers %}
+								<div class="relative rounded-2xl overflow-hidden bg-white border-2 transition-all duration-200 opacity-40 cursor-not-allowed" tabindex="0" style="border-color: rgb(148, 163, 184);">
+									<div class="h-1.5 w-full" style="background-color: rgb(182, 186, 189);"></div>
+									<div class="p-3">
+										<div class="relative mx-auto mb-3 rounded-xl overflow-hidden bg-gradient-to-b from-slate-100 to-slate-200 w-16 h-16">
+											<div class="w-full h-full flex items-center justify-center">
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-8 h-8 text-slate-400">
+													<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+													<circle cx="12" cy="7" r="4"></circle>
+												</svg>
+											</div>
+											<div class="absolute inset-0 bg-slate-900/60 flex items-center justify-center">
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check w-8 h-8 text-white">
+													<path d="M20 6 9 17l-5-5"></path>
+												</svg>
+											</div>
+										</div>
+										<div class="text-center font-black tracking-tight text-2xl" style="color: rgb(182, 186, 189);">{{ selectedDriver.driverCode }}</div>
+										<div class="text-center text-slate-700 font-medium truncate text-xs">{{ selectedDriver.driverFirstName }}
+											{{ selectedDriver.driverLastName }}</div>
+										<div class="text-center text-slate-400 truncate mt-0.5 text-[10px]">{{ selectedDriver.teamName }}</div>
+										<div class="mt-3 py-2 text-center text-sm font-medium text-slate-400">TAKEN</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 {% endblock %}

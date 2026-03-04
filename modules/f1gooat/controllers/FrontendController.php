@@ -54,12 +54,17 @@ class FrontendController extends Controller
         $drivers = Entry::find()
             ->section('drivers')
             ->isActive(true)
+            ->andWhere(['not', ['driverCode' => ['', null]]])
+            ->andWhere(['not', ['teamName' => ['', null]]])
             ->all();
 
         $availableDrivers = [];
+        $selectedDrivers = [];
         foreach ($drivers as $driver) {
             if (!in_array($driver->driverId, $selectedIds)) {
                 $availableDrivers[] = $driver;
+            } else {
+                $selectedDrivers[] = $driver;
             }
         }
 
@@ -84,6 +89,7 @@ class FrontendController extends Controller
             'recentSelections' => $recentSelections,
             'allSelections' => $allSelections,
             'selectionComplete' => $selectedCount >= $totalPlayers,
+            'selectedDrivers' => $selectedDrivers,
         ]);
     }
 

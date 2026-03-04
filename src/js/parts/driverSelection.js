@@ -42,7 +42,7 @@ function showConfirmToast(driverCode, onConfirm, onCancel) {
     const container = getToastContainer();
 
     const toast = document.createElement('div');
-    toast.style.cssText = 'background:#1E1E2E;color:#E0E0E0;border:1px solid #2D2D3F;padding:1rem 1.25rem;border-radius:0.5rem;font-size:0.875rem;box-shadow:0 4px 16px rgba(0,0,0,0.4);transform:translateX(120%);transition:transform 0.3s ease;min-width:220px;';
+    toast.style.cssText = 'background:#192335;color:#E0E0E0;border:1px solid #2D2D3F;padding:1rem 1.25rem;border-radius:0.5rem;font-size:0.875rem;box-shadow:0 4px 16px rgba(0,0,0,0.4);transform:translateX(120%);transition:transform 0.3s ease;min-width:220px;';
 
     const text = document.createElement('div');
     text.style.cssText = 'font-weight:700;margin-bottom:0.75rem;font-size:0.9375rem;';
@@ -53,7 +53,7 @@ function showConfirmToast(driverCode, onConfirm, onCancel) {
 
     const confirmBtn = document.createElement('button');
     confirmBtn.textContent = 'Lock it in';
-    confirmBtn.style.cssText = 'flex:1;background:#16a34a;color:#fff;border:none;padding:0.5rem 0.75rem;border-radius:0.375rem;font-weight:700;font-size:0.8125rem;cursor:pointer;transition:opacity 0.15s;';
+    confirmBtn.style.cssText = 'flex:1;background:#fd9a00;color:#fff;border:none;padding:0.5rem 0.75rem;border-radius:0.375rem;font-weight:700;font-size:0.8125rem;cursor:pointer;transition:opacity 0.15s;';
     confirmBtn.onmouseenter = () => { confirmBtn.style.opacity = '0.85'; };
     confirmBtn.onmouseleave = () => { confirmBtn.style.opacity = '1'; };
 
@@ -142,7 +142,7 @@ export function driverSelection(gridElement) {
     cards.forEach(card => {
         card.addEventListener('click', () => {
             const driverId = card.dataset.driverId;
-            const driverCode = card.querySelector('.font-black')?.textContent?.trim();
+            const driverCode = card.querySelector('.js-driver-name')?.textContent?.trim();
 
             // If clicking a different card, reset previous
             if (activeCard && activeCard !== card) {
