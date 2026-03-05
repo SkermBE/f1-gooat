@@ -1,105 +1,116 @@
-function getToastContainer() {
-    let container = document.getElementById('toast-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'toast-container';
-        container.style.cssText = 'position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;display:flex;flex-direction:column;gap:0.5rem;pointer-events:auto;';
-        document.body.appendChild(container);
-    }
-    return container;
-}
+import { gsap } from 'gsap';
+
+// --- Status Toast (success / error) ---
 
 function showToast(message, type = 'info', duration = 3000) {
-    const container = getToastContainer();
+    const toast = document.getElementById('status-toast');
+    const text = document.getElementById('status-toast-text');
+    if (!toast || !text) return;
 
-    const colors = {
-        success: 'background:#16a34a;color:#fff;',
-        error: 'background:#E10600;color:#fff;',
-        info: 'background:#1E1E2E;color:#E0E0E0;border:1px solid #2D2D3F;',
+    const typeClasses = {
+        success: ['bg-green-600', 'text-white'],
+        error:   ['bg-red-600',   'text-white'],
+        info:    ['bg-[#1E1E2E]', 'text-slate-200', 'border', 'border-[#2D2D3F]'],
     };
 
-    const toast = document.createElement('div');
-    toast.style.cssText = `${colors[type] || colors.info}padding:0.75rem 1.25rem;border-radius:0.5rem;font-size:0.875rem;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.3);transform:translateX(120%);transition:transform 0.3s ease;`;
-    toast.textContent = message;
-    container.appendChild(toast);
+    // Reset type classes
+    toast.className = 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] px-5 py-3 rounded-lg text-sm font-semibold shadow-xl pointer-events-none';
+    (typeClasses[type] || typeClasses.info).forEach(cls => toast.classList.add(cls));
 
-    requestAnimationFrame(() => { toast.style.transform = 'translateX(0)'; });
+    text.textContent = message;
+
+    gsap.fromTo(toast,
+        { autoAlpha: 0, scale: 0.85 },
+        { autoAlpha: 1, scale: 1, duration: 0.25, ease: 'back.out(1.7)' }
+    );
 
     if (duration > 0) {
-        setTimeout(() => dismissToast(toast), duration);
+        gsap.to(toast, {
+            autoAlpha: 0,
+            scale: 0.85,
+            duration: 0.2,
+            ease: 'power2.in',
+            delay: duration / 1000,
+        });
     }
-
-    return toast;
 }
 
-function dismissToast(toast) {
-    if (!toast || !toast.parentNode) return;
-    toast.style.transform = 'translateX(120%)';
-    setTimeout(() => toast.remove(), 300);
-}
+// --- Confirm Modal ---
 
-function showConfirmToast(driverCode, onConfirm, onCancel) {
-    const container = getToastContainer();
+function showConfirmModal(driverCode, onConfirm, onCancel) {
+    const overlay = document.getElementById('confirm-overlay');
+    const modal   = document.getElementById('confirm-modal');
+    const text    = document.getElementById('confirm-modal-text');
+    const confirmBtn = document.getElementById('confirm-modal-confirm');
+    const cancelBtn  = document.getElementById('confirm-modal-cancel');
 
-    const toast = document.createElement('div');
-    toast.style.cssText = 'background:#192335;color:#E0E0E0;border:1px solid #2D2D3F;padding:1rem 1.25rem;border-radius:0.5rem;font-size:0.875rem;box-shadow:0 4px 16px rgba(0,0,0,0.4);transform:translateX(120%);transition:transform 0.3s ease;min-width:220px;';
-
-    const text = document.createElement('div');
-    text.style.cssText = 'font-weight:700;margin-bottom:0.75rem;font-size:0.9375rem;';
     text.textContent = `Pick ${driverCode} for P10?`;
 
-    const buttons = document.createElement('div');
-    buttons.style.cssText = 'display:flex;gap:0.5rem;';
+    // Make visible before animating (gsap uses autoAlpha)
+    gsap.set([overlay, modal], { autoAlpha: 0 });
+    overlay.classList.remove('hidden');
+    modal.classList.remove('hidden');
 
-    const confirmBtn = document.createElement('button');
-    confirmBtn.textContent = 'Lock it in';
-    confirmBtn.style.cssText = 'flex:1;background:#fd9a00;color:#fff;border:none;padding:0.5rem 0.75rem;border-radius:0.375rem;font-weight:700;font-size:0.8125rem;cursor:pointer;transition:opacity 0.15s;';
-    confirmBtn.onmouseenter = () => { confirmBtn.style.opacity = '0.85'; };
-    confirmBtn.onmouseleave = () => { confirmBtn.style.opacity = '1'; };
+    // Animate overlay fade + modal pop
+    gsap.to(overlay, { autoAlpha: 1, duration: 0.25, ease: 'power2.out' });
+    gsap.fromTo(modal,
+        { autoAlpha: 0, scale: 0.85, y: 12 },
+        { autoAlpha: 1, scale: 1,    y: 0, duration: 0.3, ease: 'back.out(1.7)' }
+    );
 
-    const cancelBtn = document.createElement('button');
-    cancelBtn.textContent = 'Cancel';
-    cancelBtn.style.cssText = 'flex:1;background:transparent;color:#8B8B9E;border:1px solid #2D2D3F;padding:0.5rem 0.75rem;border-radius:0.375rem;font-weight:600;font-size:0.8125rem;cursor:pointer;transition:opacity 0.15s;';
-    cancelBtn.onmouseenter = () => { cancelBtn.style.opacity = '0.7'; };
-    cancelBtn.onmouseleave = () => { cancelBtn.style.opacity = '1'; };
+    // Clone buttons to clear old listeners
+    const newConfirm = confirmBtn.cloneNode(true);
+    const newCancel  = cancelBtn.cloneNode(true);
+    confirmBtn.replaceWith(newConfirm);
+    cancelBtn.replaceWith(newCancel);
 
-    confirmBtn.addEventListener('click', () => {
-        dismissToast(toast);
-        onConfirm();
-    });
+    function close(action) {
+        overlay.removeEventListener('click', onOverlayClick);
+        gsap.to(overlay, { autoAlpha: 0, duration: 0.2 });
+        gsap.to(modal, {
+            autoAlpha: 0,
+            scale: 0.9,
+            y: 8,
+            duration: 0.2,
+            ease: 'power2.in',
+            onComplete: () => {
+                overlay.classList.add('hidden');
+                modal.classList.add('hidden');
+                action();
+            },
+        });
+    }
 
-    cancelBtn.addEventListener('click', () => {
-        dismissToast(toast);
-        onCancel();
-    });
+    function onOverlayClick() { close(onCancel); }
 
-    buttons.appendChild(confirmBtn);
-    buttons.appendChild(cancelBtn);
-    toast.appendChild(text);
-    toast.appendChild(buttons);
-    container.appendChild(toast);
-
-    requestAnimationFrame(() => { toast.style.transform = 'translateX(0)'; });
-
-    return toast;
+    newConfirm.addEventListener('click', (e) => { e.stopPropagation(); close(onConfirm); });
+    newCancel.addEventListener('click',  (e) => { e.stopPropagation(); close(onCancel);  });
+    overlay.addEventListener('click', onOverlayClick);
 }
 
+function hideConfirmModal() {
+    const overlay = document.getElementById('confirm-overlay');
+    const modal   = document.getElementById('confirm-modal');
+    if (overlay) overlay.classList.add('hidden');
+    if (modal)   modal.classList.add('hidden');
+}
+
+// --- Driver Selection ---
+
 export function driverSelection(gridElement) {
-    const raceId = gridElement.dataset.raceId;
-    const csrfToken = gridElement.dataset.csrf;
-    const submitUrl = gridElement.dataset.submitUrl;
+    const raceId      = gridElement.dataset.raceId;
+    const csrfToken   = gridElement.dataset.csrf;
+    const submitUrl   = gridElement.dataset.submitUrl;
     const isPlayerTurn = gridElement.dataset.isPlayerTurn === '1';
 
     if (!isPlayerTurn) return;
 
     const cards = gridElement.querySelectorAll('.F1DriverCard:not(.is-disabled)');
-    let activeToast = null;
     let activeCard = null;
 
     function resetSelection() {
-        if (activeToast) dismissToast(activeToast);
+        hideConfirmModal();
         if (activeCard) activeCard.classList.remove('is-confirming');
-        activeToast = null;
         activeCard = null;
     }
 
@@ -117,8 +128,8 @@ export function driverSelection(gridElement) {
                 },
                 body: new URLSearchParams({
                     'CRAFT_CSRF_TOKEN': csrfToken,
-                    raceId: raceId,
-                    driverId: driverId,
+                    raceId,
+                    driverId,
                 }),
             });
 
@@ -126,13 +137,13 @@ export function driverSelection(gridElement) {
 
             if (data.success) {
                 showToast(`${driverCode} locked in!`, 'success');
-                setTimeout(() => window.location.reload(), 1000);
+                setTimeout(() => window.location.reload(), 1500);
             } else {
                 showToast(data.error || 'Failed to submit prediction', 'error');
                 cards.forEach(c => c.classList.remove('is-disabled'));
                 card.classList.remove('is-selected');
             }
-        } catch (error) {
+        } catch {
             showToast('Network error. Please try again.', 'error');
             cards.forEach(c => c.classList.remove('is-disabled'));
             card.classList.remove('is-selected');
@@ -141,30 +152,26 @@ export function driverSelection(gridElement) {
 
     cards.forEach(card => {
         card.addEventListener('click', () => {
-            const driverId = card.dataset.driverId;
+            const driverId   = card.dataset.driverId;
             const driverCode = card.querySelector('.js-driver-name')?.textContent?.trim();
 
-            // If clicking a different card, reset previous
-            if (activeCard && activeCard !== card) {
-                resetSelection();
-            }
-
-            // If this card is already pending, ignore (toast buttons handle it)
+            if (activeCard && activeCard !== card) resetSelection();
             if (activeCard === card) return;
 
             activeCard = card;
             card.classList.add('is-confirming');
 
-            activeToast = showConfirmToast(
+            // Small pulse on the clicked card
+            gsap.fromTo(card, { scale: 0.97 }, { scale: 1, duration: 0.25, ease: 'back.out(2)' });
+
+            showConfirmModal(
                 driverCode,
                 () => {
-                    activeToast = null;
                     activeCard = null;
                     submitPick(card, driverId, driverCode);
                 },
                 () => {
                     card.classList.remove('is-confirming');
-                    activeToast = null;
                     activeCard = null;
                 }
             );
