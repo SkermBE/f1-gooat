@@ -1,0 +1,9 @@
+baseUrl: $PRIMARY_SITE_URL_2024
+enabled: '1'
+handle: season2024
+hasUrls: true
+language: en
+name: 'Season 2024'
+primary: false
+siteGroup: 60f45fd4-6f69-41ab-a119-f016b485a9a5 # $SITE_NAME
+sortOrder: 3

@@ -4,6 +4,10 @@
 {% set perfectScores = craft.entries.section('predictions').pointsEarned('25').ids %}
 {% set latestRace = craft.entries.section('races').orderBy('raceRound desc').raceStatus('completed').one() ??? null %}
 
+{% if standings >= 0 %}
+	{% set standings = craft.entries.section('players').orderBy('totalPoints DESC, currentStanding ASC').all() %}
+{% endif %}
+
 {% block main %}
 	<div class="container container-sm mb-20">
 
@@ -77,7 +81,9 @@
 
 		<div class="space-y-2">
 			{% for entry in standings %}
-				{% include "f1/_partials/playerStanding" %}
+				{% include "f1/_partials/playerStanding" with {
+					fakeData: standings >= 0
+				} %}
 			{% endfor %}
 		</div>
 	</div>

@@ -1,4 +1,4 @@
-dateModified: 1772717338
+dateModified: 1772720228
 elementSources:
   craft\elements\Entry:
     -
@@ -39,18 +39,16 @@ elementSources:
       type: native
     -
       defaultSort:
-        - postDate
-        - desc
+        - 'field:43b3cc3e-6293-45a4-9321-2c0bd1d82aa6' # Current Standing
+        - asc
       defaultViewMode: ''
       disabled: false
       key: 'section:40f3c457-bc98-479b-bc8f-4112d9d1cb55' # Players
       page: 'F1 GOOAT'
       tableAttributes:
-        - status
-        - postDate
-        - expiryDate
-        - authors
-        - link
+        - 'field:7e74b128-601c-4dc0-ad90-cffba00195a4' # Total Points
+        - 'field:43b3cc3e-6293-45a4-9321-2c0bd1d82aa6' # Current Standing
+        - 'field:039ea3d5-d4e4-4e88-bd0c-5a3746c3918f' # Previous Standing
       type: native
     -
       defaultSort:
@@ -122,6 +120,7 @@ meta:
     6a480a33-0e75-411d-8738-15d2eb5d009e: Drivers # Drivers
     7cae5a52-6822-46d5-97f3-2437b11310a0: 'Plain text' # Plain text
     7e74b128-601c-4dc0-ad90-cffba00195a4: 'Total Points' # Total Points
+    9f611241-e6ee-4dca-8c30-7c90d242e28e: 'Season 2024' # Season 2024
     039ea3d5-d4e4-4e88-bd0c-5a3746c3918f: 'Previous Standing' # Previous Standing
     40f3c457-bc98-479b-bc8f-4112d9d1cb55: Players # Players
     43b3cc3e-6293-45a4-9321-2c0bd1d82aa6: 'Current Standing' # Current Standing

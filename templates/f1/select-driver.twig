@@ -152,7 +152,7 @@
 
 				<div id="driverGrid" class="{{ not isPlayerTurn ? 'opacity-40' }} grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4" data-race-id="{{ race.id }}" data-is-player-turn="{{ isPlayerTurn and selectionOpen ? '1' : '0' }}" data-submit-url="{{ siteUrl('prediction/submit') }}" data-csrf="{{ craft.app.request.csrfToken }}">
 					{% for driver in availableDrivers %}
-						{% if driver.teamName %}
+						{% if driver.driverCode %}
 
 							<div class="F1DriverCard relative rounded-2xl overflow-hidden bg-white border-2 transition-all duration-200 hover:scale-105 {{ isPlayerTurn ? 'border-amber-600 cursor-pointer' : 'border-gray-100 pointer-events-none' }}" data-driver-id="{{ driver.driverId }}">
 								<div class="h-1.5 w-full {{ isPlayerTurn ? 'bg-amber-600' : 'bg-gray-100' }}"></div>

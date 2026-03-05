@@ -8,17 +8,20 @@
 			{{ loop.index}}
 		</div>
 
-		<span class="inline-flex items-center justify-center w-8 text-slate-400">
-			{% if entry.positionChange > 0 %}
-				<span class="text-f1-success text-[11px] font-bold">&uarr;{{ entry.positionChange }}</span>
-			{% elseif entry.positionChange < 0 %}
-				<span class="text-primary text-[11px] font-bold">&darr;{{ entry.positionChange|abs }}</span>
-			{% else %}
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus w-4 h-4">
-					<path d="M5 12h14"></path>
-				</svg>
-			{% endif %}
-		</span>
+		{% if not fakeData %}
+
+			<span class="inline-flex items-center justify-center w-8 text-slate-400">
+				{% if entry.positionChange > 0 %}
+					<span class="text-f1-success text-[11px] font-bold">&uarr;{{ entry.positionChange }}</span>
+				{% elseif entry.positionChange < 0 %}
+					<span class="text-primary text-[11px] font-bold">&darr;{{ entry.positionChange|abs }}</span>
+				{% else %}
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus w-4 h-4">
+						<path d="M5 12h14"></path>
+					</svg>
+				{% endif %}
+			</span>
+		{% endif %}
 
 		<div class="flex-1 min-w-0">
 			<div class="flex items-center gap-2">
@@ -29,9 +32,11 @@
 			</div>
 		</div>
 
-		<div class="hidden sm:flex items-center gap-2 text-sm">
-			<span class="font-semibold text-emerald-600">+{{ latestScore.pointsEarned }}</span>
-		</div>
+		{% if not fakeData %}
+			<div class="hidden sm:flex items-center gap-2 text-sm">
+				<span class="font-semibold text-emerald-600">+{{ latestScore.pointsEarned }}</span>
+			</div>
+		{% endif %}
 
 		<div class="text-right">
 			<div class="text-2xl font-black text-slate-900 tabular-nums">{{ entry.totalPoints }}</div>
@@ -55,7 +60,8 @@
 						<div class="flex items-center justify-between p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors">
 							<div class="flex items-center gap-3">
 								<div>
-									<p class="text-slate-500 !text-[10px]">Round {{ prediction.predictionRace.one().raceRound }}</p>
+									<p class="text-slate-500 !text-[10px]">Round
+										{{ prediction.predictionRace.one().raceRound }}</p>
 									<a href="{{ siteUrl('results/' ~ prediction.predictionRace.one().id) }}" class="font-medium text-slate-900">{{ prediction.predictionRace.one().title }}</a>
 
 									<div class="text-xs text-slate-500">

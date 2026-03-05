@@ -5,10 +5,14 @@
 {% set nextRace = craft.entries.section('races').orderBy('raceRound asc').raceStatus(['selection_open', 'selection_closed']).one() %}
 {% set standings = craft.app.getModule('f1-gooat').calculateSeasonStandings() %}
 
+{% if standings >= 0 %}
+	{% set standings = craft.entries.section('players').orderBy('totalPoints DESC, currentStanding ASC').all() %}
+{% endif %}
+
 {% block main %}
 	<div class="container">
 		{% if nextRace %}
-			<a href="{{ siteUrl('select/' ~ nextRace.id) }}" class="bg-primary p-5 rounded-2xl Link block">
+			<a href="{{ siteUrl('select/' ~ nextRace.id) }}" class="bg-primary p-5 rounded-2xl Link block mb-10">
 				<div class="flex flex-col-reverse items-start gap-y-5 gap-x-2 sm:flex-row sm:justify-between">
 					<div class="">
 						<div class="text-xs font-semibold uppercase tracking-wider text-slate-400">Round
@@ -46,7 +50,7 @@
 				{% set selectedCount = craft.entries().section('predictions').relatedTo({targetElement: nextRace.id, field: 'predictionRace'}).count() %}
 				{% set totalPlayers = craft.entries().section('players').count() %}
 				{% set totalPercentage = (1 - selectedCount / totalPlayers) * 100 %}
-				{% set orderedPlayers = craft.entries().section('players').orderBy('totalPoints asc').all() %}
+				{% set orderedPlayers = craft.entries().section('players').orderBy('totalPoints asc, currentStanding desc').all() %}
 				{% set currentSelector = orderedPlayers[selectedCount] is defined ? orderedPlayers[selectedCount] : null %}
 
 				<div class="mb-4">
@@ -84,10 +88,9 @@
 			</a>
 		{% endif %}
 
-		<div
-			class="grid lg:grid-cols-3 gap-8 u-block">
+		<div class="grid lg:grid-cols-3 gap-8 mb-20">
 
-			{# Player standings #}
+
 			<div class="{{ prevRaces|length ? 'lg:col-span-2' : 'col-span-3' }}">
 				<div class="flex items-center justify-between mb-4">
 					<h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
@@ -109,7 +112,9 @@
 				</div>
 				<div class="space-y-2">
 					{% for entry in standings %}
-						{% include "f1/_partials/playerStanding" %}
+						{% include "f1/_partials/playerStanding" with {
+							fakeData: standings >= 0
+						} %}
 					{% endfor %}
 				</div>
 			</div>

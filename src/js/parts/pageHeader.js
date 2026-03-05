@@ -15,11 +15,11 @@ export function pageHeader(header) {
             });
             headroom.init();
 
-            // Add body padding
-            document.querySelector("body").style.paddingTop = (header.offsetHeight) + 'px';
-            window.addEventListener("resize", (e) => {
-                  document.querySelector("body").style.paddingTop = (header.offsetHeight) + 'px';
-            })
+            // // Add body padding
+            // document.querySelector("body").style.paddingTop = (header.offsetHeight) + 'px';
+            // window.addEventListener("resize", (e) => {
+            //       document.querySelector("body").style.paddingTop = (header.offsetHeight) + 'px';
+            // })
 
             // Toggle navigation
             toggle.addEventListener("click", (e) => {

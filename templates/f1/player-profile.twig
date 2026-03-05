@@ -3,7 +3,7 @@
 {% set perfectScores = craft.entries.section('predictions').predictionPlayer(player).pointsEarned('25').ids %}
 {% set completedRaces = craft.entries.section('races').raceStatus('completed').ids %}
 
-{% set averageScore = player.totalPoints / completedRaces|length %}
+{% set averageScore = completedRaces|length ? player.totalPoints / completedRaces|length : 0 %}
 
 
 {% block main %}

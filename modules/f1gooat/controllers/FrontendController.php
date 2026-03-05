@@ -55,7 +55,6 @@ class FrontendController extends Controller
             ->section('drivers')
             ->isActive(true)
             ->andWhere(['not', ['driverCode' => ['', null]]])
-            ->andWhere(['not', ['teamName' => ['', null]]])
             ->all();
 
         $availableDrivers = [];
@@ -307,7 +306,7 @@ class FrontendController extends Controller
 
         $players = Entry::find()
             ->section('players')
-            ->orderBy(['totalPoints' => SORT_ASC])
+            ->orderBy('totalPoints asc, currentStanding desc')
             ->all();
 
         if (isset($players[$selectedCount])) {
