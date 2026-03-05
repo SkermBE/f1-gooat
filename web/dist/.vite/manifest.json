@@ -4,7 +4,7 @@
     "name": "index"
   },
   "src/js/app.js": {
-    "file": "assets/app-DqLQJ9I-.js",
+    "file": "assets/app-DE_SpVzV.js",
     "name": "app",
     "src": "src/js/app.js",
     "isEntry": true,
@@ -17,7 +17,7 @@
       "src/js/parts/playerRaceByRace.js"
     ],
     "css": [
-      "assets/app-BEmQu_Q2.css"
+      "assets/app-CPeD5Xbz.css"
     ]
   },
   "src/js/parts/a11y-dialog.js": {
@@ -48,7 +48,7 @@
     ]
   },
   "src/js/parts/pageHeader.js": {
-    "file": "assets/pageHeader-D1zktTGx.js",
+    "file": "assets/pageHeader-GVAn6F5P.js",
     "name": "pageHeader",
     "src": "src/js/parts/pageHeader.js",
     "isDynamicEntry": true
