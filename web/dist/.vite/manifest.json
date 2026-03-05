@@ -1,6 +1,6 @@
 {
   "src/js/app.js": {
-    "file": "assets/app-CBTK5PkN.js",
+    "file": "assets/app-B5-AESNC.js",
     "name": "app",
     "src": "src/js/app.js",
     "isEntry": true,
@@ -13,7 +13,7 @@
       "src/js/parts/playerRaceByRace.js"
     ],
     "css": [
-      "assets/app-C1_-IZIK.css"
+      "assets/app-DZxOi2Ko.css"
     ]
   },
   "src/js/parts/a11y-dialog.js": {
@@ -35,7 +35,7 @@
     "isDynamicEntry": true
   },
   "src/js/parts/driverSelection.js": {
-    "file": "assets/driverSelection-b2bKlUHy.js",
+    "file": "assets/driverSelection-CC2c4dZa.js",
     "name": "driverSelection",
     "src": "src/js/parts/driverSelection.js",
     "isDynamicEntry": true
