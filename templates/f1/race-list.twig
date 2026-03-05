@@ -1,53 +1,40 @@
 {% extends 'f1/_layout' %}
 
 {% block main %}
-<div class="container py-12">
-    <h1 class="text-3xl font-black uppercase mb-2">{{ currentSeasonYear }} Race Calendar</h1>
-    <p class="text-f1-muted mb-8">{{ races|length }} races this season</p>
+	<div class="container container-sm mb-20">
+		<div class="mb-8">
+			<a href="{{ siteUrl() }}">
+				<button class="!cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-8 rounded-md px-3 text-xs text-slate-500 mb-4">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left w-4 h-4 mr-1">
+						<path d="m12 19-7-7 7-7"></path>
+						<path d="M19 12H5"></path>
+					</svg>Back</button>
+			</a>
+			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+				<div>
+					<h1 class="text-2xl sm:text-3xl font-black text-slate-900 flex items-center gap-3">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag w-8 h-8 text-slate-600">
+							<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+							<line x1="4" x2="4" y1="22" y2="15"></line>
+						</svg>Race Calendar</h1>
+					<p class="text-slate-500 mt-1">Season
+						{{ currentSeasonYear }}</p>
+				</div>
+				{# <div dir="ltr" data-orientation="horizontal">
+                    <div role="tablist" aria-orientation="horizontal" class="inline-flex h-9 items-center justify-center rounded-lg p-1 text-muted-foreground bg-white border" tabindex="0" data-orientation="horizontal" style="outline: none;">
+                        <button type="button" role="tab" aria-selected="true" aria-controls="radix-:r9:-content-all" data-state="active" id="radix-:r9:-trigger-all" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="">All</button>
+                        <button type="button" role="tab" aria-selected="false" aria-controls="radix-:r9:-content-selection_open" data-state="inactive" id="radix-:r9:-trigger-selection_open" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="">Open</button>
+                        <button type="button" role="tab" aria-selected="false" aria-controls="radix-:r9:-content-completed" data-state="inactive" id="radix-:r9:-trigger-completed" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="">Completed</button>
+                        <button type="button" role="tab" aria-selected="false" aria-controls="radix-:r9:-content-upcoming" data-state="inactive" id="radix-:r9:-trigger-upcoming" class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="">Upcoming</button>
+                    </div>
+                </div> #}
+			</div>
+		</div>
 
-    <div class="grid gap-3">
-        {% for race in races %}
-            {% if race.raceStatus == 'selection_open' %}
-                <a href="{{ siteUrl('select/' ~ race.id) }}" class="F1Card flex items-center justify-between group">
-                    <div class="flex items-center gap-5">
-                        <span class="text-f1-muted font-mono text-sm w-8">R{{ race.raceRound }}</span>
-                        <div>
-                            <h3 class="font-bold text-lg group-hover:text-primary transition-colors">{{ race.title }}</h3>
-                            {% if race.raceDate %}
-                                <span class="text-f1-muted text-sm">{{ race.raceDate|date('d M Y') }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <span class="F1Badge F1Badge--selection_open">Selection open</span>
-                </a>
-            {% elseif race.raceStatus == 'completed' %}
-                <a href="{{ siteUrl('results/' ~ race.id) }}" class="F1Card flex items-center justify-between group">
-                    <div class="flex items-center gap-5">
-                        <span class="text-f1-muted font-mono text-sm w-8">R{{ race.raceRound }}</span>
-                        <div>
-                            <h3 class="font-bold text-lg group-hover:text-primary transition-colors">{{ race.title }}</h3>
-                            {% if race.raceDate %}
-                                <span class="text-f1-muted text-sm">{{ race.raceDate|date('d M Y') }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <span class="F1Badge F1Badge--completed">Completed</span>
-                </a>
-            {% else %}
-                <div class="F1Card flex items-center justify-between opacity-50 cursor-default hover:border-f1-border hover:bg-f1-surface">
-                    <div class="flex items-center gap-5">
-                        <span class="text-f1-muted font-mono text-sm w-8">R{{ race.raceRound }}</span>
-                        <div>
-                            <h3 class="font-bold text-lg text-f1-muted">{{ race.title }}</h3>
-                            {% if race.raceDate %}
-                                <span class="text-f1-muted text-sm">{{ race.raceDate|date('d M Y') }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <span class="F1Badge F1Badge--{{ race.raceStatus }}">{{ race.raceStatus|replace({'_': ' '}) }}</span>
-                </div>
-            {% endif %}
-        {% endfor %}
-    </div>
-</div>
+		<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+			{% for race in races %}
+                {% include "f1/_partials/raceCards/" ~ race.raceStatus ~ ".twig" %}
+			{% endfor %}
+		</div>
+	</div>
 {% endblock %}

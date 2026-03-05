@@ -1,6 +1,6 @@
 {% extends 'f1/_layout' %}
 
-{% if race.raceStatus == 'completed' %}
+{% if race.raceStatus != 'selection_open' %}
 	{% redirect siteUrl('results/' ~ race.id) %}
 {% endif %}
 
