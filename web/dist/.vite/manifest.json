@@ -1,6 +1,10 @@
 {
+  "_index-DDlvirwQ.js": {
+    "file": "assets/index-DDlvirwQ.js",
+    "name": "index"
+  },
   "src/js/app.js": {
-    "file": "assets/app-B5-AESNC.js",
+    "file": "assets/app-DqLQJ9I-.js",
     "name": "app",
     "src": "src/js/app.js",
     "isEntry": true,
@@ -13,7 +17,7 @@
       "src/js/parts/playerRaceByRace.js"
     ],
     "css": [
-      "assets/app-DZxOi2Ko.css"
+      "assets/app-BEmQu_Q2.css"
     ]
   },
   "src/js/parts/a11y-dialog.js": {
@@ -35,10 +39,13 @@
     "isDynamicEntry": true
   },
   "src/js/parts/driverSelection.js": {
-    "file": "assets/driverSelection-CC2c4dZa.js",
+    "file": "assets/driverSelection-BGVYvND0.js",
     "name": "driverSelection",
     "src": "src/js/parts/driverSelection.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-DDlvirwQ.js"
+    ]
   },
   "src/js/parts/pageHeader.js": {
     "file": "assets/pageHeader-D1zktTGx.js",
@@ -47,9 +54,12 @@
     "isDynamicEntry": true
   },
   "src/js/parts/playerRaceByRace.js": {
-    "file": "assets/playerRaceByRace-Bz3vaI_3.js",
+    "file": "assets/playerRaceByRace-BDgm_T_p.js",
     "name": "playerRaceByRace",
     "src": "src/js/parts/playerRaceByRace.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-DDlvirwQ.js"
+    ]
   }
 }

@@ -1,0 +1,5 @@
+.F1DriverCard:hover button{
+      @apply bg-amber-600 text-white;
+
+      
+}

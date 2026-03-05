@@ -150,7 +150,7 @@
 						available</span>
 				</div>
 
-				<div id="driverGrid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4" data-race-id="{{ race.id }}" data-is-player-turn="{{ isPlayerTurn and selectionOpen ? '1' : '0' }}" data-submit-url="{{ siteUrl('prediction/submit') }}" data-csrf="{{ craft.app.request.csrfToken }}">
+				<div id="driverGrid" class="{{ not isPlayerTurn ? 'opacity-40' }} grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4" data-race-id="{{ race.id }}" data-is-player-turn="{{ isPlayerTurn and selectionOpen ? '1' : '0' }}" data-submit-url="{{ siteUrl('prediction/submit') }}" data-csrf="{{ craft.app.request.csrfToken }}">
 					{% for driver in availableDrivers %}
 						{% if driver.teamName %}
 
@@ -169,7 +169,7 @@
 									<div class="js-driver-name text-center text-slate-700 font-medium truncate text-xs">{{ driver.driverFirstName }}
 										{{ driver.driverLastName }}</div>
 									<div class="text-center text-slate-400 truncate mt-0.5 text-[10px]">{{ driver.teamName }}</div>
-									<button class="inline-flex items-center justify-center gap-2 whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 shadow h-8 rounded-md px-3 text-xs w-full mt-3 font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200" disabled="">SELECT</button>
+									<button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium border-amber-500 cursor-pointer transition-colors duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full group mt-2">SELECT</button>
 								</div>
 							</div>
 
@@ -216,5 +216,24 @@
 				{% endif %}
 			</div>
 		</div>
+	</div>
+
+	{# Blurred backdrop #}
+	<div id="confirm-overlay" class="hidden fixed inset-0 z-[9998] backdrop-blur-sm bg-black/50"></div>
+
+	{# Confirm modal #}
+	<div id="confirm-modal" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] w-72">
+		<div class="bg-[#192335] text-slate-200 border border-[#2D2D3F] rounded-xl p-6 shadow-2xl">
+			<div id="confirm-modal-text" class="font-bold text-base text-center mb-4"></div>
+			<div class="flex gap-2">
+				<button id="confirm-modal-confirm" class="flex-1 bg-amber-500 hover:bg-amber-400 text-white border-none py-2.5 px-3 rounded-lg font-bold text-sm cursor-pointer transition-colors">Lock it in</button>
+				<button id="confirm-modal-cancel" class="flex-1 bg-transparent hover:bg-white/5 text-slate-400 border border-[#2D2D3F] py-2.5 px-3 rounded-lg font-semibold text-sm cursor-pointer transition-colors">Cancel</button>
+			</div>
+		</div>
+	</div>
+
+	{# Status toast #}
+	<div id="status-toast" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] px-5 py-3 rounded-lg text-sm font-semibold shadow-xl pointer-events-none">
+		<span id="status-toast-text"></span>
 	</div>
 {% endblock %}
