@@ -5,7 +5,8 @@
 {% set nextRace = craft.entries.section('races').orderBy('raceRound asc').raceStatus(['selection_open', 'selection_closed']).one() %}
 {% set standings = craft.app.getModule('f1-gooat').calculateSeasonStandings() %}
 
-{% if standings is not iterable %}
+{% set fakeData = standings is not iterable or standings is empty %}
+{% if fakeData %}
 	{% set standings = craft.entries.section('players').orderBy('totalPoints DESC, currentStanding ASC').all() %}
 {% endif %}
 
@@ -113,7 +114,7 @@
 				<div class="space-y-2">
 					{% for entry in standings %}
 						{% include "f1/_partials/playerStanding" with {
-							fakeData: standings is not iterable
+							fakeData: fakeData
 						} %}
 					{% endfor %}
 				</div>

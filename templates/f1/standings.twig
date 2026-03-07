@@ -4,7 +4,8 @@
 {% set perfectScores = craft.entries.section('predictions').pointsEarned('25').ids %}
 {% set latestRace = craft.entries.section('races').orderBy('raceRound desc').raceStatus('completed').one() ??? null %}
 
-{% if standings is not iterable %}
+{% set fakeData = standings is not iterable or standings is empty %}
+{% if fakeData %}
 	{% set standings = craft.entries.section('players').orderBy('totalPoints DESC, currentStanding ASC').all() %}
 {% endif %}
 
@@ -97,7 +98,7 @@
 		<div class="space-y-2">
 			{% for entry in standings %}
 				{% include "f1/_partials/playerStanding" with {
-					fakeData: standings is not iterable
+					fakeData: fakeData
 				} %}
 			{% endfor %}
 		</div>
