@@ -158,7 +158,7 @@
 							{% for code, count in driverPicks %}
 								{% set driverEntry = craft.entries.section('drivers').driverCode(code).one() %}
 								<div class="flex items-center gap-3">
-									<a href="{{ driverEntry ? siteUrl('driver/' ~ driverEntry.id) : '#' }}" class="w-10 text-xs font-black text-slate-700 text-right hover:text-slate-900 hover:underline">{{ code }}</a>
+									<p  class="w-10 text-xs font-black text-slate-700 text-right">{{ code }}</p>
 									<div class="flex-1 relative h-8 bg-slate-100 rounded-lg overflow-hidden group">
 										<div class="h-full rounded-lg transition-all duration-700 bg-amber-500 group-hover:bg-amber-300" style="width: {{ (count / driverPicks|first * 100) }}%;"></div>
 										<div class="absolute inset-0 flex items-center px-3">

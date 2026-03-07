@@ -35,6 +35,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             driverSelection(driverGrid);
       }
 
+      // Season chart
+      const seasonChartCanvas = document.querySelector('#seasonChart');
+      if (seasonChartCanvas) {
+            const { seasonChart } = await import('@js/parts/seasonChart');
+            seasonChart(seasonChartCanvas);
+      }
+
+      // Skip player button
+      const skipPlayerBtn = document.querySelector('#skipPlayerBtn');
+      if (skipPlayerBtn) {
+            const { skipPlayer } = await import('@js/parts/skipPlayer');
+            skipPlayer(skipPlayerBtn);
+      }
+
       // Admin actions (footer sync buttons)
       const adminButtons = document.querySelectorAll('.js-admin-action');
       if (adminButtons.length > 0) {

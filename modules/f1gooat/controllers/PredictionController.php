@@ -228,6 +228,87 @@ class PredictionController extends Controller
     }
 
     /**
+     * Skip the current player's turn — any logged-in player can trigger this
+     */
+    public function actionSkipPlayer(): Response
+    {
+        $this->requirePostRequest();
+
+        $player = Module::getCurrentPlayer();
+        if (!$player) {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'Not logged in',
+            ]);
+        }
+
+        $request = Craft::$app->getRequest();
+        $raceId = $request->getBodyParam('raceId');
+        $siteId = Craft::$app->getSites()->getCurrentSite()->id;
+
+        $race = Entry::find()->id($raceId)->siteId($siteId)->one();
+
+        if (!$race || $race->raceStatus != 'selection_open') {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'Selection is not open for this race',
+            ]);
+        }
+
+        $currentSelector = $this->getCurrentSelector($raceId, $siteId);
+        if (!$currentSelector) {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'No player to skip',
+            ]);
+        }
+
+        // Get selection order
+        $selectionOrder = Entry::find()
+            ->section('predictions')
+            ->siteId($siteId)
+            ->relatedTo(['targetElement' => $raceId, 'field' => 'predictionRace'])
+            ->count() + 1;
+
+        // Create a skip prediction (no driver, 0 points)
+        $prediction = new Entry();
+        $prediction->sectionId = Craft::$app->getEntries()->getSectionByHandle('predictions')->id;
+        $prediction->typeId = Craft::$app->getEntries()->getSectionByHandle('predictions')->getEntryTypes()[0]->id;
+        $prediction->siteId = $siteId;
+
+        $prediction->setFieldValues([
+            'predictionRace' => [$raceId],
+            'predictionPlayer' => [$currentSelector->id],
+            'driverId' => 'SKIP',
+            'driverCode' => 'SKIP',
+            'driverName' => 'Skipped',
+            'selectionOrder' => $selectionOrder,
+            'pointsEarned' => 0,
+        ]);
+
+        if (!Craft::$app->getElements()->saveElement($prediction)) {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'Could not save skip prediction',
+            ]);
+        }
+
+        // Auto-close selection if all players have picked
+        $totalPlayers = Entry::find()->section('players')->siteId($siteId)->count();
+        if ($selectionOrder >= $totalPlayers) {
+            $race->setFieldValue('raceStatus', 'selection_closed');
+            Craft::$app->getElements()->saveElement($race);
+        }
+
+        return $this->asJson([
+            'success' => true,
+            'skippedPlayer' => $currentSelector->title,
+            'selectionOrder' => $selectionOrder,
+            'totalPlayers' => $totalPlayers,
+        ]);
+    }
+
+    /**
      * Get current player who should select (site-scoped)
      */
     private function getCurrentSelector(int $raceId, ?int $siteId = null): ?Entry

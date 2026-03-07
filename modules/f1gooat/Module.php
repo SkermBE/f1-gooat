@@ -51,6 +51,8 @@ class Module extends BaseModule
                 $event->rules['race/calculate-points/<raceId:\d+>'] = 'f1-gooat/race/calculate-points';
                 $event->rules['leaderboard/standings'] = 'f1-gooat/leaderboard/get-standings';
                 $event->rules['leaderboard/race-breakdown/<raceId:\d+>'] = 'f1-gooat/leaderboard/get-race-breakdown';
+                $event->rules['leaderboard/season-chart'] = 'f1-gooat/leaderboard/get-season-chart';
+                $event->rules['prediction/skip'] = 'f1-gooat/prediction/skip-player';
 
                 // Update actions (web-accessible import/sync)
                 $event->rules['update/sync-drivers'] = 'f1-gooat/update/sync-drivers';

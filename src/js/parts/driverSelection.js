@@ -136,7 +136,7 @@ export function driverSelection(gridElement) {
             const data = await response.json();
 
             if (data.success) {
-                showToast(`${driverCode} locked in!`, 'success');
+                showToast(`${driverCode} confirmed!`, 'success');
                 setTimeout(() => window.location.reload(), 1500);
             } else {
                 showToast(data.error || 'Failed to submit prediction', 'error');

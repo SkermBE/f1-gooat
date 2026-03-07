@@ -136,6 +136,67 @@ class LeaderboardController extends Controller
     }
 
     /**
+     * Get cumulative points per player per completed race (for season chart)
+     */
+    public function actionGetSeasonChart(): Response
+    {
+        $siteId = Craft::$app->getSites()->getCurrentSite()->id;
+
+        $races = Entry::find()
+            ->section('races')
+            ->siteId($siteId)
+            ->raceStatus('completed')
+            ->orderBy(['raceRound' => SORT_ASC])
+            ->all();
+
+        $players = Entry::find()
+            ->section('players')
+            ->siteId($siteId)
+            ->orderBy('totalPoints DESC')
+            ->all();
+
+        // Build labels (race names) and cumulative points per player
+        $labels = [];
+        $raceIds = [];
+        foreach ($races as $race) {
+            $labels[] = $race->title;
+            $raceIds[] = $race->id;
+        }
+
+        $datasets = [];
+        foreach ($players as $player) {
+            $cumulative = 0;
+            $dataPoints = [];
+
+            foreach ($races as $race) {
+                $prediction = Entry::find()
+                    ->section('predictions')
+                    ->siteId($siteId)
+                    ->relatedTo([
+                        'and',
+                        ['targetElement' => $player->id, 'field' => 'predictionPlayer'],
+                        ['targetElement' => $race->id, 'field' => 'predictionRace'],
+                    ])
+                    ->one();
+
+                $cumulative += $prediction ? ($prediction->pointsEarned ?? 0) : 0;
+                $dataPoints[] = $cumulative;
+            }
+
+            $datasets[] = [
+                'label' => $player->title,
+                'data' => $dataPoints,
+            ];
+        }
+
+        return $this->asJson([
+            'success' => true,
+            'labels' => $labels,
+            'datasets' => $datasets,
+        ]);
+    }
+
+    /**
      * Get player-specific statistics
      */
     public function actionGetPlayerStats(int $playerId): Response

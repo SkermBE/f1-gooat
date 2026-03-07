@@ -1,4 +1,5 @@
-{% set predictionsQuery = craft.entries.section('predictions').predictionPlayer(entry) ??? null %}
+{% set playerEntry = entry.player ??? entry %}
+{% set predictionsQuery = craft.entries.section('predictions').predictionPlayer(playerEntry) ??? null %}
 {% set latestScore = clone(predictionsQuery).predictionRace(latestRace).one() ??? null %}
 {% set predictions = clone(predictionsQuery).all() ??? null %}
 
@@ -9,7 +10,6 @@
 		</div>
 
 		{% if not fakeData %}
-
 			<span class="inline-flex items-center justify-center w-8 text-slate-400">
 				{% if entry.positionChange > 0 %}
 					<span class="text-f1-success text-[11px] font-bold">&uarr;{{ entry.positionChange }}</span>
