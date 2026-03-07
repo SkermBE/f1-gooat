@@ -2,7 +2,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "craftcms/ckeditor": "^5.0.1",
+    "craftcms/ckeditor": "^5.1.0",
     "craftcms/cms": "^5.9.14",
     "craftcms/mailgun": "^3.1.0",
     "iwf/craft-control-panel-element-counter": "5.0.8",
