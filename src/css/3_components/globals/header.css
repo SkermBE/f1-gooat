@@ -68,13 +68,13 @@
 
       .Header-navs--inner {
             @media not all and (min-width: theme("screens.lg")) {
-                  @apply grid gap-y-10 items-center h-full px-[var(--container-padding)] pb-10;
+                  @apply flex flex-col gap-6 px-[var(--container-padding)] pb-10;
 
                   .TopNav {
                         order: 1;
                         margin-top: auto;
                   }
-                  
+
                   .MainNav {
                         margin-top: auto;
                   }
@@ -103,6 +103,57 @@
                               @apply top-full;
                         }
                   }
+            }
+      }
+
+      /* App nav links */
+      .Header-nav-links {
+            @apply flex flex-col gap-3 lg:flex-row lg:gap-4;
+      }
+
+      .Header-nav-link {
+            @apply block rounded-md text-sm font-medium px-4 py-2.5 text-center transition-colors;
+
+            /* Mobile: white on dark */
+            @media not all and (min-width: theme("screens.lg")) {
+                  @apply text-white/80 border border-white/15 hover:bg-white/10 hover:text-white;
+                  font-size: 1rem;
+
+                  &.is-active {
+                        @apply bg-white/15 text-white pointer-events-none;
+                  }
+            }
+
+            /* Desktop: primary on light */
+            @media (min-width: theme("screens.lg")) {
+                  @apply border border-primary text-primary hover:bg-primary/10;
+
+                  &.is-active {
+                        @apply bg-primary text-background pointer-events-none;
+                  }
+            }
+      }
+
+      .Header-nav-link--logout {
+            @apply border-f1-warning! text-f1-warning! hover:bg-f1-warning! hover:text-background!;
+      }
+
+      .Header-nav-link--login {
+            @media not all and (min-width: theme("screens.lg")) {
+                  @apply border-white/30 text-white;
+            }
+      }
+
+      .Header-nav-select {
+            @apply rounded-md text-sm font-medium border px-4 py-2.5 w-full lg:w-auto transition-colors;
+
+            @media not all and (min-width: theme("screens.lg")) {
+                  @apply border-white/15 bg-white/10 text-white;
+                  font-size: 1rem;
+            }
+
+            @media (min-width: theme("screens.lg")) {
+                  @apply border-primary bg-primary text-background;
             }
       }
 
