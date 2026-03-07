@@ -66,7 +66,7 @@
 								{% if hasResults %}
 									<a href="{{ siteUrl('results/' ~ predRace.id) }}" class="font-medium text-slate-900">{{ predRace.title }}</a>
 								{% else %}
-									<span class="font-medium text-slate-900">{{ predRace.title }}</span>
+									<a href="{{ siteUrl('select/' ~ predRace.id) }}" class="font-medium text-slate-900">{{ predRace.title }}</a>
 								{% endif %}
 
 								<div class="text-xs text-slate-500">
