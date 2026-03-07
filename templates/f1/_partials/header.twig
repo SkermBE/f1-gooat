@@ -27,6 +27,7 @@
                     <ul class="flex flex-col lg:flex-row gap-6 list-none !p-0 !m-0">
                         <li class="list-none flex items-center justify-center"><a href="{{ siteUrl('races') }}" class="rounded-md text-sm font-medium border border-primary px-4 py-2 hover:bg-primary/[.1] transition-colors Link{% if craft.app.request.segments|first == 'races' %} bg-primary text-background pointer-events-none{% endif %}">Races</a></li>
                         <li class="list-none flex items-center justify-center"><a href="{{ siteUrl('standings') }}" class="rounded-md text-sm font-medium border border-primary px-4 py-2 hover:bg-primary/[.1] transition-colors Link{% if craft.app.request.segments|first == 'standings' %} bg-primary text-background{% endif %}">Standings</a></li>
+                        {# <li class="list-none flex items-center justify-center"><a href="{{ siteUrl('drivers') }}" class="rounded-md text-sm font-medium border border-primary px-4 py-2 hover:bg-primary/[.1] transition-colors Link{% if craft.app.request.segments|first == 'drivers' or craft.app.request.segments|first == 'driver' %} bg-primary text-background pointer-events-none{% endif %}">Drivers</a></li> #}
                     </ul>
 
                     {# Season switcher #}

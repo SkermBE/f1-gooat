@@ -67,6 +67,8 @@ class Module extends BaseModule
                 $event->rules['results/<raceId:\d+>'] = 'f1-gooat/frontend/race-results';
                 $event->rules['races'] = 'f1-gooat/frontend/race-list';
                 $event->rules['player/<playerId:\d+>'] = 'f1-gooat/frontend/player-profile';
+                $event->rules['drivers'] = 'f1-gooat/frontend/driver-list';
+                $event->rules['driver/<driverId:\d+>'] = 'f1-gooat/frontend/driver-profile';
             }
         );
 

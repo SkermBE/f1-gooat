@@ -166,8 +166,8 @@
 										</div>
 									</div>
 									<div class="text-center font-black tracking-tight text-2xl" style="color: rgb(182, 186, 189);">{{ driver.driverCode }}</div>
-									<div class="js-driver-name text-center text-slate-700 font-medium truncate text-xs">{{ driver.driverFirstName }}
-										{{ driver.driverLastName }}</div>
+									<a href="{{ siteUrl('driver/' ~ driver.id) }}" class="js-driver-name block text-center text-slate-700 font-medium truncate text-xs hover:text-slate-900 hover:underline">{{ driver.driverFirstName }}
+										{{ driver.driverLastName }}</a>
 									<div class="text-center text-slate-400 truncate mt-0.5 text-[10px]">{{ driver.teamName }}</div>
 									<button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium border-amber-500 cursor-pointer transition-colors duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full group mt-2">SELECT</button>
 								</div>

@@ -1,0 +1,222 @@
+{% extends 'f1/_layout' %}
+
+{% block main %}
+	<div class="container container-sm mb-20">
+		<div class="mb-6">
+			<a href="{{ siteUrl('races') }}">
+				<button class="!cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-8 rounded-md px-3 text-xs text-slate-500 mb-4">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left w-4 h-4 mr-1">
+						<path d="m12 19-7-7 7-7"></path>
+						<path d="M19 12H5"></path>
+					</svg>Back</button>
+			</a>
+
+			<div class="flex items-center gap-4 mb-2">
+				<div>
+					<div class="flex items-center gap-3">
+						<h1 class="text-2xl sm:text-3xl font-black text-slate-900">{{ driver.driverFirstName }} {{ driver.driverLastName }}</h1>
+						{% if driver.driverNumber %}
+							<span class="text-3xl font-black text-slate-300">#{{ driver.driverNumber }}</span>
+						{% endif %}
+					</div>
+					<div class="flex items-center gap-2 mt-1">
+						<span class="font-black text-lg tracking-wider" style="color: rgb(182, 186, 189);">{{ driver.driverCode }}</span>
+						{% if driver.teamName %}
+							<span class="text-sm text-slate-500">{{ driver.teamName }}</span>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# Stats cards #}
+		<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+			<div class="rounded-xl border bg-white text-card-foreground shadow">
+				<div class="p-6 pt-6 text-center">
+					<div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-2">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy w-5 h-5 text-amber-500">
+							<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+							<path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+							<path d="M4 22h16"></path>
+							<path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+							<path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+							<path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+						</svg>
+					</div>
+					<div class="text-3xl font-black text-slate-900">{{ wins }}</div>
+					<div class="text-xs text-slate-500 mt-0.5">Race Wins</div>
+				</div>
+			</div>
+
+			<div class="rounded-xl border bg-white text-card-foreground shadow">
+				<div class="p-6 pt-6 text-center">
+					<div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center mx-auto mb-2">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-target w-5 h-5 text-emerald-500">
+							<circle cx="12" cy="12" r="10"></circle>
+							<circle cx="12" cy="12" r="6"></circle>
+							<circle cx="12" cy="12" r="2"></circle>
+						</svg>
+					</div>
+					<div class="text-3xl font-black text-slate-900">{{ p10Finishes }}</div>
+					<div class="text-xs text-slate-500 mt-0.5">P10 Finishes</div>
+				</div>
+			</div>
+
+			<div class="rounded-xl border bg-white text-card-foreground shadow">
+				<div class="p-6 pt-6 text-center">
+					<div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mx-auto mb-2">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-5 h-5 text-blue-500">
+							<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+							<circle cx="9" cy="7" r="4"></circle>
+							<path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+							<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+						</svg>
+					</div>
+					<div class="text-3xl font-black text-slate-900">{{ timesPicked }}</div>
+					<div class="text-xs text-slate-500 mt-0.5">Times Picked</div>
+				</div>
+			</div>
+
+			<div class="rounded-xl border bg-white text-card-foreground shadow">
+				<div class="p-6 pt-6 text-center">
+					<div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-2">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up w-5 h-5 text-purple-500">
+							<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+							<polyline points="16 7 22 7 22 13"></polyline>
+						</svg>
+					</div>
+					<div class="text-3xl font-black text-slate-900">{{ bestFinish ? 'P' ~ bestFinish : '-' }}</div>
+					<div class="text-xs text-slate-500 mt-0.5">Best Finish</div>
+				</div>
+			</div>
+		</div>
+
+		{# Secondary stats row #}
+		<div class="grid grid-cols-3 gap-4 mb-6">
+			<div class="rounded-xl border bg-white shadow p-4 text-center">
+				<div class="text-xl font-black text-slate-900">{{ podiums }}</div>
+				<div class="text-xs text-slate-500">Podiums</div>
+			</div>
+			<div class="rounded-xl border bg-white shadow p-4 text-center">
+				<div class="text-xl font-black text-slate-900">{{ dnfs }}</div>
+				<div class="text-xs text-slate-500">DNFs</div>
+			</div>
+			<div class="rounded-xl border bg-white shadow p-4 text-center">
+				<div class="text-xl font-black text-slate-900">{{ avgPosition ?? '-' }}</div>
+				<div class="text-xs text-slate-500">Avg Position</div>
+			</div>
+		</div>
+
+		<div class="MainGrid gap-y-10">
+			{# Season Results #}
+			<div class="col-span-full sm:col-span-7 rounded-xl border bg-white text-card-foreground shadow">
+				<div class="flex flex-col space-y-1.5 p-6">
+					<div class="font-semibold tracking-tight text-lg">Season Results</div>
+				</div>
+				<div class="p-6 pt-0">
+					<div class="space-y-2">
+						{% for entry in seasonResults %}
+							{% if entry.hasResults and entry.result %}
+								<div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-gray-100 transition-colors">
+									<div class="flex items-center gap-3">
+										<div>
+											<p class="text-slate-500 !text-[10px]">Round {{ entry.race.raceRound }}</p>
+											<a href="{{ siteUrl('results/' ~ entry.race.id) }}" class="font-medium text-slate-900">{{ entry.race.title }}</a>
+										</div>
+									</div>
+									{% if entry.result.status == 'Finished' %}
+										{% set pos = entry.result.position %}
+										<span class="inline-flex items-center gap-1 font-bold tabular-nums text-sm {{ pos == 1 ? 'text-amber-500' : (pos <= 3 ? 'text-amber-400' : (pos == 10 ? 'text-emerald-500' : 'text-slate-400')) }}">
+											{% if pos == 1 %}
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy w-4 h-4 text-amber-500">
+													<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+													<path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+													<path d="M4 22h16"></path>
+													<path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+													<path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+													<path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+												</svg>
+											{% endif %}
+											P{{ pos }}
+										</span>
+									{% else %}
+										<span class="inline-flex items-center gap-1 font-bold tabular-nums text-sm text-red-400">
+											{{ entry.result.status }}
+										</span>
+									{% endif %}
+								</div>
+							{% elseif entry.hasResults and not entry.result %}
+								{# Race completed but driver didn't participate #}
+							{% elseif not entry.hasResults and entry.race.raceStatus != 'upcoming' %}
+								<div class="flex items-center justify-between p-3 bg-amber-50/50 border border-dashed border-amber-200 rounded-xl">
+									<div class="flex items-center gap-3">
+										<div>
+											<p class="text-slate-500 !text-[10px]">Round {{ entry.race.raceRound }}</p>
+											<span class="font-medium text-slate-900">{{ entry.race.title }}</span>
+										</div>
+									</div>
+									<span class="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide text-amber-600 bg-amber-500/10 border border-amber-500/20 rounded-full px-2.5 py-0.5">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3">
+											<circle cx="12" cy="12" r="10"></circle>
+											<polyline points="12 6 12 12 16 14"></polyline>
+										</svg>
+										Pending
+									</span>
+								</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+
+			{# Picked By / Points Generated #}
+			<div class="col-span-full sm:col-span-5">
+				<div class="rounded-xl border bg-white text-card-foreground shadow mb-6">
+					<div class="flex flex-col space-y-1.5 p-6 pb-2">
+						<div class="font-semibold tracking-tight text-lg">Points Generated</div>
+						<p class="text-sm text-slate-500">Total points earned by players who picked this driver</p>
+					</div>
+					<div class="p-6 pt-2 flex items-end gap-6">
+						<div>
+							<div class="text-4xl font-black text-slate-900">{{ totalPointsGenerated }}</div>
+							<div class="text-xs text-slate-500 mt-1">total points</div>
+						</div>
+						<div>
+							<div class="text-2xl font-black text-slate-900">{{ avgPointsGenerated ?? '-' }}</div>
+							<div class="text-xs text-slate-500 mt-1">avg per race</div>
+						</div>
+					</div>
+				</div>
+
+				{% if pickedBy|length %}
+					<div class="rounded-xl border bg-card text-card-foreground shadow">
+						<div class="flex flex-col space-y-1.5 p-6 pb-2">
+							<div class="font-semibold tracking-tight text-lg">Picked By</div>
+						</div>
+						<div class="p-6 pt-0">
+							<div class="space-y-3">
+								{% set maxPicks = pickedBy[0].count %}
+								{% for pick in pickedBy %}
+									<div class="flex items-center gap-3">
+										<div class="w-20 text-xs font-bold text-slate-700 text-right truncate">
+											<a href="{{ siteUrl('player/' ~ pick.player.id) }}" class="hover:text-slate-900">{{ pick.player.title }}</a>
+										</div>
+										<div class="flex-1 relative h-8 bg-slate-100 rounded-lg overflow-hidden group">
+											<div class="h-full rounded-lg transition-all duration-700 bg-blue-500 group-hover:bg-blue-400" style="width: {{ (pick.count / maxPicks * 100) }}%;"></div>
+											<div class="absolute inset-0 flex items-center px-3">
+												<span class="text-xs font-semibold text-slate-700">{{ pick.points }} pts</span>
+											</div>
+										</div>
+										<div class="w-10 text-right">
+											<div class="text-xs font-black text-slate-800">{{ pick.count }}x</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

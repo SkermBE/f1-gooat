@@ -197,6 +197,23 @@ class FrontendController extends Controller
     }
 
     /**
+     * Driver list/overview page
+     */
+    public function actionDriverList()
+    {
+        $drivers = Entry::find()
+            ->section('drivers')
+            ->isActive(true)
+            ->andWhere(['not', ['driverCode' => ['', null]]])
+            ->orderBy(['teamName' => SORT_ASC, 'driverLastName' => SORT_ASC])
+            ->all();
+
+        return $this->renderTemplate('f1/driver-list', [
+            'drivers' => $drivers,
+        ]);
+    }
+
+    /**
      * Player profile page
      */
     public function actionPlayerProfile(int $playerId)
@@ -291,6 +308,134 @@ class FrontendController extends Controller
             'driverPicks' => $driverPicks,
             'bestRace' => $bestRace,
             'bestPoints' => $bestPoints,
+        ]);
+    }
+
+    /**
+     * Driver detail/profile page
+     */
+    public function actionDriverProfile(int $driverId)
+    {
+        $siteId = Craft::$app->getSites()->getCurrentSite()->id;
+
+        $driver = Entry::find()->id($driverId)->section('drivers')->siteId($siteId)->one();
+        if (!$driver) {
+            throw new \yii\web\NotFoundHttpException('Driver not found');
+        }
+
+        // Get all completed races this season to extract driver stats from raceResults
+        $races = Entry::find()
+            ->section('races')
+            ->siteId($siteId)
+            ->orderBy(['raceRound' => SORT_DESC])
+            ->all();
+
+        $wins = 0;
+        $podiums = 0;
+        $p10Finishes = 0;
+        $dnfs = 0;
+        $totalRacesFinished = 0;
+        $bestFinish = null;
+        $positionSum = 0;
+        $seasonResults = [];
+
+        foreach ($races as $race) {
+            $raceResult = null;
+
+            if ($race->raceResults) {
+                foreach ($race->raceResults as $result) {
+                    if ($result['driverId'] === $driver->driverId) {
+                        $raceResult = $result;
+                        break;
+                    }
+                }
+            }
+
+            $entry = [
+                'race' => $race,
+                'result' => $raceResult,
+                'hasResults' => $race->raceStatus == 'completed' && $race->raceResults && count($race->raceResults) > 1,
+            ];
+            $seasonResults[] = $entry;
+
+            if (!$raceResult) {
+                continue;
+            }
+
+            $position = (int)$raceResult['position'];
+            $status = $raceResult['status'] ?? '';
+
+            if ($status === 'Finished') {
+                $totalRacesFinished++;
+                $positionSum += $position;
+
+                if ($position === 1) $wins++;
+                if ($position <= 3) $podiums++;
+                if ($position === 10) $p10Finishes++;
+
+                if ($bestFinish === null || $position < $bestFinish) {
+                    $bestFinish = $position;
+                }
+            } elseif ($status === 'DNF' || $status === 'DSQ') {
+                $dnfs++;
+            }
+        }
+
+        $avgPosition = $totalRacesFinished > 0 ? round($positionSum / $totalRacesFinished, 1) : null;
+
+        // Get predictions for this driver (how many times picked, by whom)
+        $predictions = Entry::find()
+            ->section('predictions')
+            ->siteId($siteId)
+            ->driverId($driver->driverId)
+            ->all();
+
+        $timesPicked = count($predictions);
+        $totalPointsGenerated = 0;
+        $finishedPicks = 0;
+        $pickedBy = [];
+
+        foreach ($predictions as $prediction) {
+            $predRace = $prediction->predictionRace->one();
+            $isCompleted = $predRace && $predRace->raceStatus == 'completed';
+
+            if ($isCompleted) {
+                $totalPointsGenerated += $prediction->pointsEarned ?? 0;
+                $finishedPicks++;
+            }
+
+            $player = $prediction->predictionPlayer->one();
+            if ($player) {
+                $pid = $player->id;
+                if (!isset($pickedBy[$pid])) {
+                    $pickedBy[$pid] = ['player' => $player, 'count' => 0, 'points' => 0];
+                }
+                $pickedBy[$pid]['count']++;
+                if ($isCompleted) {
+                    $pickedBy[$pid]['points'] += $prediction->pointsEarned ?? 0;
+                }
+            }
+        }
+
+        $avgPointsGenerated = $finishedPicks > 0 ? round($totalPointsGenerated / $finishedPicks, 1) : null;
+
+        // Sort by pick count descending
+        usort($pickedBy, fn($a, $b) => $b['count'] <=> $a['count']);
+
+        return $this->renderTemplate('f1/driver-profile', [
+            'driver' => $driver,
+            'wins' => $wins,
+            'podiums' => $podiums,
+            'p10Finishes' => $p10Finishes,
+            'dnfs' => $dnfs,
+            'bestFinish' => $bestFinish,
+            'avgPosition' => $avgPosition,
+            'totalRacesFinished' => $totalRacesFinished,
+            'timesPicked' => $timesPicked,
+            'totalPointsGenerated' => $totalPointsGenerated,
+            'avgPointsGenerated' => $avgPointsGenerated,
+            'pickedBy' => $pickedBy,
+            'seasonResults' => $seasonResults,
         ]);
     }
 
