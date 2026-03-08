@@ -49,6 +49,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             skipPlayer(skipPlayerBtn);
       }
 
+      // Re-fetch race results
+      const refetchBtn = document.querySelector('.js-refetch-results');
+      if (refetchBtn) {
+            const { refetchResults } = await import('@js/parts/refetchResults');
+            refetchResults(refetchBtn);
+      }
+
       // Admin actions (footer sync buttons)
       const adminButtons = document.querySelectorAll('.js-admin-action');
       if (adminButtons.length > 0) {

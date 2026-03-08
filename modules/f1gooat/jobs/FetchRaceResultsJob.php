@@ -116,7 +116,7 @@ class FetchRaceResultsJob extends BaseJob
             ->all();
 
         foreach ($predictions as $prediction) {
-            $result = $this->findDriverResult($race->raceResults, $prediction->driverId);
+            $result = $this->findDriverResult($race->raceResults, $prediction->driverCode);
 
             if (!$result || $result['status'] !== 'Finished') {
                 $prediction->setFieldValue('actualPosition', null);
@@ -136,10 +136,10 @@ class FetchRaceResultsJob extends BaseJob
         $this->updatePlayerStandings($siteId);
     }
 
-    private function findDriverResult(array $results, string $driverId): ?array
+    private function findDriverResult(array $results, string $driverCode): ?array
     {
         foreach ($results as $result) {
-            if ($result['driverId'] === $driverId) {
+            if ($result['driverCode'] === $driverCode) {
                 return $result;
             }
         }

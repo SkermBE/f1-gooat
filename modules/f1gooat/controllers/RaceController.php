@@ -6,20 +6,20 @@ use Craft;
 use craft\web\Controller;
 use craft\elements\Entry;
 use yii\web\Response;
-use craft\helpers\Queue;
-use modules\f1gooat\jobs\FetchRaceResultsJob;
+use GuzzleHttp\Client;
+use modules\f1gooat\Module;
 use modules\f1gooat\PointsCalculator;
 
 class RaceController extends Controller
 {
-    protected array|int|bool $allowAnonymous = ['fetch-race-results'];
+    protected array|int|bool $allowAnonymous = ['fetch-race-results', 'calculate-points'];
 
     /**
-     * Fetch race results from Jolpica API
+     * Fetch race results from Jolpica API and calculate points instantly
      */
     public function actionFetchRaceResults(int $raceId): Response
     {
-        $race = Entry::find()->id($raceId)->one();
+        $race = Entry::find()->id($raceId)->siteId('*')->one();
 
         if (!$race) {
             return $this->asJson([
@@ -35,23 +35,97 @@ class RaceController extends Controller
             ]);
         }
 
-        // Queue job to fetch results
-        Queue::push(new FetchRaceResultsJob([
-            'raceId' => $raceId,
-        ]));
+        $siteId = $race->siteId;
 
-        return $this->asJson([
-            'success' => true,
-            'message' => 'Results fetching queued',
-        ]);
+        try {
+            // Fetch from Jolpica API
+            $client = new Client();
+            $apiBase = Module::getApiBaseUrl();
+            $url = "{$apiBase}/{$race->season}/{$race->raceRound}/results/";
+
+            $response = $client->get($url);
+            $data = json_decode($response->getBody(), true);
+
+            $results = $data['MRData']['RaceTable']['Races'][0]['Results'] ?? [];
+
+            if (empty($results)) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => 'No results found in API response',
+                ]);
+            }
+
+            // Format and save results
+            $formattedResults = $this->formatResults($results);
+            $race->setFieldValue('raceResults', $formattedResults);
+            $race->setFieldValue('raceStatus', 'completed');
+
+            if (!Craft::$app->getElements()->saveElement($race)) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => 'Could not save race results',
+                ]);
+            }
+
+            // Calculate points
+            $this->calculatePointsForRace($race, $siteId);
+
+            // Update standings
+            $this->updatePlayerStandings($siteId);
+
+            // Auto-open next race
+            $this->openNextRace($race);
+
+            return $this->asJson([
+                'success' => true,
+                'message' => 'Results fetched and points calculated',
+            ]);
+
+        } catch (\Exception $e) {
+            Craft::error('Failed to fetch race results: ' . $e->getMessage(), __METHOD__);
+            return $this->asJson([
+                'success' => false,
+                'error' => 'Failed to fetch results: ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    private function formatResults(array $apiResults): array
+    {
+        $formatted = [];
+
+        foreach ($apiResults as $result) {
+            $status = $result['status'] ?? '';
+
+            $isFinished = $status === 'Finished' ||
+                         strpos($status, '+') === 0 ||
+                         strpos($status, 'Lap') !== false;
+
+            if ($isFinished) {
+                $displayStatus = 'Finished';
+            } elseif (stripos($status, 'Disqualified') !== false) {
+                $displayStatus = 'DSQ';
+            } else {
+                $displayStatus = 'DNF';
+            }
+
+            $formatted[] = [
+                'position' => (int)$result['position'],
+                'driverCode' => $result['Driver']['code'] ?? '',
+                'driverId' => $result['Driver']['driverId'] ?? '',
+                'status' => $displayStatus,
+            ];
+        }
+
+        return $formatted;
     }
 
     /**
-     * Process fetched results and calculate points
+     * Recalculate points from existing race results
      */
     public function actionCalculatePoints(int $raceId): Response
     {
-        $race = Entry::find()->id($raceId)->one();
+        $race = Entry::find()->id($raceId)->siteId('*')->one();
 
         if (!$race || !$race->raceResults) {
             return $this->asJson([
@@ -60,52 +134,48 @@ class RaceController extends Controller
             ]);
         }
 
+        $this->calculatePointsForRace($race, $race->siteId);
+        $this->updatePlayerStandings($race->siteId);
+
+        return $this->asJson([
+            'success' => true,
+            'message' => 'Points recalculated successfully',
+        ]);
+    }
+
+    private function calculatePointsForRace(Entry $race, int $siteId): void
+    {
         $predictions = Entry::find()
             ->section('predictions')
-            ->relatedTo(['targetElement' => $raceId, 'field' => 'predictionRace'])
+            ->siteId($siteId)
+            ->relatedTo(['targetElement' => $race->id, 'field' => 'predictionRace'])
             ->all();
 
         foreach ($predictions as $prediction) {
-            $result = $this->findDriverResult($race->raceResults, $prediction->driverId);
+            $result = $this->findDriverResult($race->raceResults, $prediction->driverCode);
 
-            if (!$result || $result['status'] != 'Finished') {
-                // DNF or not found
+            if (!$result || $result['status'] !== 'Finished') {
                 $prediction->setFieldValue('actualPosition', null);
                 $prediction->setFieldValue('pointsEarned', 0);
             } else {
                 $actualPosition = (int)$result['position'];
                 $points = PointsCalculator::calculate($actualPosition);
-                
+
                 $prediction->setFieldValue('actualPosition', $actualPosition);
                 $prediction->setFieldValue('pointsEarned', $points);
             }
 
             Craft::$app->getElements()->saveElement($prediction);
         }
-
-        // Update race status
-        $race->setFieldValue('raceStatus', 'completed');
-        Craft::$app->getElements()->saveElement($race);
-
-        // Update player standings for this site/season
-        $this->updatePlayerStandings($race->siteId);
-
-        // Auto-open the next race
-        $this->openNextRace($race);
-
-        return $this->asJson([
-            'success' => true,
-            'message' => 'Points calculated successfully',
-        ]);
     }
 
     /**
      * Find driver result in race results table
      */
-    private function findDriverResult(array $results, string $driverId): ?array
+    private function findDriverResult(array $results, string $driverCode): ?array
     {
         foreach ($results as $result) {
-            if ($result['driverId'] == $driverId) {
+            if ($result['driverCode'] === $driverCode) {
                 return $result;
             }
         }
