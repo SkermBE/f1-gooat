@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d72cd4d12616684fbefa95d5a2a1bd35",
+    "content-hash": "e8c17588e63fd25a4935686a156bd111",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -258,78 +258,6 @@
             "time": "2026-01-05T13:00:32+00:00"
         },
         {
-            "name": "composer/ca-bundle",
-            "version": "1.5.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "961a5e4056dd2e4a2eedcac7576075947c28bf63"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/961a5e4056dd2e4a2eedcac7576075947c28bf63",
-                "reference": "961a5e4056dd2e4a2eedcac7576075947c28bf63",
-                "shasum": ""
-            },
-            "require": {
-                "ext-openssl": "*",
-                "ext-pcre": "*",
-                "php": "^7.2 || ^8.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^8 || ^9",
-                "psr/log": "^1.0 || ^2.0 || ^3.0",
-                "symfony/process": "^4.0 || ^5.0 || ^6.0 || ^7.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Composer\\CaBundle\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                }
-            ],
-            "description": "Lets you find a path to the system CA bundle, and includes a fallback to the Mozilla CA bundle.",
-            "keywords": [
-                "cabundle",
-                "cacert",
-                "certificate",
-                "ssl",
-                "tls"
-            ],
-            "support": {
-                "irc": "irc://irc.freenode.org/composer",
-                "issues": "https://github.com/composer/ca-bundle/issues",
-                "source": "https://github.com/composer/ca-bundle/tree/1.5.10"
-            },
-            "funding": [
-                {
-                    "url": "https://packagist.com",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/composer",
-                    "type": "github"
-                }
-            ],
-            "time": "2025-12-08T15:06:51+00:00"
-        },
-        {
             "name": "composer/pcre",
             "version": "3.3.2",
             "dist": {
@@ -457,59 +385,6 @@
             "time": "2025-08-20T19:15:30+00:00"
         },
         {
-            "name": "craftcms/ckeditor",
-            "version": "5.1.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/craftcms/ckeditor/zipball/a86e7dc1703dcf33f6824cfe283f4f6af1b1c172",
-                "reference": "a86e7dc1703dcf33f6824cfe283f4f6af1b1c172",
-                "shasum": ""
-            },
-            "require": {
-                "craftcms/cms": "^5.9.0",
-                "craftcms/html-field": "^3.4.0",
-                "embed/embed": "^4.4",
-                "nystudio107/craft-code-editor": ">=1.0.8 <=1.0.13 || ^1.0.16",
-                "php": "^8.2"
-            },
-            "type": "craft-plugin",
-            "extra": {
-                "name": "CKEditor",
-                "handle": "ckeditor",
-                "documentationUrl": "https://github.com/craftcms/ckeditor/blob/master/README.md"
-            },
-            "autoload": {
-                "psr-4": {
-                    "craft\\ckeditor\\": "src/"
-                }
-            },
-            "license": [
-                "GPL-3.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Pixel & Tonic",
-                    "homepage": "https://pixelandtonic.com/"
-                }
-            ],
-            "description": "Edit rich text content in Craft CMS using CKEditor.",
-            "keywords": [
-                "ckeditor",
-                "cms",
-                "craftcms",
-                "html",
-                "yii2"
-            ],
-            "support": {
-                "email": "support@craftcms.com",
-                "issues": "https://github.com/craftcms/ckeditor/issues?state=open",
-                "source": "https://github.com/craftcms/ckeditor",
-                "docs": "https://github.com/craftcms/ckeditor/blob/master/README.md",
-                "rss": "https://github.com/craftcms/ckeditor/commits/master.atom"
-            },
-            "time": "2026-03-05T16:29:16+00:00"
-        },
-        {
             "name": "craftcms/cms",
             "version": "5.9.14",
             "dist": {
@@ -616,98 +491,6 @@
                 "rss": "https://github.com/craftcms/cms/releases.atom"
             },
             "time": "2026-02-25T21:48:05+00:00"
-        },
-        {
-            "name": "craftcms/html-field",
-            "version": "3.4.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/craftcms/html-field/zipball/3f23569c94d64e9054e3402447e03bd3c4c7b181",
-                "reference": "3f23569c94d64e9054e3402447e03bd3c4c7b181",
-                "shasum": ""
-            },
-            "require": {
-                "craftcms/cms": "^5.5.0",
-                "league/html-to-markdown": "^5.1",
-                "php": "^8.2",
-                "symfony/css-selector": "^6.0|^7.0",
-                "symfony/dom-crawler": "^6.0|^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "craft\\htmlfield\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pixel & Tonic",
-                    "homepage": "https://pixelandtonic.com/"
-                }
-            ],
-            "description": "Base class for Craft CMS field types with HTML values.",
-            "support": {
-                "email": "support@craftcms.com",
-                "issues": "https://github.com/craftcms/html-field/issues?state=open",
-                "source": "https://github.com/craftcms/html-field",
-                "docs": "https://github.com/craftcms/html-field/blob/main/README.md",
-                "rss": "https://github.com/craftcms/html-field/commits/main.atom"
-            },
-            "time": "2025-04-30T16:54:07+00:00"
-        },
-        {
-            "name": "craftcms/mailgun",
-            "version": "3.1.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/craftcms/mailgun/zipball/1f47b030df867056062f673858a6246730f7fe40",
-                "reference": "1f47b030df867056062f673858a6246730f7fe40",
-                "shasum": ""
-            },
-            "require": {
-                "craftcms/cms": "^4.0.0-alpha.1|^5.0.0-beta.1",
-                "php": "^8.0.2",
-                "symfony/mailgun-mailer": "^6.0.3|7.0.4"
-            },
-            "type": "craft-plugin",
-            "extra": {
-                "name": "Mailgun",
-                "handle": "mailgun",
-                "documentationUrl": "https://github.com/craftcms/mailgun/blob/v1/README.md"
-            },
-            "autoload": {
-                "psr-4": {
-                    "craft\\mailgun\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pixel & Tonic",
-                    "homepage": "https://pixelandtonic.com/"
-                }
-            ],
-            "description": "Mailgun integration for Craft CMS",
-            "keywords": [
-                "cms",
-                "craftcms",
-                "mailer",
-                "mailgun",
-                "yii2"
-            ],
-            "support": {
-                "email": "support@craftcms.com",
-                "issues": "https://github.com/craftcms/mailgun/issues?state=open",
-                "source": "https://github.com/craftcms/mailgun",
-                "docs": "https://github.com/craftcms/mailgun/blob/v1/README.md",
-                "rss": "https://github.com/craftcms/mailgun/commits/master.atom"
-            },
-            "time": "2024-03-19T21:34:20+00:00"
         },
         {
             "name": "craftcms/plugin-installer",
@@ -1236,95 +1019,6 @@
                 "php-emoji"
             ],
             "time": "2022-10-28T02:32:19+00:00"
-        },
-        {
-            "name": "embed/embed",
-            "version": "v4.4.17",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-embed/Embed.git",
-                "reference": "b2ea091a5586c14ea5f2c5bf52fb0ef38e5aef87"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-embed/Embed/zipball/b2ea091a5586c14ea5f2c5bf52fb0ef38e5aef87",
-                "reference": "b2ea091a5586c14ea5f2c5bf52fb0ef38e5aef87",
-                "shasum": ""
-            },
-            "require": {
-                "composer/ca-bundle": "^1.0",
-                "ext-curl": "*",
-                "ext-dom": "*",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "ml/json-ld": "^1.1",
-                "oscarotero/html-parser": "^0.1.4",
-                "php": "^7.4|^8",
-                "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.0",
-                "psr/http-message": "^1.0|^2.0"
-            },
-            "require-dev": {
-                "brick/varexporter": "^0.3.1",
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "nyholm/psr7": "^1.2",
-                "oscarotero/php-cs-fixer-config": "^1.0",
-                "phpunit/phpunit": "^9.0",
-                "symfony/css-selector": "^5.0"
-            },
-            "suggest": {
-                "symfony/css-selector": "If you want to get elements using css selectors"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/functions.php"
-                ],
-                "psr-4": {
-                    "Embed\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Oscar Otero",
-                    "email": "oom@oscarotero.com",
-                    "homepage": "http://oscarotero.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PHP library to retrieve page info using oembed, opengraph, etc",
-            "homepage": "https://github.com/oscarotero/Embed",
-            "keywords": [
-                "embed",
-                "embedly",
-                "oembed",
-                "opengraph",
-                "twitter cards"
-            ],
-            "support": {
-                "email": "oom@oscarotero.com",
-                "issues": "https://github.com/oscarotero/Embed/issues",
-                "source": "https://github.com/php-embed/Embed/tree/v4.4.17"
-            },
-            "funding": [
-                {
-                    "url": "https://paypal.me/oscarotero",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/oscarotero",
-                    "type": "github"
-                },
-                {
-                    "url": "https://www.patreon.com/misteroom",
-                    "type": "patreon"
-                }
-            ],
-            "time": "2025-05-13T12:42:29+00:00"
         },
         {
             "name": "enshrined/svg-sanitize",
@@ -2177,59 +1871,6 @@
             "time": "2024-09-24T20:45:14+00:00"
         },
         {
-            "name": "league/html-to-markdown",
-            "version": "5.1.1",
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/0b4066eede55c48f38bcee4fb8f0aa85654390fd",
-                "reference": "0b4066eede55c48f38bcee4fb8f0aa85654390fd",
-                "shasum": ""
-            },
-            "require": {
-                "ext-dom": "*",
-                "ext-xml": "*",
-                "php": "^7.2.5 || ^8.0"
-            },
-            "bin": [
-                "bin/html-to-markdown"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\HTMLToMarkdown\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Colin O'Dell",
-                    "email": "colinodell@gmail.com",
-                    "homepage": "https://www.colinodell.com",
-                    "role": "Lead Developer"
-                },
-                {
-                    "name": "Nick Cernis",
-                    "email": "nick@cern.is",
-                    "homepage": "http://modernnerd.net",
-                    "role": "Original Author"
-                }
-            ],
-            "description": "An HTML-to-markdown conversion helper for PHP",
-            "homepage": "https://github.com/thephpleague/html-to-markdown",
-            "keywords": [
-                "html",
-                "markdown"
-            ],
-            "time": "2023-07-12T21:21:09+00:00"
-        },
-        {
             "name": "league/uri",
             "version": "7.8.0",
             "source": {
@@ -2635,86 +2276,6 @@
             "time": "2023-04-19T08:25:22+00:00"
         },
         {
-            "name": "ml/iri",
-            "version": "1.1.4",
-            "target-dir": "ML/IRI",
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lanthaler/IRI/zipball/cbd44fa913e00ea624241b38cefaa99da8d71341",
-                "reference": "cbd44fa913e00ea624241b38cefaa99da8d71341",
-                "shasum": ""
-            },
-            "require": {
-                "lib-pcre": ">=4.0",
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "ML\\IRI": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Markus Lanthaler",
-                    "email": "mail@markus-lanthaler.com",
-                    "homepage": "http://www.markus-lanthaler.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "IRI handling for PHP",
-            "homepage": "http://www.markus-lanthaler.com",
-            "keywords": [
-                "URN",
-                "iri",
-                "uri",
-                "url"
-            ],
-            "time": "2014-01-21T13:43:39+00:00"
-        },
-        {
-            "name": "ml/json-ld",
-            "version": "1.2.1",
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lanthaler/JsonLD/zipball/537e68e87a6bce23e57c575cd5dcac1f67ce25d8",
-                "reference": "537e68e87a6bce23e57c575cd5dcac1f67ce25d8",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "ml/iri": "^1.1.1",
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ML\\JsonLD\\": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Markus Lanthaler",
-                    "email": "mail@markus-lanthaler.com",
-                    "homepage": "http://www.markus-lanthaler.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "JSON-LD Processor for PHP",
-            "homepage": "http://www.markus-lanthaler.com",
-            "keywords": [
-                "JSON-LD",
-                "jsonld"
-            ],
-            "time": "2022-09-29T08:45:17+00:00"
-        },
-        {
             "name": "moneyphp/money",
             "version": "v4.8.0",
             "source": {
@@ -3015,74 +2576,6 @@
             "time": "2025-01-08T20:10:23+00:00"
         },
         {
-            "name": "nystudio107/craft-code-editor",
-            "version": "1.0.29",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nystudio107/craft-code-editor.git",
-                "reference": "5b071512ee2ad2b8004f979f88ff3bf722bbcb4d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nystudio107/craft-code-editor/zipball/5b071512ee2ad2b8004f979f88ff3bf722bbcb4d",
-                "reference": "5b071512ee2ad2b8004f979f88ff3bf722bbcb4d",
-                "shasum": ""
-            },
-            "require": {
-                "craftcms/cms": "^3.0.0 || ^4.0.0 || ^5.0.0",
-                "phpdocumentor/reflection-docblock": "^5.0.0"
-            },
-            "require-dev": {
-                "craftcms/ecs": "dev-main",
-                "craftcms/phpstan": "dev-main",
-                "craftcms/rector": "dev-main"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "bootstrap": "nystudio107\\codeeditor\\CodeEditor"
-            },
-            "autoload": {
-                "psr-4": {
-                    "nystudio107\\codeeditor\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "nystudio107",
-                    "homepage": "https://nystudio107.com"
-                }
-            ],
-            "description": "Provides a code editor field with Twig & Craft API autocomplete",
-            "keywords": [
-                "Craft",
-                "Monaco",
-                "cms",
-                "code",
-                "craftcms",
-                "css",
-                "editor",
-                "javascript",
-                "markdown",
-                "twig"
-            ],
-            "support": {
-                "docs": "https://github.com/nystudio107/craft-code-editor/blob/v1/README.md",
-                "issues": "https://github.com/nystudio107/craft-code-editor/issues",
-                "source": "https://github.com/nystudio107/craft-code-editor"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/khalwat",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-01-30T19:10:22+00:00"
-        },
-        {
             "name": "nystudio107/craft-emptycoalesce",
             "version": "5.0.0",
             "dist": {
@@ -3221,44 +2714,6 @@
                 "source": "https://github.com/nystudio107/craft-vite"
             },
             "time": "2024-08-14T02:05:18+00:00"
-        },
-        {
-            "name": "oscarotero/html-parser",
-            "version": "v0.1.8",
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oscarotero/html-parser/zipball/10f3219267a365d9433f2f7d1694209c9d436c8d",
-                "reference": "10f3219267a365d9433f2f7d1694209c9d436c8d",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2 || ^8"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "HtmlParser\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Oscar Otero",
-                    "email": "oom@oscarotero.com",
-                    "homepage": "http://oscarotero.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Parse html strings to DOMDocument",
-            "homepage": "https://github.com/oscarotero/html-parser",
-            "keywords": [
-                "dom",
-                "html",
-                "parser"
-            ],
-            "time": "2023-11-29T20:28:41+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -5245,48 +4700,6 @@
                 }
             ],
             "time": "2026-02-25T16:50:00+00:00"
-        },
-        {
-            "name": "symfony/mailgun-mailer",
-            "version": "v7.0.4",
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailgun-mailer/zipball/96df0d3815dc72367ecc38c4a82d8021f8bddd4e",
-                "reference": "96df0d3815dc72367ecc38c4a82d8021f8bddd4e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.2",
-                "symfony/mailer": "^6.4|^7.0"
-            },
-            "conflict": {
-                "symfony/http-foundation": "<6.4"
-            },
-            "type": "symfony-mailer-bridge",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Mailer\\Bridge\\Mailgun\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Mailgun Mailer Bridge",
-            "homepage": "https://symfony.com",
-            "time": "2024-02-15T11:33:06+00:00"
         },
         {
             "name": "symfony/mime",
@@ -7279,110 +6692,6 @@
                 }
             ],
             "time": "2025-05-03T07:21:55+00:00"
-        },
-        {
-            "name": "verbb/base",
-            "version": "3.0.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/verbb/verbb-base.git",
-                "reference": "c731693efdd65c4d7015e98c62631b79422bcd8a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/verbb/verbb-base/zipball/c731693efdd65c4d7015e98c62631b79422bcd8a",
-                "reference": "c731693efdd65c4d7015e98c62631b79422bcd8a",
-                "shasum": ""
-            },
-            "require": {
-                "craftcms/cms": "^5.0.0",
-                "php": "^8.2"
-            },
-            "type": "yii-module",
-            "autoload": {
-                "psr-4": {
-                    "verbb\\base\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Verbb",
-                    "homepage": "https://verbb.io"
-                }
-            ],
-            "description": "Common utilities and building-blocks for Verbb plugins for Craft CMS.",
-            "support": {
-                "docs": "https://github.com/verbb/verbb-base",
-                "email": "support@verbb.io",
-                "issues": "https://github.com/verbb/verbb-base/issues?state=open",
-                "rss": "https://github.com/verbb/verbb-base/commits/v2.atom",
-                "source": "https://github.com/verbb/verbb-base"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/verbb",
-                    "type": "github"
-                }
-            ],
-            "time": "2025-06-17T02:49:50+00:00"
-        },
-        {
-            "name": "verbb/expanded-singles",
-            "version": "3.0.3",
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/verbb/expanded-singles/zipball/72d6c2942245ae3e0d2aa34509fabfc064423913",
-                "reference": "72d6c2942245ae3e0d2aa34509fabfc064423913",
-                "shasum": ""
-            },
-            "require": {
-                "craftcms/cms": "^5.0.0",
-                "php": "^8.2",
-                "verbb/base": "^3.0.0"
-            },
-            "type": "craft-plugin",
-            "extra": {
-                "name": "Expanded Singles",
-                "handle": "expanded-singles",
-                "description": "Alters the Entries Index sidebar to list all Singles, rather than grouping them under a 'Singles' link.",
-                "documentationUrl": "https://github.com/verbb/expanded-singles",
-                "changelogUrl": "https://raw.githubusercontent.com/verbb/expanded-singles/craft-5/CHANGELOG.md",
-                "class": "verbb\\expandedsingles\\ExpandedSingles"
-            },
-            "autoload": {
-                "psr-4": {
-                    "verbb\\expandedsingles\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Verbb",
-                    "homepage": "https://verbb.io"
-                }
-            ],
-            "description": "Extract Single entries to be top-level entries.",
-            "keywords": [
-                "cms",
-                "craft",
-                "craft-plugin",
-                "craftcms",
-                "expanded singles"
-            ],
-            "support": {
-                "email": "support@verbb.io",
-                "issues": "https://github.com/verbb/expanded-singles/issues?state=open",
-                "source": "https://github.com/verbb/expanded-singles",
-                "docs": "https://github.com/verbb/expanded-singles",
-                "rss": "https://github.com/verbb/expanded-singles/commits/v2.atom"
-            },
-            "time": "2025-07-18T14:04:19+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

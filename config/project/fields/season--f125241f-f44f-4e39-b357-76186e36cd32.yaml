@@ -1,5 +1,4 @@
 columnSuffix: kfnnyegk
-contentColumnType: integer(10)
 handle: season
 instructions: 'Year of the season'
 name: Season
@@ -13,6 +12,7 @@ settings:
   previewCurrency: null
   previewFormat: decimal
   size: null
+  step: null
   suffix: null
 translationKeyFormat: null
 translationMethod: none

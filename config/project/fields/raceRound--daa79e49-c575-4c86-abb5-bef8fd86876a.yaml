@@ -1,5 +1,4 @@
 columnSuffix: wychwbrz
-contentColumnType: integer(10)
 handle: raceRound
 instructions: 'Round number in the season'
 name: 'Race Round'
@@ -13,6 +12,7 @@ settings:
   previewCurrency: null
   previewFormat: decimal
   size: null
+  step: null
   suffix: null
 translationKeyFormat: null
 translationMethod: none

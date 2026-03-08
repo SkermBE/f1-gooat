@@ -1,5 +1,4 @@
 columnSuffix: sgnlkcyz
-contentColumnType: string
 handle: playerEmail
 instructions: 'Player email address'
 name: 'Player Email'

@@ -1,4 +1,4 @@
-dateModified: 1772720228
+dateModified: 1772971751
 elementSources:
   craft\elements\Entry:
     -
@@ -89,10 +89,12 @@ email:
   replyToEmail: $REPLY_EMAIL
   template: null
   transportSettings:
-    apiKey: $MAILGUN_API
-    domain: $MAILGUN_DOMAIN
-    endpoint: $MAILGUN_ENDPOINT
-  transportType: craft\mailgun\MailgunAdapter
+    host: $SMTP_HOST
+    password: $SMTP_PASSWORD
+    port: $SMTP_PORT
+    useAuthentication: $SMTP_VERIFICATIE
+    username: $SMTP_USERNAME
+  transportType: craft\mail\transportadapters\Smtp
 fs:
   files:
     hasUrls: true
@@ -112,7 +114,6 @@ meta:
   __names__:
     0e06e559-f9be-4000-930b-f7096c319a95: 'Driver Photo' # Driver Photo
     01b9fa51-7c82-495d-a125-54246848dda3: 'Multiple line plain text' # Multiple line plain text
-    1e26dc00-d92d-49f6-a155-a75a8944b681: Tekst # Tekst
     4a511286-2b52-4efb-baf0-fd1e1923c6f1: Video # Video
     4c8aa25e-d55d-4719-bac5-472d04d624d2: Afbeeldingen # Afbeeldingen
     4ebfb8a1-8dc0-4bad-8876-a2fbce75f84c: 'Prediction Player' # Prediction Player
@@ -127,7 +128,6 @@ meta:
     60f45fd4-6f69-41ab-a119-f016b485a9a5: $SITE_NAME # $SITE_NAME
     63c31cd7-9c31-469c-93fd-c5e8c173695f: 'Points Earned' # Points Earned
     70c7bc84-96ad-46cb-a4fa-cb199f539360: 'Player Email' # Player Email
-    71e989b9-a8bf-4d15-b898-513b8d37723d: 'Titel bold' # Titel bold
     74ff37ae-4ee1-4676-8e95-b511d6b2eb2f: 'Season 2025' # Season 2025
     75fb5ded-fb3d-4f10-853c-b3c065fb37b1: 'Is Active' # Is Active
     78e9870e-196b-495f-bb5e-eb1d8865954d: 'Team Name' # Team Name
@@ -150,11 +150,9 @@ meta:
     b0c75c6b-ebdc-4798-af15-4441983df8e9: Races # Races
     c20bf6d0-eda3-4415-a90b-44eaee61232e: 'Driver ID' # Driver ID
     c35d0db6-ae05-43c9-8bdb-c92696a228e5: Predictions # Predictions
-    c55ca0a9-4bd6-409b-afd8-c1884dafecd0: Team # Team
     ce448a77-a759-4cb5-b72a-03b3e0267abc: Toggle # Toggle
     cf0b87ab-e617-4f90-92cc-440a6aa36912: 'Race Status' # Race Status
     daa79e49-c575-4c86-abb5-bef8fd86876a: 'Race Round' # Race Round
-    ddae94aa-4ca8-4566-a31f-fdc6a0042bc1: Intro # Intro
     e80a0524-bdff-4f2f-a981-38ae6ce47f2d: Iconen # Iconen
     ea5c931e-5fd1-474a-a7f2-6e921db4bee4: 'Driver Code' # Driver Code
     f026cf70-26cc-4731-a17f-b16713fb81c1: 'Race Date' # Race Date
@@ -162,26 +160,11 @@ meta:
     f125241f-f44f-4e39-b357-76186e36cd32: Season # Season
     faabdab7-b665-4a65-b0b7-03dc902e6851: Drivers # Drivers
 plugins:
-  ckeditor:
-    edition: standard
-    enabled: true
-    schemaVersion: 5.0.0.1
   control-panel-element-counter:
     edition: standard
     enabled: true
     schemaVersion: 1.0.0
   empty-coalesce:
-    edition: standard
-    enabled: true
-    schemaVersion: 1.0.0
-  expanded-singles:
-    edition: standard
-    enabled: true
-    schemaVersion: 1.0.0
-    settings:
-      expandSingles: true
-      redirectToEntry: true
-  mailgun:
     edition: standard
     enabled: true
     schemaVersion: 1.0.0
@@ -196,3 +179,10 @@ system:
   retryDuration: null
   schemaVersion: 5.9.0.8
   timeZone: Europe/Brussels
+users:
+  allowPublicRegistration: false
+  defaultGroup: null
+  photoSubpath: null
+  photoVolumeUid: null
+  require2fa: false
+  requireEmailVerification: true

@@ -1,11 +1,10 @@
 columnSuffix: hlggxdhr
-contentColumnType: string(16)
 handle: raceStatus
 instructions: 'Current status of the race'
 name: 'Race Status'
 searchable: false
 settings:
-  columnType: null
+  customOptions: false
   options:
     -
       __assoc__:

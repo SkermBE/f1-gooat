@@ -1,5 +1,4 @@
 columnSuffix: htdnsnhb
-contentColumnType: datetime
 handle: raceDate
 instructions: 'Date and time of the race'
 name: 'Race Date'

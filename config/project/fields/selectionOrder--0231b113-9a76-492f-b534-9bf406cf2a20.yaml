@@ -1,5 +1,4 @@
 columnSuffix: xipzojva
-contentColumnType: integer(10)
 handle: selectionOrder
 instructions: 'Order in which prediction was made'
 name: 'Selection Order'
@@ -13,6 +12,7 @@ settings:
   previewCurrency: null
   previewFormat: decimal
   size: null
+  step: null
   suffix: null
 translationKeyFormat: null
 translationMethod: none

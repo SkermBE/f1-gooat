@@ -1,12 +1,10 @@
 columnSuffix: rxynmjwm
-contentColumnType: text
 handle: raceResults
 instructions: 'Final race results from API'
 name: 'Race Results'
 searchable: false
 settings:
   addRowLabel: 'Add a row'
-  columnType: text
   columns:
     __assoc__:
       -

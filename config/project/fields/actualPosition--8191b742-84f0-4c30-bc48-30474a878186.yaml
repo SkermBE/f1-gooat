@@ -1,5 +1,4 @@
 columnSuffix: tvvfdgnb
-contentColumnType: integer(10)
 handle: actualPosition
 instructions: 'Actual finishing position'
 name: 'Actual Position'
@@ -13,6 +12,7 @@ settings:
   previewCurrency: null
   previewFormat: decimal
   size: null
+  step: null
   suffix: null
 translationKeyFormat: null
 translationMethod: none
