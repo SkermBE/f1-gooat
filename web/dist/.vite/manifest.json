@@ -4,7 +4,7 @@
     "name": "index"
   },
   "src/js/app.js": {
-    "file": "assets/app-BfEy-zD8.js",
+    "file": "assets/app-K6oqdcEg.js",
     "name": "app",
     "src": "src/js/app.js",
     "isEntry": true,
@@ -15,11 +15,12 @@
       "src/js/parts/driverSelection.js",
       "src/js/parts/seasonChart.js",
       "src/js/parts/skipPlayer.js",
+      "src/js/parts/refetchResults.js",
       "src/js/parts/adminActions.js",
       "src/js/parts/playerRaceByRace.js"
     ],
     "css": [
-      "assets/app-sDqhE30-.css"
+      "assets/app-DOfRs7R8.css"
     ]
   },
   "src/js/parts/a11y-dialog.js": {
@@ -63,6 +64,12 @@
     "imports": [
       "_index-DDlvirwQ.js"
     ]
+  },
+  "src/js/parts/refetchResults.js": {
+    "file": "assets/refetchResults-COHaxP_8.js",
+    "name": "refetchResults",
+    "src": "src/js/parts/refetchResults.js",
+    "isDynamicEntry": true
   },
   "src/js/parts/seasonChart.js": {
     "file": "assets/seasonChart-ZouKGCzR.js",
