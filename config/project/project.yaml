@@ -1,4 +1,4 @@
-dateModified: 1772971751
+dateModified: 1772971922
 elementSources:
   craft\elements\Entry:
     -
@@ -59,11 +59,10 @@ elementSources:
       key: 'section:c35d0db6-ae05-43c9-8bdb-c92696a228e5' # Predictions
       page: 'F1 GOOAT'
       tableAttributes:
-        - status
-        - postDate
-        - expiryDate
-        - authors
-        - link
+        - 'field:4ebfb8a1-8dc0-4bad-8876-a2fbce75f84c' # Prediction Player
+        - 'field:a6bbbfb4-c43f-47a9-b53d-5a01e2c3d166' # Prediction Race
+        - 'field:765f1d3e-7083-49ca-8baa-d90996d0366f' # Driver Name
+        - 'field:8191b742-84f0-4c30-bc48-30474a878186' # Actual Position
       type: native
     -
       defaultSort:
