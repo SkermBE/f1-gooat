@@ -71,7 +71,16 @@ class UpdateController extends Controller
                         ->one();
 
                     if ($existing) {
-                        $skipped++;
+                        // Update existing driver fields
+                        $existing->setFieldValues([
+                            'driverCode' => $driverData['code'] ?? $existing->driverCode,
+                            'driverFirstName' => $driverData['givenName'] ?? $existing->driverFirstName,
+                            'driverLastName' => $driverData['familyName'] ?? $existing->driverLastName,
+                            'driverNumber' => $driverData['permanentNumber'] ?? $existing->driverNumber,
+                        ]);
+                        if (Craft::$app->getElements()->saveElement($existing)) {
+                            $updated++;
+                        }
                         continue;
                     }
 
@@ -86,6 +95,7 @@ class UpdateController extends Controller
                         'driverCode' => $driverData['code'] ?? '',
                         'driverFirstName' => $driverData['givenName'] ?? '',
                         'driverLastName' => $driverData['familyName'] ?? '',
+                        'driverNumber' => $driverData['permanentNumber'] ?? '',
                         'teamName' => '',
                         'isActive' => true,
                     ]);
@@ -147,7 +157,7 @@ class UpdateController extends Controller
         $client = new Client();
 
         $imported = 0;
-        $skipped = 0;
+        $updated = 0;
 
         try {
             $response = $client->get("{$apiBase}/{$year}/");
@@ -159,7 +169,7 @@ class UpdateController extends Controller
                     'success' => true,
                     'message' => 'No races found in API.',
                     'imported' => 0,
-                    'skipped' => 0,
+                    'updated' => 0,
                 ]);
             }
 
@@ -168,6 +178,7 @@ class UpdateController extends Controller
 
             foreach ($races as $raceData) {
                 $round = $raceData['round'];
+                $raceDateTime = new \DateTime($raceData['date'] . ' ' . ($raceData['time'] ?? '00:00:00'));
 
                 $existing = Entry::find()
                     ->section('races')
@@ -176,11 +187,17 @@ class UpdateController extends Controller
                     ->one();
 
                 if ($existing) {
-                    $skipped++;
+                    // Update title and date for existing races
+                    $existing->title = $raceData['raceName'];
+                    $existing->setFieldValues([
+                        'raceDate' => $raceDateTime,
+                        'season' => (int)$year,
+                    ]);
+                    if (Craft::$app->getElements()->saveElement($existing)) {
+                        $updated++;
+                    }
                     continue;
                 }
-
-                $raceDateTime = new \DateTime($raceData['date'] . ' ' . ($raceData['time'] ?? '00:00:00'));
 
                 $race = new Entry();
                 $race->sectionId = $section->id;
@@ -203,9 +220,9 @@ class UpdateController extends Controller
 
             return $this->asJson([
                 'success' => true,
-                'message' => "Races synced: {$imported} imported, {$skipped} already exist.",
+                'message' => "Races synced: {$imported} imported, {$updated} updated.",
                 'imported' => $imported,
-                'skipped' => $skipped,
+                'updated' => $updated,
             ]);
         } catch (\Exception $e) {
             return $this->asJson([
@@ -325,10 +342,10 @@ class UpdateController extends Controller
             ->all();
 
         foreach ($predictions as $prediction) {
-            $driverId = $prediction->driverId;
+            $driverCode = $prediction->driverCode;
             $result = null;
             foreach ($race->raceResults as $r) {
-                if ($r['driverId'] === $driverId) {
+                if ($r['driverCode'] === $driverCode) {
                     $result = $r;
                     break;
                 }
