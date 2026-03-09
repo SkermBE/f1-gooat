@@ -96,10 +96,9 @@
 											{% if isPerfect %}
 												<span class="text-[10px] font-bold text-amber-500">✓ exact</span>
 											{% endif %}
-											{% if prediction.boosterUsed %}
-												<span class="text-[10px] font-bold text-purple-500 bg-purple-100 rounded px-1">2x</span>
-											{% endif %}
-
+										{% endif %}
+										{% if prediction.boosterUsed %}
+											<span class="text-[10px] font-bold text-purple-500 bg-purple-100 rounded px-1">2x</span>
 										{% endif %}
 									</div>
 								</div>

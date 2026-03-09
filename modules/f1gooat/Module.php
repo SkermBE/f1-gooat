@@ -195,8 +195,21 @@ class Module extends BaseModule
             }
         }
 
-        // Sort current standings by points desc
-        arsort($playerPoints);
+        // Sort by points desc, then by currentStanding asc as tiebreaker
+        $sortable = [];
+        foreach ($playerPoints as $pid => $points) {
+            $sortable[$pid] = [
+                'points' => $points,
+                'standing' => $playerEntries[$pid]->currentStanding ?? PHP_INT_MAX,
+            ];
+        }
+        uasort($sortable, function ($a, $b) {
+            if ($a['points'] !== $b['points']) {
+                return $b['points'] <=> $a['points']; // points descending
+            }
+            return $a['standing'] <=> $b['standing']; // standing ascending
+        });
+        $playerPoints = array_map(fn($s) => $s['points'], $sortable);
 
         // Build previous position map
         arsort($playerPrevPoints);

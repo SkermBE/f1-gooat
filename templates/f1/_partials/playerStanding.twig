@@ -14,7 +14,7 @@
 				{% if entry.positionChange > 0 %}
 					<span class="text-f1-success text-[11px] font-bold">&uarr;{{ entry.positionChange }}</span>
 				{% elseif entry.positionChange < 0 %}
-					<span class="text-primary text-[11px] font-bold">&darr;{{ entry.positionChange|abs }}</span>
+					<span class="text-red-500 text-[11px] font-bold">&darr;{{ entry.positionChange|abs }}</span>
 				{% else %}
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus w-4 h-4">
 						<path d="M5 12h14"></path>
