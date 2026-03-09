@@ -7,7 +7,7 @@
 
 {% set fakeData = standings is not iterable or standings is empty %}
 {% if fakeData %}
-	{% set standings = craft.entries.section('players').orderBy('totalPoints DESC, currentStanding ASC').all() %}
+	{% set standings = craft.entries.section('players').orderBy('totalPoints DESC, currentStanding ASC, title ASC').all() %}
 {% endif %}
 
 {% block main %}
@@ -59,8 +59,14 @@
 				{% set selectedCount = craft.entries().section('predictions').relatedTo({targetElement: nextRace.id, field: 'predictionRace'}).count() %}
 				{% set totalPlayers = craft.entries().section('players').count() %}
 				{% set totalPercentage = (1 - selectedCount / totalPlayers) * 100 %}
-				{% set orderedPlayers = craft.entries().section('players').orderBy('totalPoints asc, currentStanding desc').all() %}
-				{% set currentSelector = orderedPlayers[selectedCount] is defined ? orderedPlayers[selectedCount] : null %}
+				{% set calculatedStandings = craft.app.getModule('f1-gooat').calculateSeasonStandings() %}
+				{% if calculatedStandings is not empty %}
+					{% set reversedStandings = calculatedStandings|reverse %}
+					{% set currentSelector = reversedStandings[selectedCount] is defined ? craft.entries().id(reversedStandings[selectedCount].id).one() : null %}
+				{% else %}
+					{% set orderedPlayers = craft.entries().section('players').orderBy('totalPoints asc, currentStanding desc, title desc').all() %}
+					{% set currentSelector = orderedPlayers[selectedCount] is defined ? orderedPlayers[selectedCount] : null %}
+				{% endif %}
 
 				<div class="mb-4">
 					<div class="space-y-2">

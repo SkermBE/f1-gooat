@@ -1,5 +1,7 @@
 .F1DriverCard:hover button{
-      @apply bg-amber-600 text-white;
+      @apply bg-amber-600 text-white cursor-pointer;
+}
 
-      
+.F1DriverCard:hover {
+      @apply border-amber-600 text-white;
 }

@@ -17,6 +17,9 @@ class AuthController extends Controller
      */
     public function actionLogin(): Response|string
     {
+        $request = Craft::$app->getRequest();
+        $isAjax = $request->getAcceptsJson();
+
         // Already logged in — go home
         $playerEmail = Craft::$app->getSession()->get('playerEmail');
         if ($playerEmail) {
@@ -25,15 +28,21 @@ class AuthController extends Controller
                 ->playerEmail($playerEmail)
                 ->one();
             if ($player) {
+                if ($isAjax) {
+                    return $this->asJson(['success' => true]);
+                }
                 return $this->redirect(UrlHelper::siteUrl(''));
             }
         }
 
         // POST: process email submission
-        if (Craft::$app->getRequest()->getIsPost()) {
-            $email = Craft::$app->getRequest()->getBodyParam('email');
+        if ($request->getIsPost()) {
+            $email = $request->getBodyParam('email');
 
             if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                if ($isAjax) {
+                    return $this->asJson(['success' => false, 'error' => 'Please enter a valid email address.']);
+                }
                 return $this->renderTemplate('f1/login', [
                     'error' => 'Please enter a valid email address.',
                     'email' => $email,
@@ -47,6 +56,9 @@ class AuthController extends Controller
                 ->one();
 
             if (!$player) {
+                if ($isAjax) {
+                    return $this->asJson(['success' => false, 'error' => 'No player found with that email address.']);
+                }
                 return $this->renderTemplate('f1/login', [
                     'error' => 'No player found with that email address.',
                     'email' => $email,
@@ -56,10 +68,11 @@ class AuthController extends Controller
             // Store email in session (works across sites)
             Craft::$app->getSession()->set('playerEmail', $email);
 
-            // Redirect to where they were going, or home
-            $returnUrl = Craft::$app->getSession()->get('returnUrl', UrlHelper::siteUrl(''));
-            Craft::$app->getSession()->remove('returnUrl');
-            return $this->redirect($returnUrl);
+            if ($isAjax) {
+                return $this->asJson(['success' => true]);
+            }
+
+            return $this->redirect(UrlHelper::siteUrl(''));
         }
 
         // GET: show the login form
@@ -76,7 +89,13 @@ class AuthController extends Controller
     {
         Craft::$app->getSession()->remove('playerEmail');
 
-        // Redirect to the homepage of the current site (not the CP)
+        // Redirect back to the page the user was on, or homepage
+        $redirect = Craft::$app->getRequest()->getQueryParam('redirect');
+
+        if ($redirect && str_starts_with($redirect, '/')) {
+            return $this->redirect($redirect);
+        }
+
         return $this->redirect(Craft::$app->getSites()->getCurrentSite()->getBaseUrl());
     }
 }

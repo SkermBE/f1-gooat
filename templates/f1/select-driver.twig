@@ -117,45 +117,45 @@
 						</div>
 					</div>
 
-				{% if boosterAvailable %}
-					<div id="booster-toggle" class="rounded-2xl border-2 border-dashed border-purple-300 bg-purple-50 p-4 cursor-pointer transition-all hover:border-purple-400" data-active="0">
-						<div class="flex items-center gap-3">
-							<div class="p-2 rounded-xl bg-purple-100 text-purple-600">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-									<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
-									<path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
-									<path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
-									<path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
-								</svg>
-							</div>
-							<div class="flex-1">
-								<div class="font-bold text-purple-900 text-sm">Activate Booster</div>
-								<div class="text-xs text-purple-600">Double your points for this race (1x per season)</div>
-							</div>
-							<div id="booster-switch" class="w-11 h-6 rounded-full bg-gray-300 relative transition-colors">
-								<div class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform"></div>
-							</div>
-						</div>
-					</div>
-				{% else %}
-					<div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 opacity-50">
-						<div class="flex items-center gap-3">
-							<div class="p-2 rounded-xl bg-slate-100 text-slate-400">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-									<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
-									<path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
-									<path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
-									<path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
-								</svg>
-							</div>
-							<div class="flex-1">
-								<div class="font-bold text-slate-500 text-sm">Booster Used</div>
-								<div class="text-xs text-slate-400">Already activated this season</div>
+					{% if boosterAvailable %}
+						<div id="booster-toggle" class="rounded-2xl border-2 border-dashed border-purple-300 bg-purple-50 p-4 cursor-pointer transition-all hover:border-purple-400" data-active="0">
+							<div class="flex items-center gap-3">
+								<div class="p-2 rounded-xl bg-purple-100 text-purple-600">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+										<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+										<path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+										<path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+										<path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+									</svg>
+								</div>
+								<div class="flex-1">
+									<div class="font-bold text-purple-900 text-sm">Activate Booster</div>
+									<div class="text-xs text-purple-600">Double your points for this race (1x per season)</div>
+								</div>
+								<div id="booster-switch" class="w-11 h-6 rounded-full bg-gray-300 relative transition-colors">
+									<div class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform"></div>
+								</div>
 							</div>
 						</div>
-					</div>
-				{% endif %}
-			{% elseif selectionOpen %}
+					{% else %}
+						<div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 opacity-50">
+							<div class="flex items-center gap-3">
+								<div class="p-2 rounded-xl bg-slate-100 text-slate-400">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+										<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+										<path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+										<path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+										<path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+									</svg>
+								</div>
+								<div class="flex-1">
+									<div class="font-bold text-slate-500 text-sm">Booster Used</div>
+									<div class="text-xs text-slate-400">Already activated this season</div>
+								</div>
+							</div>
+						</div>
+					{% endif %}
+				{% elseif selectionOpen %}
 					<div class="rounded-2xl bg-slate-100 border border-slate-200 p-6">
 						<div class="flex items-center gap-4">
 							<div class="p-3 rounded-xl bg-slate-200">
@@ -169,14 +169,28 @@
 								<div class="text-xl font-bold text-slate-900">{{ currentSelector.title }}</div>
 							</div>
 						</div>
-						<button id="skipPlayerBtn" class="!cursor-pointer mt-4 w-full inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 h-9 rounded-lg px-4 text-sm" data-race-id="{{ race.id }}" data-skip-url="{{ siteUrl('prediction/skip') }}" data-csrf="{{ craft.app.request.csrfToken }}" data-player-name="{{ currentSelector.title }}">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-								<polygon points="5 4 15 12 5 20 5 4"></polygon>
-								<line x1="19" x2="19" y1="5" y2="19"></line>
-							</svg>
-							Skip {{ currentSelector.title }}
-						</button>
+						{% if  player %}
+							<button id="skipPlayerBtn" class="!cursor-pointer mt-4 w-full inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 h-9 rounded-lg px-4 text-sm" data-race-id="{{ race.id }}" data-skip-url="{{ siteUrl('prediction/skip') }}" data-csrf="{{ craft.app.request.csrfToken }}" data-player-name="{{ currentSelector.title }}">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+									<polygon points="5 4 15 12 5 20 5 4"></polygon>
+									<line x1="19" x2="19" y1="5" y2="19"></line>
+								</svg>
+								Skip
+								{{ currentSelector.title }}
+							</button>
+						{% endif %}
 					</div>
+
+					{% if not player %}
+						<button type="button" class="js-login-open cursor-pointer Link w-full inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring border border-amber-500/20 bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 h-9 rounded-lg px-4 text-sm">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+								<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+								<polyline points="10 17 15 12 10 7"></polyline>
+								<line x1="15" x2="3" y1="12" y2="12"></line>
+							</svg>
+							Log in to play
+						</button>
+					{% endif %}
 				{% endif %}
 
 				{% if allSelections|length %}
@@ -212,12 +226,11 @@
 						available</span>
 				</div>
 
-				<div id="driverGrid" class="{{ not isPlayerTurn ? 'opacity-40' }} grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4" data-race-id="{{ race.id }}" data-is-player-turn="{{ isPlayerTurn and selectionOpen ? '1' : '0' }}" data-submit-url="{{ siteUrl('prediction/submit') }}" data-csrf="{{ craft.app.request.csrfToken }}">
+				<div id="driverGrid" class="{{ not player or not isPlayerTurn ? 'opacity-40' }} grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4" data-race-id="{{ race.id }}" data-is-player-turn="{{ isPlayerTurn and selectionOpen ? '1' : '0' }}" data-submit-url="{{ siteUrl('prediction/submit') }}" data-csrf="{{ craft.app.request.csrfToken }}" {{ not player ? 'data-require-login="1"' }}>
 					{% for driver in availableDrivers %}
 						{% if driver.driverCode %}
 
-							<div class="F1DriverCard relative rounded-2xl overflow-hidden bg-white border-2 transition-all duration-200 hover:scale-105 {{ isPlayerTurn ? 'border-amber-600 cursor-pointer' : 'border-gray-100 pointer-events-none' }}" data-driver-id="{{ driver.driverId }}">
-								<div class="h-1.5 w-full {{ isPlayerTurn ? 'bg-amber-600' : 'bg-gray-100' }}"></div>
+							<div class="F1DriverCard group relative rounded-2xl overflow-hidden bg-white border-2 transition-all duration-200 hover:scale-105 {{ isPlayerTurn ? 'border-amber-500/20 cursor-pointer' : 'border-gray-100 pointer-events-none' }}" data-driver-id="{{ driver.driverId }}">
 								<div class="p-3">
 									<div class="relative mx-auto mb-3 rounded-xl overflow-hidden bg-gradient-to-b from-slate-100 to-slate-200 w-16 h-16">
 										<div class="w-full h-full flex items-center justify-center">
@@ -230,7 +243,7 @@
 									<div class="text-center font-black tracking-tight text-2xl" style="color: rgb(182, 186, 189);">{{ driver.driverCode }}</div>
 									<p class="js-driver-name block text-center text-slate-700 font-medium truncate text-xs">{{ driver.driverFirstName ~ ' ' ~ driver.driverLastName }}</p>
 									<div class="text-center text-slate-400 truncate mt-0.5 text-[10px]">{{ driver.teamName }}</div>
-									<button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium border-amber-500 cursor-pointer transition-colors duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full group mt-2">SELECT</button>
+									<button class="Link w-full mt-2 inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring border border-amber-500/20 bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 h-9 rounded-lg px-4 text-sm">SELECT</button>
 								</div>
 							</div>
 

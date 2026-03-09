@@ -342,7 +342,7 @@ class PredictionController extends Controller
 
         $query = Entry::find()
             ->section('players')
-            ->orderBy('totalPoints asc, currentStanding desc');
+            ->orderBy('totalPoints asc, currentStanding desc, title desc');
 
         if ($siteId) {
             $query->siteId($siteId);

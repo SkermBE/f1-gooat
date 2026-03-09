@@ -17,12 +17,7 @@ class FrontendController extends Controller
      */
     public function actionSelectDriver(int $raceId)
     {
-        // Require player session
         $player = Module::getCurrentPlayer();
-        if (!$player) {
-            Craft::$app->getSession()->set('returnUrl', Craft::$app->getRequest()->getUrl());
-            return $this->redirect(UrlHelper::siteUrl('player-login'));
-        }
 
         $race = Entry::find()->id($raceId)->one();
 
@@ -453,7 +448,8 @@ class FrontendController extends Controller
     }
 
     /**
-     * Get current selector helper
+     * Get current selector helper — last place picks first.
+     * Uses calculated standings (reversed) so pick order matches the displayed leaderboard.
      */
     private function getCurrentSelector(int $raceId): ?Entry
     {
@@ -462,9 +458,23 @@ class FrontendController extends Controller
             ->relatedTo(['targetElement' => $raceId, 'field' => 'predictionRace'])
             ->count();
 
+        // Use calculated standings so pick order is consistent with displayed leaderboard
+        $standings = Module::calculateSeasonStandings();
+
+        if (!empty($standings)) {
+            // Reverse: last place picks first
+            $reversed = array_reverse($standings);
+            if (isset($reversed[$selectedCount])) {
+                return Entry::find()->id($reversed[$selectedCount]['id'])->one();
+            }
+            return null;
+        }
+
+        // Fallback: no completed races / no predictions yet — use stored fields
+        // Add title as final tiebreaker for deterministic ordering
         $players = Entry::find()
             ->section('players')
-            ->orderBy('totalPoints asc, currentStanding desc')
+            ->orderBy('totalPoints asc, currentStanding desc, title desc')
             ->all();
 
         if (isset($players[$selectedCount])) {
