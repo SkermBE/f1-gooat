@@ -77,6 +77,18 @@ class FrontendController extends Controller
         // Recent selections (last 3, reverse order for display)
         $recentSelections = array_slice(array_reverse($allSelections), 0, 3);
 
+        // Check if player has already used booster this season
+        $boosterAvailable = false;
+        if ($player) {
+            $existingBooster = Entry::find()
+                ->section('predictions')
+                ->siteId($race->siteId)
+                ->relatedTo(['targetElement' => $player->id, 'field' => 'predictionPlayer'])
+                ->boosterUsed(true)
+                ->one();
+            $boosterAvailable = !$existingBooster;
+        }
+
         return $this->renderTemplate('f1/select-driver', [
             'race' => $race,
             'player' => $player,
@@ -89,6 +101,7 @@ class FrontendController extends Controller
             'allSelections' => $allSelections,
             'selectionComplete' => $selectedCount >= $totalPlayers,
             'selectedDrivers' => $selectedDrivers,
+            'boosterAvailable' => $boosterAvailable,
         ]);
     }
 

@@ -1,4 +1,4 @@
-dateModified: 1772972089
+dateModified: 1772993991
 elementSources:
   craft\elements\Entry:
     -
@@ -63,6 +63,7 @@ elementSources:
         - 'field:a6bbbfb4-c43f-47a9-b53d-5a01e2c3d166' # Prediction Race
         - 'field:765f1d3e-7083-49ca-8baa-d90996d0366f' # Driver Name
         - 'field:8191b742-84f0-4c30-bc48-30474a878186' # Actual Position
+        - 'field:b8f2a1c3-7d4e-4f5a-9e6b-3c8d9f0a1b2e' # Booster Used
       type: native
     -
       defaultSort:
@@ -147,6 +148,7 @@ meta:
     a88d754d-03b9-4e5a-9984-de49f12d0629: 'Season 2026' # Season 2026
     aab1e909-1491-4d02-934a-4a03b4f3b858: 'Public Schema' # Public Schema
     b0c75c6b-ebdc-4798-af15-4441983df8e9: Races # Races
+    b8f2a1c3-7d4e-4f5a-9e6b-3c8d9f0a1b2e: 'Booster Used' # Booster Used
     c20bf6d0-eda3-4415-a90b-44eaee61232e: 'Driver ID' # Driver ID
     c35d0db6-ae05-43c9-8bdb-c92696a228e5: Predictions # Predictions
     ce448a77-a759-4cb5-b72a-03b3e0267abc: Toggle # Toggle

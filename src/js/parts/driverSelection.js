@@ -37,14 +37,16 @@ function showToast(message, type = 'info', duration = 3000) {
 
 // --- Confirm Modal ---
 
-function showConfirmModal(driverCode, onConfirm, onCancel) {
+function showConfirmModal(driverCode, boosterOn, onConfirm, onCancel) {
     const overlay = document.getElementById('confirm-overlay');
     const modal   = document.getElementById('confirm-modal');
     const text    = document.getElementById('confirm-modal-text');
     const confirmBtn = document.getElementById('confirm-modal-confirm');
     const cancelBtn  = document.getElementById('confirm-modal-cancel');
 
-    text.textContent = `Pick ${driverCode} for P10?`;
+    text.innerHTML = boosterOn
+        ? `Pick ${driverCode} for P10?<br><span class="text-purple-400 text-sm">Booster activated — 2x points!</span>`
+        : `Pick ${driverCode} for P10?`;
 
     // Make visible before animating (gsap uses autoAlpha)
     gsap.set([overlay, modal], { autoAlpha: 0 });
@@ -105,6 +107,32 @@ export function driverSelection(gridElement) {
 
     if (!isPlayerTurn) return;
 
+    // Booster toggle
+    const boosterToggle = document.getElementById('booster-toggle');
+    const boosterSwitch = document.getElementById('booster-switch');
+    let boosterActive = false;
+
+    if (boosterToggle && boosterSwitch) {
+        boosterToggle.addEventListener('click', () => {
+            boosterActive = !boosterActive;
+            boosterToggle.dataset.active = boosterActive ? '1' : '0';
+
+            if (boosterActive) {
+                boosterToggle.classList.remove('border-purple-300', 'bg-purple-50');
+                boosterToggle.classList.add('border-purple-500', 'bg-purple-100');
+                boosterSwitch.classList.remove('bg-gray-300');
+                boosterSwitch.classList.add('bg-purple-600');
+                boosterSwitch.querySelector('div').style.transform = 'translateX(1.25rem)';
+            } else {
+                boosterToggle.classList.add('border-purple-300', 'bg-purple-50');
+                boosterToggle.classList.remove('border-purple-500', 'bg-purple-100');
+                boosterSwitch.classList.add('bg-gray-300');
+                boosterSwitch.classList.remove('bg-purple-600');
+                boosterSwitch.querySelector('div').style.transform = 'translateX(0)';
+            }
+        });
+    }
+
     const cards = gridElement.querySelectorAll('.F1DriverCard:not(.is-disabled)');
     let activeCard = null;
 
@@ -130,13 +158,14 @@ export function driverSelection(gridElement) {
                     'CRAFT_CSRF_TOKEN': csrfToken,
                     raceId,
                     driverId,
+                    boosterUsed: boosterActive ? '1' : '',
                 }),
             });
 
             const data = await response.json();
 
             if (data.success) {
-                showToast(`${driverCode} confirmed!`, 'success');
+                showToast(data.prediction?.boosterUsed ? `${driverCode} confirmed with BOOSTER!` : `${driverCode} confirmed!`, 'success');
                 setTimeout(() => window.location.reload(), 1500);
             } else {
                 showToast(data.error || 'Failed to submit prediction', 'error');
@@ -166,6 +195,7 @@ export function driverSelection(gridElement) {
 
             showConfirmModal(
                 driverCode,
+                boosterActive,
                 () => {
                     activeCard = null;
                     submitPick(card, driverId, driverCode);

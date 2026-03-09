@@ -94,7 +94,10 @@
 												{{ '→ ' ~ (prediction.actualPosition is null ? 'DNF' : 'P' ~ prediction.actualPosition )}}
 											</span>
 											{% if isPerfect %}
-												<span class="text-[10px] font-boldtext-amber-500">✓ exact</span>
+												<span class="text-[10px] font-bold text-amber-500">✓ exact</span>
+											{% endif %}
+											{% if prediction.boosterUsed %}
+												<span class="text-[10px] font-bold text-purple-500 bg-purple-100 rounded px-1">2x</span>
 											{% endif %}
 
 										{% endif %}
@@ -102,7 +105,7 @@
 								</div>
 
 								{% if actualP10 %}
-									<span class="font-mono-data font-bold text-sm px-2.5 py-1 rounded-lg {{ isPerfect ? 'text-amber-600 bg-amber-50' : 'text-gray-600 bg-gray-100' }}">{{ prediction.pointsEarned }}</span>
+									<span class="font-mono-data font-bold text-sm px-2.5 py-1 rounded-lg {{ prediction.boosterUsed ? 'text-purple-600 bg-purple-50' : (isPerfect ? 'text-amber-600 bg-amber-50' : 'text-gray-600 bg-gray-100') }}">{{ prediction.pointsEarned }}</span>
 								{% endif %}
 							</div>
 						{% endfor %}

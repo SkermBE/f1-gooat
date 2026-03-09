@@ -100,6 +100,26 @@ class PredictionController extends Controller
         $driverCode = $driver->driverCode;
         $driverName = trim($driver->driverFirstName . ' ' . $driver->driverLastName);
 
+        // Check booster usage
+        $boosterUsed = (bool)$request->getBodyParam('boosterUsed');
+
+        if ($boosterUsed) {
+            // Check if player already used booster this season
+            $existingBooster = Entry::find()
+                ->section('predictions')
+                ->siteId($siteId)
+                ->relatedTo(['targetElement' => $player->id, 'field' => 'predictionPlayer'])
+                ->boosterUsed(true)
+                ->one();
+
+            if ($existingBooster) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => 'You have already used your booster this season',
+                ]);
+            }
+        }
+
         // Create prediction on current site
         $prediction = new Entry();
         $prediction->sectionId = Craft::$app->getEntries()->getSectionByHandle('predictions')->id;
@@ -113,6 +133,7 @@ class PredictionController extends Controller
             'driverCode' => $driverCode,
             'driverName' => $driverName,
             'selectionOrder' => $selectionOrder,
+            'boosterUsed' => $boosterUsed,
         ]);
 
         if (!Craft::$app->getElements()->saveElement($prediction)) {
@@ -137,6 +158,7 @@ class PredictionController extends Controller
                 'driverName' => $driverName,
                 'selectionOrder' => $selectionOrder,
                 'totalPlayers' => $totalPlayers,
+                'boosterUsed' => $boosterUsed,
             ],
         ]);
     }

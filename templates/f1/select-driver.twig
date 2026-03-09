@@ -116,7 +116,46 @@
 							</div>
 						</div>
 					</div>
-				{% elseif selectionOpen %}
+
+				{% if boosterAvailable %}
+					<div id="booster-toggle" class="rounded-2xl border-2 border-dashed border-purple-300 bg-purple-50 p-4 cursor-pointer transition-all hover:border-purple-400" data-active="0">
+						<div class="flex items-center gap-3">
+							<div class="p-2 rounded-xl bg-purple-100 text-purple-600">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+									<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+									<path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+									<path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+									<path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+								</svg>
+							</div>
+							<div class="flex-1">
+								<div class="font-bold text-purple-900 text-sm">Activate Booster</div>
+								<div class="text-xs text-purple-600">Double your points for this race (1x per season)</div>
+							</div>
+							<div id="booster-switch" class="w-11 h-6 rounded-full bg-gray-300 relative transition-colors">
+								<div class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform"></div>
+							</div>
+						</div>
+					</div>
+				{% else %}
+					<div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 opacity-50">
+						<div class="flex items-center gap-3">
+							<div class="p-2 rounded-xl bg-slate-100 text-slate-400">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+									<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+									<path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+									<path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+									<path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+								</svg>
+							</div>
+							<div class="flex-1">
+								<div class="font-bold text-slate-500 text-sm">Booster Used</div>
+								<div class="text-xs text-slate-400">Already activated this season</div>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			{% elseif selectionOpen %}
 					<div class="rounded-2xl bg-slate-100 border border-slate-200 p-6">
 						<div class="flex items-center gap-4">
 							<div class="p-3 rounded-xl bg-slate-200">
@@ -154,6 +193,9 @@
 										{% else %}
 											<span class="text-slate-400 mx-1.5">picked</span>
 											<span class="font-bold" style="color: rgb(182, 186, 189);">{{ prediction.driverCode }}</span>
+											{% if prediction.boosterUsed %}
+												<span class="text-[9px] font-bold text-purple-500 bg-purple-100 rounded px-1 ml-1">2x</span>
+											{% endif %}
 										{% endif %}
 									</div>
 								</div>

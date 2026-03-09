@@ -1,0 +1,9 @@
+columnSuffix: bstrused
+default: false
+handle: boosterUsed
+instructions: 'Whether the booster was activated for this prediction'
+name: 'Booster Used'
+searchable: false
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Lightswitch

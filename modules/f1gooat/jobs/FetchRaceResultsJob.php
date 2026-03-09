@@ -125,6 +125,10 @@ class FetchRaceResultsJob extends BaseJob
                 $actualPosition = (int)$result['position'];
                 $points = PointsCalculator::calculate($actualPosition);
 
+                if ($prediction->boosterUsed) {
+                    $points *= 2;
+                }
+
                 $prediction->setFieldValue('actualPosition', $actualPosition);
                 $prediction->setFieldValue('pointsEarned', $points);
             }

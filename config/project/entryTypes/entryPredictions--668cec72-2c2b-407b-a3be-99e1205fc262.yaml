@@ -104,6 +104,22 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
+          -
+            dateAdded: '2026-03-08T12:00:00+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: b8f2a1c3-7d4e-4f5a-9e6b-3c8d9f0a1b2e # Booster Used
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: a1b2c3d4-5e6f-7a8b-9c0d-e1f2a3b4c5d6
+            userCondition: null
+            warning: null
+            width: 100
         name: Prediction
         uid: 36743adf-3ce2-4cb1-83fd-d7c3d8dfb893
         userCondition: null
