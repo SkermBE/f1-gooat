@@ -26,6 +26,11 @@ class ImportController extends Controller
      */
     public ?string $from = null;
 
+    /**
+     * @var string|null Path to JSON file for predictions import
+     */
+    public ?string $file = null;
+
     public function options($actionID): array
     {
         $options = parent::options($actionID);
@@ -35,6 +40,9 @@ class ImportController extends Controller
         }
         if ($actionID === 'clone-players') {
             $options[] = 'from';
+        }
+        if ($actionID === 'predictions') {
+            $options[] = 'file';
         }
         return $options;
     }
@@ -85,7 +93,7 @@ class ImportController extends Controller
         $client = new Client();
 
         try {
-            $response = $client->get("{$apiBase}/{$year}/drivers/");
+            $response = $client->get("{$apiBase}/{$year}/drivers.json?limit=100");
             $data = json_decode($response->getBody(), true);
 
             $drivers = $data['MRData']['DriverTable']['Drivers'] ?? [];

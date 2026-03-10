@@ -4,11 +4,6 @@
 {% set perfectScores = craft.entries.section('predictions').pointsEarned('25').ids %}
 {% set latestRace = craft.entries.section('races').orderBy('raceRound desc').raceStatus('completed').one() ??? null %}
 
-{% set fakeData = standings is not iterable or standings is empty %}
-{% if fakeData %}
-	{% set standings = craft.entries.section('players').orderBy('totalPoints DESC, currentStanding ASC').all() %}
-{% endif %}
-
 {% block main %}
 	<div class="container container-sm mb-20">
 
@@ -80,7 +75,7 @@
 			</div>
 		</div>
 
-		{% if completedRaces|length >= 2 and currentSeasonYear >= 2026 %}
+		{% if completedRaces|length >= 2 %}
 		<div class="js-season-chart-wrapper bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 mb-8">
 			<h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-line w-5 h-5 text-amber-500">
@@ -97,9 +92,7 @@
 
 		<div class="space-y-2">
 			{% for entry in standings %}
-				{% include "f1/_partials/playerStanding" with {
-					fakeData: fakeData
-				} %}
+				{% include "f1/_partials/playerStanding" %}
 			{% endfor %}
 		</div>
 	</div>
