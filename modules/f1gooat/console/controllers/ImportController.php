@@ -347,4 +347,162 @@ class ImportController extends Controller
         echo "\nPlayer clone complete!\n";
         return ExitCode::OK;
     }
+
+    /**
+     * Import predictions from a JSON file.
+     * Usage: php craft f1-gooat/import/predictions --site=season2025 --file=predictions.json
+     *
+     * JSON format:
+     * [
+     *   { "round": 1, "playerId": 123, "driverCode": "VER", "selectionOrder": 1, "boosterUsed": false },
+     *   { "round": 1, "playerId": 456, "driverCode": "SKIP", "selectionOrder": 2, "boosterUsed": false }
+     * ]
+     */
+    public function actionPredictions(): int
+    {
+        $siteId = $this->resolveSiteId();
+
+        if (!$this->file) {
+            throw new \Exception('--file is required (path to JSON file)');
+        }
+
+        $filePath = realpath($this->file);
+        if (!$filePath || !file_exists($filePath)) {
+            throw new \Exception("File not found: {$this->file}");
+        }
+
+        $json = file_get_contents($filePath);
+        $predictions = json_decode($json, true);
+
+        if (!is_array($predictions) || empty($predictions)) {
+            throw new \Exception('Invalid or empty JSON file');
+        }
+
+        $section = Craft::$app->getEntries()->getSectionByHandle('predictions');
+        $entryType = $section->getEntryTypes()[0];
+
+        // Pre-load lookups
+        $races = [];
+        foreach (Entry::find()->section('races')->siteId($siteId)->all() as $race) {
+            $races[(int)$race->raceRound] = $race;
+        }
+
+        $players = [];
+        foreach (Entry::find()->section('players')->siteId($siteId)->all() as $player) {
+            $players[$player->id] = $player;
+        }
+
+        $drivers = [];
+        foreach (Entry::find()->section('drivers')->siteId($siteId)->all() as $driver) {
+            if ($driver->driverCode) {
+                $drivers[$driver->driverCode] = $driver;
+            }
+        }
+
+        echo "Importing " . count($predictions) . " predictions into '{$this->site}'...\n\n";
+
+        $imported = 0;
+        $skipped = 0;
+        $errors = 0;
+
+        foreach ($predictions as $i => $row) {
+            $line = $i + 1;
+            $round = (int)($row['round'] ?? 0);
+            $playerId = (int)($row['playerId'] ?? 0);
+            $driverCode = $row['driverCode'] ?? '';
+            $selectionOrder = (int)($row['selectionOrder'] ?? 0);
+            $boosterUsed = (bool)($row['boosterUsed'] ?? false);
+
+            // Validate required fields
+            if (!$round || !$playerId || !$driverCode || !$selectionOrder) {
+                echo "[{$line}] ERROR: Missing required fields (round, playerId, driverCode, selectionOrder)\n";
+                $errors++;
+                continue;
+            }
+
+            // Look up race
+            if (!isset($races[$round])) {
+                echo "[{$line}] ERROR: Race round {$round} not found\n";
+                $errors++;
+                continue;
+            }
+            $race = $races[$round];
+
+            // Look up player
+            if (!isset($players[$playerId])) {
+                echo "[{$line}] ERROR: Player ID {$playerId} not found\n";
+                $errors++;
+                continue;
+            }
+            $player = $players[$playerId];
+
+            // Check for duplicate
+            $existing = Entry::find()
+                ->section('predictions')
+                ->siteId($siteId)
+                ->relatedTo([
+                    'and',
+                    ['targetElement' => $race->id, 'field' => 'predictionRace'],
+                    ['targetElement' => $player->id, 'field' => 'predictionPlayer'],
+                ])
+                ->one();
+
+            if ($existing) {
+                echo "[{$line}] SKIP: Prediction already exists for {$player->title} in round {$round}\n";
+                $skipped++;
+                continue;
+            }
+
+            // Handle skip vs normal prediction
+            $isSkip = strtoupper($driverCode) === 'SKIP';
+            $driverName = 'Skipped';
+            $driverId = 'SKIP';
+
+            if (!$isSkip) {
+                if (!isset($drivers[$driverCode])) {
+                    echo "[{$line}] ERROR: Driver '{$driverCode}' not found\n";
+                    $errors++;
+                    continue;
+                }
+                $driver = $drivers[$driverCode];
+                $driverId = $driver->driverId;
+                $driverName = trim($driver->driverFirstName . ' ' . $driver->driverLastName);
+            }
+
+            // Create prediction
+            $prediction = new Entry();
+            $prediction->sectionId = $section->id;
+            $prediction->typeId = $entryType->id;
+            $prediction->siteId = $siteId;
+            $prediction->authorId = 1;
+
+            $fieldValues = [
+                'predictionRace' => [$race->id],
+                'predictionPlayer' => [$player->id],
+                'driverId' => $driverId,
+                'driverCode' => $isSkip ? 'SKIP' : $driverCode,
+                'driverName' => $driverName,
+                'selectionOrder' => $selectionOrder,
+                'boosterUsed' => $boosterUsed,
+            ];
+
+            if ($isSkip) {
+                $fieldValues['pointsEarned'] = 0;
+            }
+
+            $prediction->setFieldValues($fieldValues);
+
+            if (Craft::$app->getElements()->saveElement($prediction)) {
+                $label = $isSkip ? 'SKIP' : $driverCode;
+                echo "[{$line}] OK: Round {$round} — {$player->title} -> {$label}" . ($boosterUsed ? ' (BOOSTER)' : '') . "\n";
+                $imported++;
+            } else {
+                echo "[{$line}] ERROR: Failed to save — " . json_encode($prediction->getErrors()) . "\n";
+                $errors++;
+            }
+        }
+
+        echo "\nImport complete! Imported: {$imported}, Skipped: {$skipped}, Errors: {$errors}\n";
+        return $errors > 0 ? ExitCode::UNSPECIFIED_ERROR : ExitCode::OK;
+    }
 }
