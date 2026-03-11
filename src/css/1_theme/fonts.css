@@ -1,5 +1,15 @@
+/* Adjusted fallback to match Inter metrics and prevent CLS */
+@font-face {
+      font-family: "Inter Fallback";
+      src: local("Arial");
+      size-adjust: 107%;
+      ascent-override: 90%;
+      descent-override: 22%;
+      line-gap-override: 0%;
+}
+
 /* Fonts */
 @theme {
-      --font-body: "Inter", "ui-serif", "Georgia", "Cambria", '"Times New Roman"', "Times", "serif";
-      --font-heading: "Inter", "ui-serif", "Georgia", "Cambria", '"Times New Roman"', "Times", "serif";
+      --font-body: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      --font-heading: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
