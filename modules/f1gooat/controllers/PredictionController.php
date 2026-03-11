@@ -7,6 +7,7 @@ use craft\web\Controller;
 use craft\elements\Entry;
 use yii\web\Response;
 use modules\f1gooat\Module;
+use modules\f1gooat\CacheService;
 
 class PredictionController extends Controller
 {
@@ -149,6 +150,9 @@ class PredictionController extends Controller
             $race->setFieldValue('raceStatus', 'selection_closed');
             Craft::$app->getElements()->saveElement($race);
         }
+
+        // Invalidate caches affected by the new prediction
+        CacheService::invalidateAfterPrediction();
 
         return $this->asJson([
             'success' => true,
@@ -321,6 +325,9 @@ class PredictionController extends Controller
             $race->setFieldValue('raceStatus', 'selection_closed');
             Craft::$app->getElements()->saveElement($race);
         }
+
+        // Invalidate caches affected by the skip
+        CacheService::invalidateAfterPrediction();
 
         return $this->asJson([
             'success' => true,

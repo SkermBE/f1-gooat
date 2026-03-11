@@ -11,6 +11,7 @@ use GuzzleHttp\Client;
 use modules\f1gooat\Module;
 use modules\f1gooat\jobs\FetchRaceResultsJob;
 use modules\f1gooat\PointsCalculator;
+use modules\f1gooat\CacheService;
 
 class UpdateController extends Controller
 {
@@ -129,6 +130,8 @@ class UpdateController extends Controller
                 }
             }
 
+            CacheService::invalidateAfterDriverSync();
+
             return $this->asJson([
                 'success' => true,
                 'message' => "Drivers synced: {$imported} imported, {$updated} updated, {$skipped} skipped.",
@@ -218,6 +221,8 @@ class UpdateController extends Controller
                 }
             }
 
+            CacheService::invalidateAfterRaceSync();
+
             return $this->asJson([
                 'success' => true,
                 'message' => "Races synced: {$imported} imported, {$updated} updated.",
@@ -290,6 +295,11 @@ class UpdateController extends Controller
 
                 $processed++;
                 $raceNames[] = $race->title;
+            }
+
+            // Invalidate all caches after processing results
+            if ($processed > 0) {
+                CacheService::invalidateAfterRaceResults();
             }
 
             return $this->asJson([

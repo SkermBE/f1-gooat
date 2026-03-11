@@ -9,6 +9,7 @@ use yii\web\Response;
 use GuzzleHttp\Client;
 use modules\f1gooat\Module;
 use modules\f1gooat\PointsCalculator;
+use modules\f1gooat\CacheService;
 
 class RaceController extends Controller
 {
@@ -76,6 +77,9 @@ class RaceController extends Controller
             // Auto-open next race
             $this->openNextRace($race);
 
+            // Invalidate all caches — race results change everything
+            CacheService::invalidateAfterRaceResults();
+
             return $this->asJson([
                 'success' => true,
                 'message' => 'Results fetched and points calculated',
@@ -136,6 +140,9 @@ class RaceController extends Controller
 
         $this->calculatePointsForRace($race, $race->siteId);
         $this->updatePlayerStandings($race->siteId);
+
+        // Invalidate all caches after recalculation
+        CacheService::invalidateAfterRaceResults();
 
         return $this->asJson([
             'success' => true,

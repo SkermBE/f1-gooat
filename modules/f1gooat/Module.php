@@ -11,6 +11,7 @@ use craft\web\View;
 use craft\elements\Entry;
 use craft\helpers\UrlHelper;
 use modules\f1gooat\PointsCalculator;
+use modules\f1gooat\CacheService;
 
 /**
  * F1 Prediction Game Module
@@ -142,6 +143,23 @@ class Module extends BaseModule
      * For non-web contexts (queue jobs, console), pass $siteId explicitly.
      */
     public static function calculateSeasonStandings(?int $siteId = null): array
+    {
+        $cacheKey = CacheService::siteKey('standings', $siteId);
+
+        return CacheService::getOrSet(
+            $cacheKey,
+            [CacheService::TAG_STANDINGS, CacheService::TAG_PREDICTIONS, CacheService::TAG_PLAYERS],
+            CacheService::DURATION_MEDIUM,
+            function () use ($siteId) {
+                return self::computeSeasonStandings($siteId);
+            }
+        );
+    }
+
+    /**
+     * Internal: compute standings from the database (uncached).
+     */
+    private static function computeSeasonStandings(?int $siteId): array
     {
         $racesQuery = Entry::find()->section('races');
         $predictionsQuery = Entry::find()->section('predictions');

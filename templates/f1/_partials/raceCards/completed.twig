@@ -1,3 +1,4 @@
+{% cache using key "raceCard-completed-" ~ race.id for 1 week %}
 <div class="rounded-2xl overflow-hidden duration-300 bg-white border border-slate-200 hover:bg-gray-100 transition-colors {{ race.raceStatus == " selection_open" ? '!bg-primary' }}">
 	<div class="p-5">
 		<div class="flex items-start justify-between mb-4">
@@ -34,3 +35,4 @@
 		</a>
 	</div>
 </div>
+{% endcache %}

@@ -1,6 +1,7 @@
 {% extends 'f1/_layout' %}
 
 {% block main %}
+	{% cache using key "driver-list-" ~ currentSite.id for 1 week %}
 	<div class="container container-sm mb-20">
 		<div class="mb-6">
 			<a href="{{ siteUrl('races') }}">
@@ -41,4 +42,5 @@
 			{% endfor %}
 		</div>
 	</div>
+	{% endcache %}
 {% endblock %}

@@ -1,12 +1,11 @@
 {% extends 'f1/_layout' %}
 
-{% set perfectScores = craft.entries.section('predictions').predictionPlayer(player).pointsEarned('25').ids %}
-{% set completedRaces = craft.entries.section('races').raceStatus('completed').ids %}
-
-{% set averageScore = completedRaces|length ? player.totalPoints / completedRaces|length : 0 %}
-
-
 {% block main %}
+	{% cache using key "player-profile-" ~ player.id ~ "-" ~ currentSite.id for 1 hour %}
+	{% set perfectScores = craft.entries.section('predictions').predictionPlayer(player).pointsEarned('25').ids %}
+	{% set completedRaces = craft.entries.section('races').raceStatus('completed').ids %}
+	{% set averageScore = completedRaces|length ? player.totalPoints / completedRaces|length : 0 %}
+
 	<div class="container container-sm mb-20">
 		<div class="mb-6">
 			<a href="{{ siteUrl('standings') }}">
@@ -180,4 +179,5 @@
 
 		</div>
 	</div>
+	{% endcache %}
 {% endblock %}

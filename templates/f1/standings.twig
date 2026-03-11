@@ -1,10 +1,11 @@
 {% extends 'f1/_layout' %}
 
-{% set completedRaces = craft.entries.section('races').raceStatus('completed').ids %}
-{% set perfectScores = craft.entries.section('predictions').pointsEarned('25').ids %}
-{% set latestRace = craft.entries.section('races').orderBy('raceRound desc').raceStatus('completed').one() ??? null %}
-
 {% block main %}
+	{% cache using key "standings-page-" ~ currentSite.id for 1 hour %}
+	{% set completedRaces = craft.entries.section('races').raceStatus('completed').ids %}
+	{% set perfectScores = craft.entries.section('predictions').pointsEarned('25').ids %}
+	{% set latestRace = craft.entries.section('races').orderBy('raceRound desc').raceStatus('completed').one() ??? null %}
+
 	<div class="container container-sm mb-20">
 
 		<div class="mb-8">
@@ -96,4 +97,5 @@
 			{% endfor %}
 		</div>
 	</div>
+	{% endcache %}
 {% endblock %}
