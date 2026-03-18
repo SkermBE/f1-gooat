@@ -4,7 +4,7 @@
     "name": "index"
   },
   "src/js/app.js": {
-    "file": "assets/app-DHke4y3_.js",
+    "file": "assets/app-DilcvmTh.js",
     "name": "app",
     "src": "src/js/app.js",
     "isEntry": true,
@@ -19,7 +19,7 @@
       "src/js/parts/playerRaceByRace.js"
     ],
     "css": [
-      "assets/app-BnwYu4zG.css"
+      "assets/app-D_lckWxa.css"
     ]
   },
   "src/js/parts/a11y-dialog.js": {

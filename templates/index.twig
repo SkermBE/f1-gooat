@@ -55,9 +55,16 @@
 				{% set totalPlayers = craft.entries().section('players').count() %}
 				{% set totalPercentage = (1 - selectedCount / totalPlayers) * 100 %}
 				{% set calculatedStandings = craft.app.getModule('f1-gooat').calculateSeasonStandings() %}
+				{% set allPlayers = craft.entries().section('players').all() %}
 				{% if calculatedStandings is not empty %}
-					{% set reversedStandings = calculatedStandings|reverse %}
-					{% set currentSelector = reversedStandings[selectedCount] is defined ? craft.entries().id(reversedStandings[selectedCount].id).one() : null %}
+					{% set pickOrder = calculatedStandings|reverse %}
+					{% set standingIds = calculatedStandings|column('id') %}
+					{% for p in allPlayers %}
+						{% if p.id not in standingIds %}
+							{% set pickOrder = pickOrder|merge([{id: p.id}]) %}
+						{% endif %}
+					{% endfor %}
+					{% set currentSelector = pickOrder[selectedCount] is defined ? craft.entries().id(pickOrder[selectedCount].id).one() : null %}
 				{% else %}
 					{% set orderedPlayers = craft.entries().section('players').orderBy('totalPoints asc, currentStanding desc, title desc').all() %}
 					{% set currentSelector = orderedPlayers[selectedCount] is defined ? orderedPlayers[selectedCount] : null %}

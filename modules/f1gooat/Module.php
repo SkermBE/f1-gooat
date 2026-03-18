@@ -181,7 +181,7 @@ class Module extends BaseModule
             ->all();
 
         // Find the latest completed race to exclude for previous standings
-        $completedRaces = array_filter($races, fn($r) => $r->raceStatus == 'completed');
+        $completedRaces = array_filter($races, fn($r) => $r->raceStatus == RaceStatus::COMPLETED);
         $latestCompletedRace = !empty($completedRaces) ? end($completedRaces) : null;
         $latestRaceId = $latestCompletedRace ? $latestCompletedRace->id : null;
 

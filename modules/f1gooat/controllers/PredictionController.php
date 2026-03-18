@@ -7,7 +7,9 @@ use craft\web\Controller;
 use craft\elements\Entry;
 use yii\web\Response;
 use modules\f1gooat\Module;
+use modules\f1gooat\RaceStatus;
 use modules\f1gooat\CacheService;
+use modules\f1gooat\SelectionService;
 
 class PredictionController extends Controller
 {
@@ -20,24 +22,25 @@ class PredictionController extends Controller
     {
         $this->requirePostRequest();
 
+        $request = Craft::$app->getRequest();
+        $raceId = $request->getBodyParam('raceId');
+        $driverId = $request->getBodyParam('driverId');
+
+        $siteId = Craft::$app->getSites()->getCurrentSite()->id;
+        $isAdmin = Craft::$app->getUser()->getIdentity() && Craft::$app->getUser()->getIdentity()->admin;
+
         $player = Module::getCurrentPlayer();
-        if (!$player) {
+        if (!$player && !$isAdmin) {
             return $this->asJson([
                 'success' => false,
                 'error' => 'Not logged in',
             ]);
         }
 
-        $request = Craft::$app->getRequest();
-        $raceId = $request->getBodyParam('raceId');
-        $driverId = $request->getBodyParam('driverId');
-
-        $siteId = Craft::$app->getSites()->getCurrentSite()->id;
-
         // Get race — must be on current site and open for selection
         $race = Entry::find()->id($raceId)->siteId($siteId)->one();
 
-        if (!$race || $race->raceStatus != 'selection_open') {
+        if (!$race || $race->raceStatus != RaceStatus::SELECTION_OPEN) {
             return $this->asJson([
                 'success' => false,
                 'error' => 'Selection is not open for this race',
@@ -65,10 +68,18 @@ class PredictionController extends Controller
             ]);
         }
 
-        // Check if it's this player's turn
-        $currentSelector = $this->getCurrentSelector($raceId, $siteId);
+        // Check if it's this player's turn (admins vote on behalf of currentSelector)
+        $currentSelector = SelectionService::getCurrentSelector($raceId, $siteId);
 
-        if (!$currentSelector || $currentSelector->id != $player->id) {
+        if ($isAdmin) {
+            if (!$currentSelector) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => 'No player to vote for — all selections complete',
+                ]);
+            }
+            $player = $currentSelector;
+        } elseif (!$currentSelector || $currentSelector->id != $player->id) {
             return $this->asJson([
                 'success' => false,
                 'error' => 'It is not your turn to select',
@@ -104,21 +115,11 @@ class PredictionController extends Controller
         // Check booster usage
         $boosterUsed = (bool)$request->getBodyParam('boosterUsed');
 
-        if ($boosterUsed) {
-            // Check if player already used booster this season
-            $existingBooster = Entry::find()
-                ->section('predictions')
-                ->siteId($siteId)
-                ->relatedTo(['targetElement' => $player->id, 'field' => 'predictionPlayer'])
-                ->boosterUsed(true)
-                ->one();
-
-            if ($existingBooster) {
-                return $this->asJson([
-                    'success' => false,
-                    'error' => 'You have already used your booster this season',
-                ]);
-            }
+        if ($boosterUsed && SelectionService::hasUsedBooster($player, $siteId)) {
+            return $this->asJson([
+                'success' => false,
+                'error' => 'You have already used your booster this season',
+            ]);
         }
 
         // Create prediction on current site
@@ -147,7 +148,7 @@ class PredictionController extends Controller
         // Auto-close selection if all players have picked
         $totalPlayers = Entry::find()->section('players')->siteId($siteId)->count();
         if ($selectionOrder >= $totalPlayers) {
-            $race->setFieldValue('raceStatus', 'selection_closed');
+            $race->setFieldValue('raceStatus', RaceStatus::SELECTION_CLOSED);
             Craft::$app->getElements()->saveElement($race);
         }
 
@@ -235,7 +236,7 @@ class PredictionController extends Controller
             ->relatedTo(['targetElement' => $raceId, 'field' => 'predictionRace'])
             ->count();
 
-        $currentSelector = $this->getCurrentSelector($raceId, $race->siteId);
+        $currentSelector = SelectionService::getCurrentSelector($raceId, $race->siteId);
 
         $player = Module::getCurrentPlayer();
         $isPlayerTurn = $currentSelector && $player && $currentSelector->id == $player->id;
@@ -254,14 +255,15 @@ class PredictionController extends Controller
     }
 
     /**
-     * Skip the current player's turn — any logged-in player can trigger this
+     * Skip the current player's turn — any logged-in player or admin can trigger this
      */
     public function actionSkipPlayer(): Response
     {
         $this->requirePostRequest();
 
+        $isAdmin = Craft::$app->getUser()->getIdentity() && Craft::$app->getUser()->getIdentity()->admin;
         $player = Module::getCurrentPlayer();
-        if (!$player) {
+        if (!$player && !$isAdmin) {
             return $this->asJson([
                 'success' => false,
                 'error' => 'Not logged in',
@@ -274,14 +276,14 @@ class PredictionController extends Controller
 
         $race = Entry::find()->id($raceId)->siteId($siteId)->one();
 
-        if (!$race || $race->raceStatus != 'selection_open') {
+        if (!$race || $race->raceStatus != RaceStatus::SELECTION_OPEN) {
             return $this->asJson([
                 'success' => false,
                 'error' => 'Selection is not open for this race',
             ]);
         }
 
-        $currentSelector = $this->getCurrentSelector($raceId, $siteId);
+        $currentSelector = SelectionService::getCurrentSelector($raceId, $siteId);
         if (!$currentSelector) {
             return $this->asJson([
                 'success' => false,
@@ -322,7 +324,7 @@ class PredictionController extends Controller
         // Auto-close selection if all players have picked
         $totalPlayers = Entry::find()->section('players')->siteId($siteId)->count();
         if ($selectionOrder >= $totalPlayers) {
-            $race->setFieldValue('raceStatus', 'selection_closed');
+            $race->setFieldValue('raceStatus', RaceStatus::SELECTION_CLOSED);
             Craft::$app->getElements()->saveElement($race);
         }
 
@@ -337,30 +339,4 @@ class PredictionController extends Controller
         ]);
     }
 
-    /**
-     * Get current player who should select (site-scoped)
-     */
-    private function getCurrentSelector(int $raceId, ?int $siteId = null): ?Entry
-    {
-        $selectedCount = Entry::find()
-            ->section('predictions')
-            ->relatedTo(['targetElement' => $raceId, 'field' => 'predictionRace'])
-            ->count();
-
-        $query = Entry::find()
-            ->section('players')
-            ->orderBy('totalPoints asc, currentStanding desc, title desc');
-
-        if ($siteId) {
-            $query->siteId($siteId);
-        }
-
-        $players = $query->all();
-
-        if (isset($players[$selectedCount])) {
-            return $players[$selectedCount];
-        }
-
-        return null;
-    }
 }

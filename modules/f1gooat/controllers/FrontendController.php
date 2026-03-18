@@ -7,7 +7,9 @@ use craft\web\Controller;
 use craft\elements\Entry;
 use craft\helpers\UrlHelper;
 use modules\f1gooat\Module;
+use modules\f1gooat\RaceStatus;
 use modules\f1gooat\CacheService;
+use modules\f1gooat\SelectionService;
 
 class FrontendController extends Controller
 {
@@ -33,8 +35,11 @@ class FrontendController extends Controller
             ->relatedTo(['targetElement' => $raceId, 'field' => 'predictionRace'])
             ->count();
 
-        $currentSelector = $this->getCurrentSelector($raceId);
+        $currentSelector = SelectionService::getCurrentSelector($raceId, $race->siteId);
         $isPlayerTurn = $currentSelector && $player && $currentSelector->id == $player->id;
+
+        // Admin override: CP-logged-in user can vote on behalf of currentSelector
+        $isAdmin = Craft::$app->getUser()->getIdentity() && Craft::$app->getUser()->getIdentity()->admin;
 
         // Get available drivers
         $selectedPredictions = Entry::find()
@@ -74,15 +79,11 @@ class FrontendController extends Controller
         $recentSelections = array_slice(array_reverse($allSelections), 0, 3);
 
         // Check if player has already used booster this season
-        $boosterAvailable = false;
-        if ($player) {
-            $existingBooster = Entry::find()
-                ->section('predictions')
-                ->siteId($race->siteId)
-                ->relatedTo(['targetElement' => $player->id, 'field' => 'predictionPlayer'])
-                ->boosterUsed(true)
-                ->one();
-            $boosterAvailable = !$existingBooster;
+        $boosterAvailable = $player ? !SelectionService::hasUsedBooster($player, $race->siteId) : false;
+
+        // For admin: check booster for the currentSelector instead
+        if ($isAdmin && $currentSelector) {
+            $boosterAvailable = !SelectionService::hasUsedBooster($currentSelector, $race->siteId);
         }
 
         return $this->renderTemplate('f1/select-driver', [
@@ -98,6 +99,7 @@ class FrontendController extends Controller
             'selectionComplete' => $selectedCount >= $totalPlayers,
             'selectedDrivers' => $selectedDrivers,
             'boosterAvailable' => $boosterAvailable,
+            'isAdmin' => $isAdmin,
         ]);
     }
 
@@ -419,7 +421,7 @@ class FrontendController extends Controller
                     $entry = [
                         'race' => $race,
                         'result' => $raceResult,
-                        'hasResults' => $race->raceStatus == 'completed' && $race->raceResults && count($race->raceResults) > 1,
+                        'hasResults' => $race->raceStatus == RaceStatus::COMPLETED && $race->raceResults && count($race->raceResults) > 1,
                     ];
                     $seasonResults[] = $entry;
 
@@ -462,7 +464,7 @@ class FrontendController extends Controller
 
                 foreach ($predictions as $prediction) {
                     $predRace = $prediction->predictionRace->one();
-                    $isCompleted = $predRace && $predRace->raceStatus == 'completed';
+                    $isCompleted = $predRace && $predRace->raceStatus == RaceStatus::COMPLETED;
 
                     if ($isCompleted) {
                         $totalPointsGenerated += $prediction->pointsEarned ?? 0;
@@ -512,40 +514,4 @@ class FrontendController extends Controller
         return $this->renderTemplate('f1/driver-profile', $data);
     }
 
-    /**
-     * Get current selector helper — last place picks first.
-     * Uses calculated standings (reversed) so pick order matches the displayed leaderboard.
-     */
-    private function getCurrentSelector(int $raceId): ?Entry
-    {
-        $selectedCount = Entry::find()
-            ->section('predictions')
-            ->relatedTo(['targetElement' => $raceId, 'field' => 'predictionRace'])
-            ->count();
-
-        // Use calculated standings so pick order is consistent with displayed leaderboard
-        $standings = Module::calculateSeasonStandings();
-
-        if (!empty($standings)) {
-            // Reverse: last place picks first
-            $reversed = array_reverse($standings);
-            if (isset($reversed[$selectedCount])) {
-                return Entry::find()->id($reversed[$selectedCount]['id'])->one();
-            }
-            return null;
-        }
-
-        // Fallback: no completed races / no predictions yet — use stored fields
-        // Add title as final tiebreaker for deterministic ordering
-        $players = Entry::find()
-            ->section('players')
-            ->orderBy('totalPoints asc, currentStanding desc, title desc')
-            ->all();
-
-        if (isset($players[$selectedCount])) {
-            return $players[$selectedCount];
-        }
-
-        return null;
-    }
 }

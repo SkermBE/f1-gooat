@@ -5,12 +5,11 @@ namespace modules\f1gooat\controllers;
 use Craft;
 use craft\web\Controller;
 use craft\elements\Entry;
-use craft\helpers\Queue;
 use yii\web\Response;
 use GuzzleHttp\Client;
 use modules\f1gooat\Module;
-use modules\f1gooat\jobs\FetchRaceResultsJob;
-use modules\f1gooat\PointsCalculator;
+use modules\f1gooat\RaceStatus;
+use modules\f1gooat\RaceResultsService;
 use modules\f1gooat\CacheService;
 
 class UpdateController extends Controller
@@ -37,7 +36,6 @@ class UpdateController extends Controller
 
     /**
      * Sync drivers from Jolpica API for the current site/season.
-     * Imports new drivers and updates team info.
      */
     public function actionSyncDrivers(): Response
     {
@@ -72,7 +70,6 @@ class UpdateController extends Controller
                         ->one();
 
                     if ($existing) {
-                        // Update existing driver fields
                         $existing->setFieldValues([
                             'driverCode' => $driverData['code'] ?? $existing->driverCode,
                             'driverFirstName' => $driverData['givenName'] ?? $existing->driverFirstName,
@@ -190,7 +187,6 @@ class UpdateController extends Controller
                     ->one();
 
                 if ($existing) {
-                    // Update title and date for existing races
                     $existing->title = $raceData['raceName'];
                     $existing->setFieldValues([
                         'raceDate' => $raceDateTime,
@@ -213,7 +209,7 @@ class UpdateController extends Controller
                     'raceDate' => $raceDateTime,
                     'raceRound' => (int)$round,
                     'season' => (int)$year,
-                    'raceStatus' => 'upcoming',
+                    'raceStatus' => RaceStatus::UPCOMING,
                 ]);
 
                 if (Craft::$app->getElements()->saveElement($race)) {
@@ -239,7 +235,6 @@ class UpdateController extends Controller
 
     /**
      * Fetch results for all races with status 'selection_closed' on the current site.
-     * Runs synchronously (no queue) so results and next-race opening happen immediately.
      */
     public function actionFetchAllResults(): Response
     {
@@ -253,7 +248,7 @@ class UpdateController extends Controller
             $races = Entry::find()
                 ->section('races')
                 ->siteId($siteId)
-                ->raceStatus('selection_closed')
+                ->raceStatus(RaceStatus::SELECTION_CLOSED)
                 ->all();
 
             if (empty($races)) {
@@ -268,7 +263,6 @@ class UpdateController extends Controller
             $raceNames = [];
 
             foreach ($races as $race) {
-                // Fetch from Jolpica API
                 $url = "{$apiBase}/{$race->season}/{$race->raceRound}/results/";
                 $response = $client->get($url);
                 $data = json_decode($response->getBody(), true);
@@ -278,28 +272,11 @@ class UpdateController extends Controller
                     continue;
                 }
 
-                // Format and save results
-                $formattedResults = $this->formatResults($results);
-                $race->setFieldValue('raceResults', $formattedResults);
-                $race->setFieldValue('raceStatus', 'completed');
-                Craft::$app->getElements()->saveElement($race);
-
-                // Calculate points for predictions
-                $this->calculatePoints($race, $siteId);
-
-                // Update player standings
-                $this->updatePlayerStandings($siteId);
-
-                // Auto-open next race
-                $this->openNextRace($race, $siteId);
+                $formattedResults = RaceResultsService::formatResults($results);
+                RaceResultsService::processRaceResults($race, $formattedResults);
 
                 $processed++;
                 $raceNames[] = $race->title;
-            }
-
-            // Invalidate all caches after processing results
-            if ($processed > 0) {
-                CacheService::invalidateAfterRaceResults();
             }
 
             return $this->asJson([
@@ -313,114 +290,6 @@ class UpdateController extends Controller
                 'success' => false,
                 'error' => $e->getMessage(),
             ]);
-        }
-    }
-
-    private function formatResults(array $apiResults): array
-    {
-        $formatted = [];
-        foreach ($apiResults as $result) {
-            $status = $result['status'] ?? '';
-            $isFinished = $status === 'Finished' ||
-                         strpos($status, '+') === 0 ||
-                         strpos($status, 'Lap') !== false;
-
-            if ($isFinished) {
-                $displayStatus = 'Finished';
-            } elseif (stripos($status, 'Disqualified') !== false) {
-                $displayStatus = 'DSQ';
-            } else {
-                $displayStatus = 'DNF';
-            }
-
-            $formatted[] = [
-                'position' => (int)$result['position'],
-                'driverCode' => $result['Driver']['code'] ?? '',
-                'driverId' => $result['Driver']['driverId'] ?? '',
-                'status' => $displayStatus,
-            ];
-        }
-        return $formatted;
-    }
-
-    private function calculatePoints(Entry $race, int $siteId): void
-    {
-        $predictions = Entry::find()
-            ->section('predictions')
-            ->siteId($siteId)
-            ->relatedTo(['targetElement' => $race->id, 'field' => 'predictionRace'])
-            ->all();
-
-        foreach ($predictions as $prediction) {
-            $driverCode = $prediction->driverCode;
-            $result = null;
-            foreach ($race->raceResults as $r) {
-                if ($r['driverCode'] === $driverCode) {
-                    $result = $r;
-                    break;
-                }
-            }
-
-            if (!$result || $result['status'] !== 'Finished') {
-                $prediction->setFieldValue('actualPosition', null);
-                $prediction->setFieldValue('pointsEarned', 0);
-            } else {
-                $actualPosition = (int)$result['position'];
-                $points = PointsCalculator::calculate($actualPosition);
-
-                if ($prediction->boosterUsed) {
-                    $points *= 2;
-                }
-
-                $prediction->setFieldValue('actualPosition', $actualPosition);
-                $prediction->setFieldValue('pointsEarned', $points);
-            }
-
-            Craft::$app->getElements()->saveElement($prediction);
-        }
-    }
-
-    private function updatePlayerStandings(int $siteId): void
-    {
-        $players = Entry::find()->section('players')->siteId($siteId)->all();
-
-        foreach ($players as $player) {
-            $player->setFieldValue('previousStanding', $player->currentStanding ?? 0);
-        }
-
-        foreach ($players as $player) {
-            $predictions = Entry::find()
-                ->section('predictions')
-                ->siteId($siteId)
-                ->relatedTo(['targetElement' => $player->id, 'field' => 'predictionPlayer'])
-                ->all();
-
-            $totalPoints = 0;
-            foreach ($predictions as $prediction) {
-                $totalPoints += $prediction->pointsEarned ?? 0;
-            }
-            $player->setFieldValue('totalPoints', $totalPoints);
-        }
-
-        usort($players, fn($a, $b) => ($b->totalPoints ?? 0) <=> ($a->totalPoints ?? 0));
-
-        foreach ($players as $index => $player) {
-            $player->setFieldValue('currentStanding', $index + 1);
-            Craft::$app->getElements()->saveElement($player);
-        }
-    }
-
-    private function openNextRace(Entry $completedRace, int $siteId): void
-    {
-        $nextRace = Entry::find()
-            ->section('races')
-            ->siteId($siteId)
-            ->raceRound($completedRace->raceRound + 1)
-            ->one();
-
-        if ($nextRace && $nextRace->raceStatus == 'upcoming') {
-            $nextRace->setFieldValue('raceStatus', 'selection_open');
-            Craft::$app->getElements()->saveElement($nextRace);
         }
     }
 }

@@ -5,6 +5,8 @@
 {% endif %}
 
 {% set selectionOpen = race.raceStatus == 'selection_open' %}
+{% set isAdmin = isAdmin is defined and isAdmin %}
+{% set canVote = isPlayerTurn or (isAdmin and currentSelector) %}
 {% set totalPercentage = (1 - selectedCount / totalPlayers) * 100 %}
 
 {% block main %}
@@ -155,6 +157,42 @@
 							</div>
 						</div>
 					{% endif %}
+				{% elseif isAdmin and currentSelector %}
+					<div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white" style="opacity: 1; transform: none;">
+						<div class="relative flex items-center gap-4">
+							<div class="p-3 rounded-xl bg-white/20 backdrop-blur-sm">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+									<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+								</svg>
+							</div>
+							<div>
+								<div class="text-sm font-medium text-blue-100 uppercase tracking-wide">Admin Mode</div>
+								<div class="text-xl font-bold">Voting for {{ currentSelector.title }}</div>
+							</div>
+						</div>
+					</div>
+
+					{% if boosterAvailable %}
+						<div id="booster-toggle" class="rounded-2xl border-2 border-dashed border-purple-300 bg-purple-50 p-4 cursor-pointer transition-all hover:border-purple-400" data-active="0">
+							<div class="flex items-center gap-3">
+								<div class="p-2 rounded-xl bg-purple-100 text-purple-600">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+										<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+										<path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+										<path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+										<path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+									</svg>
+								</div>
+								<div class="flex-1">
+									<div class="font-bold text-purple-900 text-sm">Activate Booster for {{ currentSelector.title }}</div>
+									<div class="text-xs text-purple-600">Double points for this race (1x per season)</div>
+								</div>
+								<div id="booster-switch" class="w-11 h-6 rounded-full bg-gray-300 relative transition-colors">
+									<div class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform"></div>
+								</div>
+							</div>
+						</div>
+					{% endif %}
 				{% elseif selectionOpen %}
 					<div class="rounded-2xl bg-slate-100 border border-slate-200 p-6">
 						<div class="flex items-center gap-4">
@@ -226,11 +264,11 @@
 						available</span>
 				</div>
 
-				<div id="driverGrid" class="{{ not player or not isPlayerTurn ? 'opacity-40' }} grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4" data-race-id="{{ race.id }}" data-is-player-turn="{{ isPlayerTurn and selectionOpen ? '1' : '0' }}" data-submit-url="{{ siteUrl('prediction/submit') }}" data-csrf="{{ craft.app.request.csrfToken }}" {{ not player ? 'data-require-login="1"' }}>
+				<div id="driverGrid" class="{{ not canVote ? 'opacity-40' }} grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4" data-race-id="{{ race.id }}" data-is-player-turn="{{ canVote and selectionOpen ? '1' : '0' }}" data-submit-url="{{ siteUrl('prediction/submit') }}" data-csrf="{{ craft.app.request.csrfToken }}" {{ not player and not isAdmin ? 'data-require-login="1"' }}>
 					{% for driver in availableDrivers %}
 						{% if driver.driverCode %}
 
-							<div class="F1DriverCard group relative rounded-2xl overflow-hidden bg-white border-2 transition-all duration-200 hover:scale-105 {{ isPlayerTurn ? 'border-amber-500/20 cursor-pointer' : 'border-gray-100 pointer-events-none' }}" data-driver-id="{{ driver.driverId }}">
+							<div class="F1DriverCard group relative rounded-2xl overflow-hidden bg-white border-2 transition-all duration-200 hover:scale-105 {{ canVote ? 'border-amber-500/20 cursor-pointer' : 'border-gray-100 pointer-events-none' }}" data-driver-id="{{ driver.driverId }}">
 								<div class="p-3">
 									<div class="relative mx-auto mb-3 rounded-xl overflow-hidden bg-gradient-to-b from-slate-100 to-slate-200 w-16 h-16">
 										<div class="w-full h-full flex items-center justify-center">
