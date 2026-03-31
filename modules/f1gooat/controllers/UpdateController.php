@@ -14,7 +14,7 @@ use modules\f1gooat\CacheService;
 
 class UpdateController extends Controller
 {
-    protected array|int|bool $allowAnonymous = ['sync-drivers', 'sync-races', 'fetch-all-results'];
+    protected array|int|bool $allowAnonymous = ['sync-drivers', 'sync-races', 'fetch-all-results', 'clear-cache'];
 
     private function requirePlayer(): ?Response
     {
@@ -32,6 +32,27 @@ class UpdateController extends Controller
     private function getSeasonYear(): int
     {
         return Module::getCurrentSeasonYear();
+    }
+
+    /**
+     * Clear all caches by running the Craft console command. Available to anyone.
+     */
+    public function actionClearCache(): Response
+    {
+        $craftPath = Craft::getAlias('@root') . '/craft';
+        exec("php {$craftPath} clear-caches/all 2>&1", $output, $exitCode);
+
+        if ($exitCode !== 0) {
+            return $this->asJson([
+                'success' => false,
+                'error' => implode(' ', $output),
+            ]);
+        }
+
+        return $this->asJson([
+            'success' => true,
+            'message' => 'Cache cleared.',
+        ]);
     }
 
     /**

@@ -165,11 +165,10 @@
 											<div class="flex items-center gap-1.5">
 												<span class="font-mono-data font-bold text-sm text-[#0C1B33]">{{ result.driverCode }}</span>
 											</div>
-											<p class="!text-[10px] text-gray-400 truncate">{{ result.firstName }}
+											<p class="!text-[12px] text-gray-400 truncate">{{ result.firstName }}
 												{{ result.lastName}}</p>
 											{% if predictedBy %}
-												<p class="!text-[8px] text-amber-500 truncate">picked by:
-													{{ predictedBy.predictionPlayer.one().title }}</p>
+												<p class="!text-[8px] text-amber-500 truncate">{{ predictedBy.predictionPlayer.one().title }}</p>
 											{% endif %}
 										</div>
 									</div>

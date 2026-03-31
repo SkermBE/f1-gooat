@@ -5,12 +5,15 @@
             {{ svg(include('_partials/icons/icon_alt.svg'))|attr({class: 'max-w-[75px] w-full sm:hidden h-auto'}) }}
         </div>
 
-        {% if currentPlayer %}
-            <div class="border-t border-white/10 mt-6 pt-6">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                    <div id="adminMessage" class="text-sm hidden"></div>
-                </div>
-                <div class="flex flex-wrap gap-3">
+        <div class="border-t border-white/10 mt-6 pt-6">
+            <div id="adminMessage" class="text-sm hidden mb-4"></div>
+            <div class="flex flex-wrap gap-3">
+                <button type="button" class="js-admin-action cursor-pointer! bg-white/10 text-white/80 hover:bg-white/20 px-4 py-2 text-sm rounded-lg font-medium transition-colors"
+                        data-url="{{ siteUrl('update/clear-cache') }}"
+                        data-csrf="{{ craft.app.request.csrfToken }}">
+                        Clear Cache
+                </button>
+                {% if currentPlayer %}
                     <button type="button" class="js-admin-action !cursor-pointer bg-white/10 text-white/80 hover:bg-white/20 px-4 py-2 text-sm rounded-lg font-medium transition-colors"
                             data-url="{{ siteUrl('update/sync-drivers') }}"
                             data-csrf="{{ craft.app.request.csrfToken }}">
@@ -26,8 +29,8 @@
                             data-csrf="{{ craft.app.request.csrfToken }}">
                         Fetch Results
                     </button>
-                </div>
+                {% endif %}
             </div>
-        {% endif %}
+        </div>
     </div>
 </footer>

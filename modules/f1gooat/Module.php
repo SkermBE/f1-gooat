@@ -59,6 +59,7 @@ class Module extends BaseModule
                 $event->rules['update/sync-drivers'] = 'f1-gooat/update/sync-drivers';
                 $event->rules['update/sync-races'] = 'f1-gooat/update/sync-races';
                 $event->rules['update/fetch-results'] = 'f1-gooat/update/fetch-all-results';
+                $event->rules['update/clear-cache'] = 'f1-gooat/update/clear-cache';
 
                 // Auth
                 $event->rules['player-login'] = 'f1-gooat/auth/login';
