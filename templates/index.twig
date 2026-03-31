@@ -110,7 +110,6 @@
 			</a>
 		{% endif %}
 
-		{% cache using key "index-standings-" ~ currentSite.id for 1 hour %}
 		<div class="grid lg:grid-cols-3 gap-8 mb-20">
 
 
@@ -165,6 +164,5 @@
 				</div>
 			{% endif %}
 		</div>
-		{% endcache %}
 	</div>
 {% endblock %}
