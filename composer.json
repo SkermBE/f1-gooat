@@ -2,7 +2,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "craftcms/cms": "^5.9.14",
+    "craftcms/cms": "^5.9.18",
     "iwf/craft-control-panel-element-counter": "5.0.8",
     "nystudio107/craft-emptycoalesce": "^5.0.0",
     "nystudio107/craft-vite": "^5.0.1",

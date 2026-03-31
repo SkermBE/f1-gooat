@@ -1,4 +1,4 @@
-dateModified: 1772993991
+dateModified: 1774987298
 elementSources:
   craft\elements\Entry:
     -
@@ -46,6 +46,7 @@ elementSources:
       key: 'section:40f3c457-bc98-479b-bc8f-4112d9d1cb55' # Players
       page: 'F1 GOOAT'
       tableAttributes:
+        - 'field:70c7bc84-96ad-46cb-a4fa-cb199f539360' # Player Email
         - 'field:7e74b128-601c-4dc0-ad90-cffba00195a4' # Total Points
         - 'field:43b3cc3e-6293-45a4-9321-2c0bd1d82aa6' # Current Standing
         - 'field:039ea3d5-d4e4-4e88-bd0c-5a3746c3918f' # Previous Standing
