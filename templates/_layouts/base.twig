@@ -53,7 +53,7 @@
 	</head>
 
 	{# HTML Body #}
-	<body class="{{ bodyClass }}">
+	<body class="{{ bodyClass }}" data-current-player="{{ currentPlayer.id ?? '' }}">
 
 		{# Main block #}
 		{% block body %}{% endblock %}
